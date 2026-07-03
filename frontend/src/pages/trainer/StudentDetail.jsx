@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import api from "../../api/axios";
 
 const StudentDetail = () => {
     const { id } = useParams();
@@ -14,79 +15,55 @@ const StudentDetail = () => {
     }, []);
 
     const fetchStudent = async () => {
-        try {
-            const response = await fetch(
-                `http://127.0.0.1:8000/api/student/trainer/students/${id}/`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+    try {
+        const { data } = await api.get(
+            `/student/trainer/students/${id}/`
+        );
 
-            const data = await response.json();
-
-            setStudent(data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        setStudent(data);
+    } catch (error) {
+        console.error("Error fetching student:", error);
+    }
+};
 
     const approveStudent = async () => {
-        try {
-            await fetch(
-                "http://127.0.0.1:8000/api/student/trainer/approve/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        student_profile_id: id,
-                        remark: remark,
-                    }),
-                }
-            );
+    try {
+        await api.post("/student/trainer/approve/", {
+            student_profile_id: id,
+            remark: remark,
+        });
 
-            alert(
-                "Profile Approved Successfully"
-            );
+        alert("Profile Approved Successfully");
 
-            fetchStudent();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        fetchStudent();
+    } catch (error) {
+        console.error("Approval Error:", error);
 
+        alert(
+            error.response?.data?.detail ||
+            "Failed to approve student."
+        );
+    }
+};
     const rejectStudent = async () => {
-        try {
-            await fetch(
-                "http://127.0.0.1:8000/api/student/trainer/reject/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        student_profile_id: id,
-                        remark: remark,
-                    }),
-                }
-            );
+    try {
+        await api.post("/student/trainer/reject/", {
+            student_profile_id: id,
+            remark: remark,
+        });
 
-            alert(
-                "Profile Rejected Successfully"
-            );
+        alert("Profile Rejected Successfully");
 
-            fetchStudent();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        fetchStudent();
+    } catch (error) {
+        console.error("Rejection Error:", error);
+
+        alert(
+            error.response?.data?.detail ||
+            "Failed to reject student."
+        );
+    }
+};
 
     if (!student) {
         return (

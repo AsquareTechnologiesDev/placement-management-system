@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const TrainerDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -13,27 +14,19 @@ const TrainerDashboard = () => {
     }, []);
 
     const fetchStudents = async () => {
-        try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/trainer/students/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+    try {
+        const { data } = await api.get(
+            "/student/trainer/students/"
+        );
 
-            const data = await response.json();
-
-            setStudents(data);
-        } catch (error) {
-            console.error(
-                "Error loading students:",
-                error
-            );
-        }
-    };
-
+        setStudents(data);
+    } catch (error) {
+        console.error(
+            "Error loading students:",
+            error
+        );
+    }
+};
     const handleView = (studentId) => {
         navigate(
             `/trainer/student/${studentId}`

@@ -10,26 +10,16 @@ const ViewProfile = () => {
     }, []);
 
     const fetchProfile = async () => {
-        try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/profile/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+    try {
+        const { data } = await api.get("/student/profile/");
 
-            const data = await response.json();
+        console.log("PROFILE:", data);
 
-            console.log("PROFILE:", data);
-
-            setProfile(data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
+        setProfile(data);
+    } catch (error) {
+        console.error("Profile Error:", error);
+    }
+};
     if (!profile) {
         return (
             <div
