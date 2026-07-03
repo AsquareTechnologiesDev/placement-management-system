@@ -11,7 +11,7 @@ password='Admin@asquare123',
 first_name='Admin',
 last_name='Asquare',
 role=User.Role.ADMIN
-)
+)"
 
 python manage.py collectstatic --no-input
 python manage.py migrate
