@@ -192,17 +192,22 @@ CORS_ALLOWED_ORIGINS = [
     "https://placement-management-system-phi-seven.vercel.app",
 ]
 
-if not DEBUG:
-    CORS_ALLOWED_ORIGINS += [
-        "https://placement-management-system-phi-seven.vercel.app",
-    ]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://placement-management-system-phi-seven.vercel.app",
+]
+
+# if not DEBUG:
+#     CORS_ALLOWED_ORIGINS += [
+#         "https://placement-management-system-phi-seven.vercel.app",
+#     ]
 
 #media
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
