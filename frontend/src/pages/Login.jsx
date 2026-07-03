@@ -65,16 +65,14 @@ const Login = () => {
                 );
             }
         } catch (error) {
-            console.error(
-                "Login failed:",
-                error
-            );
+    console.error("FULL ERROR:", error);
 
-            alert(
-                "Invalid email or password"
-            );
-        }
-    };
+    if (error.response) {
+        console.log(error.response.data);
+    }
+
+    alert(error.message);
+}
 
     return (
         <div

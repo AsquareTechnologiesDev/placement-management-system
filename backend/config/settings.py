@@ -189,14 +189,13 @@ AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://placement-management-system-phi-seven.vercel.app/" ,
+    "https://placement-management-system-phi-seven.vercel.app",
 ]
 
 if not DEBUG:
     CORS_ALLOWED_ORIGINS += [
-        "https://your-vercel-app.vercel.app",
+        "https://placement-management-system-phi-seven.vercel.app",
     ]
-
 
 #media
 MEDIA_URL = "/media/"
