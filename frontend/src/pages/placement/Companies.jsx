@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import api from "../api/axios";
 
 const Companies = () => {
     const [companies, setCompanies] = useState([]);
@@ -21,14 +22,7 @@ const Companies = () => {
 
     const fetchCompanies = async () => {
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/companies/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await api.get("/companies/");
 
             const data = await response.json();
 
@@ -49,18 +43,7 @@ const Companies = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/companies/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(formData),
-                }
-            );
+            const response = await api.post("/companies/",formData);
 
             if (response.ok) {
                 alert("Company Added");

@@ -33,26 +33,23 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/auth/register/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-                    },
-                    body: JSON.stringify({
-                        first_name:
-                            formData.first_name,
-                        last_name:
-                            formData.last_name,
-                        email:
-                            formData.email,
-                        password:
-                            formData.password,
-                    }),
-                }
-            );
+            try {
+    const response = await api.post("/auth/register/", {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        password: formData.password,
+    });
+
+    alert("Registration Successful");
+    navigate("/");
+} catch (error) {
+    alert(
+        error.response?.data?.detail ||
+        error.response?.data?.message ||
+        "Registration Failed"
+    );
+}
 
             const data =
                 await response.json();

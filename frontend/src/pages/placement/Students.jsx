@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../api/axios";
 
 
 
@@ -17,14 +17,7 @@ const Students = () => {
 
     const fetchStudents = async () => {
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/approved/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await api.get("/student/approved/");
 
             const data = await response.json();
 

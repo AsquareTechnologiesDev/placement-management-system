@@ -1,6 +1,7 @@
 // src/pages/student/Profile.jsx
 
 import { useEffect, useState } from "react";
+import api from "../api/axios";
 
 const Profile = () => {
     const [status, setStatus] = useState("DRAFT");
@@ -27,14 +28,7 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/profile/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await api.get("/student/profile/");
 
             const data = await response.json();
 
@@ -65,27 +59,13 @@ const Profile = () => {
     };
 
     const fetchTrainers = async () => {
-        try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/trainers/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            const data = await response.json();
-
-            setTrainers(data);
-        } catch (error) {
-            console.error(
-                "Trainer Error:",
-                error
-            );
-        }
-    };
-
+    try {
+        const { data } = await api.get("/student/trainers/");
+        setTrainers(data);
+    } catch (error) {
+        console.error("Trainer Error:", error);
+    }
+};
     const handleChange = (e) => {
         const { name, value, files } =
             e.target;
@@ -147,19 +127,14 @@ const Profile = () => {
                 );
             }
 
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/student/profile/",
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: payload,
-                }
-            );
+            const response = await api.post(
+        "/student/profile/",
+        payload
+    );
 
-            const data =
-                await response.json();
+    const data = response.data;
+
+            
 
             setStatus(
                 data.status ||

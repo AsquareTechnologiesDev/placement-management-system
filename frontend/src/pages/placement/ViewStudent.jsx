@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../api/axios";
 
+const MEDIA_URL = (
+    import.meta.env.VITE_API_URL || ""
+).replace("/api", "");
 const ViewStudent = () => {
     const { id } = useParams();
 
@@ -111,7 +114,7 @@ const ViewStudent = () => {
                             <td>
                                 {student.resume ? (
                                     <a
-                                        href={`http://127.0.0.1:8000${student.resume}`}
+                                        href={`${MEDIA_URL}${student.resume}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         style={{
