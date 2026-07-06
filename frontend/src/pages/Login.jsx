@@ -12,67 +12,47 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        try {
-            // Step 1: Login
-            const loginResponse = await authService.login(
-                email,
-                password
-            );
+    try {
+        // Step 1: Login
+        const loginResponse = await authService.login(
+            email,
+            password
+        );
 
-            console.log(
-                "Login Response:",
-                loginResponse
-            );
+        console.log("Login Response:", loginResponse);
 
-            // Save Access Token
-            localStorage.setItem(
-                "access_token",
-                loginResponse.access
-            );
+        localStorage.setItem(
+            "access_token",
+            loginResponse.access
+        );
 
-            // Step 2: Get Current User
-            const user =
-                await authService.getCurrentUser();
+        // Step 2: Get Current User
+        const user = await authService.getCurrentUser();
 
-            console.log(
-                "Current User:",
-                user
-            );
+        console.log("Current User:", user);
 
-            // Step 3 & 4: Navigate based on role
-            if (user.role === "ADMIN") {
-                navigate("/admin/dashboard");
-            } else if (
-                user.role ===
-                "PLACEMENT_EXECUTIVE"
-            ) {
-                navigate(
-                    "/placement/dashboard"
-                );
-            } else if (
-                user.role === "TRAINER"
-            ) {
-                navigate(
-                    "/trainer/dashboard"
-                );
-            } else if (
-                user.role === "STUDENT"
-            ) {
-                navigate(
-                    "/student/dashboard"
-                );
-            }
-        } catch (error) {
-    console.error("FULL ERROR:", error);
+        // Step 3: Navigate based on role
+        if (user.role === "ADMIN") {
+            navigate("/admin/dashboard");
+        } else if (user.role === "PLACEMENT_EXECUTIVE") {
+            navigate("/placement/dashboard");
+        } else if (user.role === "TRAINER") {
+            navigate("/trainer/dashboard");
+        } else if (user.role === "STUDENT") {
+            navigate("/student/dashboard");
+        }
+    } catch (error) {
+        console.error("FULL ERROR:", error);
 
-    if (error.response) {
-        console.log(error.response.data);
+        if (error.response) {
+            console.log(error.response.data);
+        }
+
+        alert(error.message);
     }
-
-    alert(error.message);
-}
+};   // <-- This closes handleSubmit
 
     return (
         <div
@@ -428,6 +408,6 @@ const Login = () => {
         </div>
     );
 };
-};
+
 
 export default Login;
