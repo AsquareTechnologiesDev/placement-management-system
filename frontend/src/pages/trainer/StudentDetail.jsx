@@ -229,7 +229,7 @@ const StudentDetail = () => {
 
                     {student.resume ? (
                         <a
-                            href={`http://127.0.0.1:8000${student.resume}`}
+                            href={`https://placement-management-system-29po.onrender.com${student.resume}`}
                             target="_blank"
                             rel="noreferrer"
                             style={{

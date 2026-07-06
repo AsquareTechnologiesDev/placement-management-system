@@ -233,7 +233,7 @@ const ViewProfile = () => {
 
                     {profile.resume ? (
                         <a
-                            href={`http://127.0.0.1:8000${profile.resume}`}
+                            href={`https://placement-management-system-29po.onrender.com${profile.resume}`}
                             target="_blank"
                             rel="noreferrer"
                             style={{
