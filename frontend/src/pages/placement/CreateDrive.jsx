@@ -42,7 +42,7 @@ const CreateDrive = () => {
     const fetchCompanies = async () => {
         try {
             const response = await api.get("/companies/");
-            setCompanies(response.data);
+            setCompanies(response.data)
         } catch (error) {
             console.log(error);
         }

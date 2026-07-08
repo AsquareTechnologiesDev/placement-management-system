@@ -14,7 +14,7 @@ const Companies = () => {
         phone: "",
     });
 
-    const token = localStorage.getItem("access_token");
+    // const token = localStorage.getItem("access_token");
 
     useEffect(() => {
         fetchCompanies();
@@ -24,9 +24,7 @@ const Companies = () => {
         try {
             const response = await api.get("/companies/");
 
-            const data = await response.json();
-
-            setCompanies(data);
+            setCompanies(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -43,21 +41,21 @@ const Companies = () => {
         e.preventDefault();
 
         try {
-            const response = await api.post("/companies/",formData);
+            const response = await api.post("/companies/", formData);
 
-            if (response.ok) {
-                alert("Company Added");
+if (response.ok) {
+    alert("Company Added");
 
-                setFormData({
-                    name: "",
-                    website: "",
-                    contact_person: "",
-                    email: "",
-                    phone: "",
-                });
+    setFormData({
+        name: "",
+        website: "",
+        contact_person: "",
+        email: "",
+        phone: "",
+    });
 
-                fetchCompanies();
-            }
+    fetchCompanies();
+}
         } catch (error) {
             console.error(error);
         }

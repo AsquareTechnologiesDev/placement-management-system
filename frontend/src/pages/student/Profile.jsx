@@ -30,26 +30,20 @@ const Profile = () => {
         try {
             const response = await api.get("/student/profile/");
 
-            const data = await response.json();
+const data = response.data;
 
-            setStatus(data.status || "DRAFT");
+setStatus(data.status || "DRAFT");
 
-            setFormData((prev) => ({
-                ...prev,
-                student_name:
-                    data.student_name || "",
-                phone: data.phone || "",
-                address:
-                    data.address || "",
-                qualification:
-                    data.qualification || "",
-                passout_year:
-                    data.passout_year || "",
-                skills:
-                    data.skills || "",
-                trainer:
-                    data.trainer || "",
-            }));
+setFormData((prev) => ({
+            ...prev,
+            student_name: data.student_name || "",
+            phone: data.phone || "",
+            address: data.address || "",
+            qualification: data.qualification || "",
+            passout_year: data.passout_year || "",
+            skills: data.skills || "",
+            trainer: data.trainer || "",
+        }));
         } catch (error) {
             console.error(
                 "Profile Error:",

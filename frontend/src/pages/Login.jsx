@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import authService from "../services/authService";
-
+import logoo from "../assets/logoo.png";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -77,7 +77,16 @@ const Login = () => {
                     padding: "70px",
                 }}
             >
-                <h1
+                    <img
+                        src={logoo}
+                        alt="Asquare Technologies"
+                        style={{
+                            width: "220px",
+                            height: "auto",
+                            marginBottom: "40px",
+                        }}
+                    />
+                                    <h1
                     style={{
                         fontSize: "4rem",
                         fontWeight: "700",

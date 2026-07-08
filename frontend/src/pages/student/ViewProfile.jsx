@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
+import api from "../api/axios";
+
+const MEDIA_URL = (
+    import.meta.env.VITE_API_URL || ""
+).replace("/api", "");
 
 const ViewProfile = () => {
     const [profile, setProfile] = useState(null);
 
-    const token = localStorage.getItem("access_token");
+    // const token = localStorage.getItem("access_token");
 
     useEffect(() => {
         fetchProfile();
@@ -233,7 +238,7 @@ const ViewProfile = () => {
 
                     {profile.resume ? (
                         <a
-                            href={`https://placement-management-system-29po.onrender.com${profile.resume}`}
+                            href={`${MEDIA_URL}${profile.resume}`}
                             target="_blank"
                             rel="noreferrer"
                             style={{
