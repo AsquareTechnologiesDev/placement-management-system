@@ -1,7 +1,7 @@
 // src/pages/student/Profile.jsx
 
 import { useEffect, useState } from "react";
-import api from "../api/axios";
+import api from "../../api/axios";
 
 const Profile = () => {
     const [status, setStatus] = useState("DRAFT");
