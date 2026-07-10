@@ -32,6 +32,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
+    ".asquaretechnologiesweb.com",
+    "career.asquaretechnologiesweb.com",
+    "31.97.228.71",
     "localhost",
     "127.0.0.1",
 ]
@@ -185,10 +188,13 @@ AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://31.97.228.71:5173",
+    "https://career.asquaretechnologiesweb.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://career.asquaretechnologiesweb.com",
 ]
 
 # if not DEBUG:
