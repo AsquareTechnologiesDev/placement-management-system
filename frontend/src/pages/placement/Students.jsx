@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    Users,
+    GraduationCap,
+    Sparkles,
+    ArrowRight,
+    UserX,
+} from "lucide-react";
 import api from "../../api/axios";
-
-
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Students.css";
 
 const Students = () => {
     const [students, setStudents] = useState([]);
@@ -19,232 +27,104 @@ const Students = () => {
         try {
             const response = await api.get("/student/approved/");
 
-            const data = await response.json();
-
-            setStudents(data);
+            setStudents(response.data);
         } catch (error) {
             console.error(error);
         }
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
+        <>
+            {/* Site-wide branded header (logo, company name, logout) */}
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
+
+            <div className="st-root">
+
             {/* Header */}
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    Approved Students
-                </h1>
-
-                <p
-                    style={{
-                        marginTop: "10px",
-                    }}
-                >
-                    View trainer-approved
-                    candidates ready for placement.
+            <div className="st-header">
+                <div className="st-header-blob" />
+                <div className="st-header-grid" />
+                <span className="st-header-eyebrow">
+                    <Users /> Talent Pool
+                </span>
+                <h1 className="st-header-title">Approved Students</h1>
+                <p className="st-header-sub">
+                    View trainer-approved candidates ready for placement.
                 </p>
             </div>
 
             {/* Count Card */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    padding: "20px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h3
-                    style={{
-                        margin: 0,
-                        color: "#555",
-                    }}
-                >
-                    Total Approved Students
-                </h3>
-
-                <h1
-                    style={{
-                        color: "#ED1464",
-                        marginBottom: 0,
-                    }}
-                >
-                    {students.length}
-                </h1>
+            <div className="st-stat-card">
+                <div className="st-stat-icon"><Users /></div>
+                <div>
+                    <p className="st-stat-label">Total Approved Students</p>
+                    <h1 className="st-stat-value">{students.length}</h1>
+                </div>
             </div>
 
             {/* Student Cards */}
 
             {students.length === 0 ? (
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "40px",
-                        borderRadius: "15px",
-                        textAlign: "center",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#888",
-                        }}
-                    >
-                        No approved students found.
-                    </h3>
+                <div className="st-empty">
+                    <div className="st-empty-icon"><UserX /></div>
+                    <p className="st-empty-title">No approved students found</p>
+                    <p className="st-empty-sub">Approved candidates will appear here once available.</p>
                 </div>
             ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(320px,1fr))",
-                        gap: "20px",
-                    }}
-                >
-                    {students.map(
-                        (student) => (
-                            <div
-                                key={
-                                    student.id
-                                }
-                                style={{
-                                    background:
-                                        "#fff",
-                                    padding:
-                                        "25px",
-                                    borderRadius:
-                                        "15px",
-                                    boxShadow:
-                                        "0 3px 12px rgba(0,0,0,0.08)",
-                                }}
-                            >
-                                {/* Avatar */}
+                <div className="st-grid">
+                    {students.map((student) => {
+                        const skills = student.skills
+                            ? student.skills.split(",").map((s) => s.trim()).filter(Boolean)
+                            : [];
 
-                                <div
-                                    style={{
-                                        width:
-                                            "60px",
-                                        height:
-                                            "60px",
-                                        borderRadius:
-                                            "50%",
-                                        background:
-                                            "#ED1464",
-                                        color:
-                                            "#fff",
-                                        display:
-                                            "flex",
-                                        alignItems:
-                                            "center",
-                                        justifyContent:
-                                            "center",
-                                        fontSize:
-                                            "24px",
-                                        fontWeight:
-                                            "bold",
-                                        marginBottom:
-                                            "15px",
-                                    }}
-                                >
-                                    {student.student_name
-                                        ?.charAt(
-                                            0
-                                        )
-                                        ?.toUpperCase()}
+                        return (
+                            <div key={student.id} className="st-card">
+                                <div className="st-avatar">
+                                    {student.student_name?.charAt(0)?.toUpperCase()}
                                 </div>
 
-                                <h2
-                                    style={{
-                                        marginTop:
-                                            0,
-                                        color:
-                                            "#333",
-                                    }}
-                                >
-                                    {
-                                        student.student_name
-                                    }
-                                </h2>
+                                <h2 className="st-card-name">{student.student_name}</h2>
 
-                                <p>
-                                    <strong>
-                                        Qualification:
-                                    </strong>
-                                    <br />
-                                    {
-                                        student.qualification
-                                    }
-                                </p>
-
-                                <p>
-                                    <strong>
-                                        Skills:
-                                    </strong>
-                                    <br />
-                                    {
-                                        student.skills
-                                    }
-                                </p>
-
-                                <div
-                                    style={{
-                                        marginTop:
-                                            "20px",
-                                    }}
-                                >
-                                    <button
-                                        onClick={() =>
-                                            navigate(
-                                                `/placement/student/${student.id}`
-                                            )
-                                        }
-                                        style={{
-                                            background:
-                                                "#ED1464",
-                                            color:
-                                                "#fff",
-                                            border:
-                                                "none",
-                                            padding:
-                                                "12px 20px",
-                                            borderRadius:
-                                                "8px",
-                                            cursor:
-                                                "pointer",
-                                            fontWeight:
-                                                "600",
-                                        }}
-                                    >
-                                        View Profile
-                                    </button>
+                                <div className="st-card-row">
+                                    <span className="st-card-label">
+                                        <GraduationCap /> Qualification
+                                    </span>
+                                    <p className="st-card-value">{student.qualification || "Not specified"}</p>
                                 </div>
+
+                                <div className="st-card-row">
+                                    <span className="st-card-label">
+                                        <Sparkles /> Skills
+                                    </span>
+                                    {skills.length > 0 ? (
+                                        <div className="st-tags">
+                                            {skills.map((skill, i) => (
+                                                <span className="st-tag" key={i}>{skill}</span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="st-card-value">Not specified</p>
+                                    )}
+                                </div>
+
+                                <button
+                                    onClick={() => navigate(`/placement/student/${student.id}`)}
+                                    className="st-view-btn"
+                                >
+                                    View Profile
+                                    <ArrowRight />
+                                </button>
                             </div>
-                        )
-                    )}
+                        );
+                    })}
                 </div>
             )}
-        </div>
+            </div>
+
+            <AppFooter version="v1.0.0" />
+        </>
     );
 };
 

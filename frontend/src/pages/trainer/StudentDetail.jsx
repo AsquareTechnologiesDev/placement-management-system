@@ -1,9 +1,51 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+    UserRound,
+    Phone,
+    GraduationCap,
+    Tags,
+    FileText,
+    FileX,
+    MessageSquareText,
+    CheckCircle2,
+    XCircle,
+    ClipboardCheck,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./StudentDetail.css";
+
+const STATUS_META = {
+    PENDING: { fg: "var(--status-pending)", bg: "var(--status-pending-tint)" },
+    APPROVED: { fg: "var(--status-approved)", bg: "var(--status-approved-tint)" },
+    REJECTED: { fg: "var(--status-rejected)", bg: "var(--status-rejected-tint)" },
+};
+
+const initials = (name = "") =>
+    name
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase())
+        .join("");
+
+const InfoField = ({ icon: IconCmp, label, value }) => (
+    <div className="asq-info-field">
+        <span className="asq-info-icon">
+            <IconCmp size={15} />
+        </span>
+        <span>
+            <span className="asq-info-label">{label}</span>
+            <span className="asq-info-value">{value || "—"}</span>
+        </span>
+    </div>
+);
 
 const StudentDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [student, setStudent] = useState(null);
     const [remark, setRemark] = useState("");
@@ -15,339 +57,182 @@ const StudentDetail = () => {
     }, []);
 
     const fetchStudent = async () => {
-    try {
-        const { data } = await api.get(
-            `/student/trainer/students/${id}/`
-        );
+        try {
+            const { data } = await api.get(
+                `/student/trainer/students/${id}/`
+            );
 
-        setStudent(data);
-    } catch (error) {
-        console.error("Error fetching student:", error);
-    }
-};
+            setStudent(data);
+        } catch (error) {
+            console.error("Error fetching student:", error);
+        }
+    };
 
     const approveStudent = async () => {
-    try {
-        await api.post("/student/trainer/approve/", {
-            student_profile_id: id,
-            remark: remark,
-        });
+        try {
+            await api.post("/student/trainer/approve/", {
+                student_profile_id: id,
+                remark: remark,
+            });
 
-        alert("Profile Approved Successfully");
+            alert("Profile Approved Successfully");
 
-        fetchStudent();
-    } catch (error) {
-        console.error("Approval Error:", error);
+            fetchStudent();
+        } catch (error) {
+            console.error("Approval Error:", error);
 
-        alert(
-            error.response?.data?.detail ||
-            "Failed to approve student."
-        );
-    }
-};
+            alert(
+                error.response?.data?.detail ||
+                "Failed to approve student."
+            );
+        }
+    };
+
     const rejectStudent = async () => {
-    try {
-        await api.post("/student/trainer/reject/", {
-            student_profile_id: id,
-            remark: remark,
-        });
+        try {
+            await api.post("/student/trainer/reject/", {
+                student_profile_id: id,
+                remark: remark,
+            });
 
-        alert("Profile Rejected Successfully");
+            alert("Profile Rejected Successfully");
 
-        fetchStudent();
-    } catch (error) {
-        console.error("Rejection Error:", error);
+            fetchStudent();
+        } catch (error) {
+            console.error("Rejection Error:", error);
 
-        alert(
-            error.response?.data?.detail ||
-            "Failed to reject student."
-        );
-    }
-};
+            alert(
+                error.response?.data?.detail ||
+                "Failed to reject student."
+            );
+        }
+    };
 
     if (!student) {
         return (
-            <div
-                style={{
-                    padding: "40px",
-                    textAlign: "center",
-                }}
-            >
-                Loading...
-            </div>
+            <>
+                <AppHeader onLogoClick={() => navigate("/trainer/dashboard")} />
+                <div className="asq-review">
+                    <div className="asq-loading-shell">
+                        <div className="asq-skel" style={{ height: 140 }} />
+                        <div className="asq-skel" style={{ height: 220 }} />
+                        <div className="asq-skel" style={{ height: 180 }} />
+                    </div>
+                </div>
+                <AppFooter version="v1.0.0" />
+            </>
         );
     }
 
+    const statusMeta = STATUS_META[student.status] || STATUS_META.PENDING;
+
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily:
-                    "'Segoe UI', sans-serif",
-            }}
-        >
-            {/* Header */}
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/trainer/dashboard")} />
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    Student Review
-                </h1>
+        <div className="asq-review">
+            <div className="asq-review-shell">
+                {/* ---------- Header ---------- */}
+                <div className="asq-review-header">
+                    <svg className="asq-review-motif" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M30 40 80 90 30 140 30 40Z" stroke="rgba(255,255,255,0.28)" strokeWidth="6" strokeLinejoin="round" />
+                        <path d="M100 40 150 90 100 140 100 40Z" stroke="rgba(255,255,255,0.16)" strokeWidth="6" strokeLinejoin="round" />
+                        <path d="M220 110 270 160 220 210 220 110Z" stroke="rgba(255,255,255,0.12)" strokeWidth="5" strokeLinejoin="round" />
+                    </svg>
 
-                <p
-                    style={{
-                        marginTop: "10px",
-                    }}
-                >
-                    Review student profile and
-                    provide approval remarks.
-                </p>
-            </div>
-
-            {/* Student Details Card */}
-
-            <div
-                style={{
-                    background: "#fff",
-                    padding: "30px",
-                    borderRadius: "15px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                    marginBottom: "25px",
-                }}
-            >
-                <h2
-                    style={{
-                        color: "#ED1464",
-                        marginTop: 0,
-                    }}
-                >
-                    Student Information
-                </h2>
-
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(300px,1fr))",
-                        gap: "20px",
-                    }}
-                >
-                    <div>
-                        <strong>
-                            Student Name
-                        </strong>
-                        <p>
-                            {
-                                student.student_name
-                            }
+                    <div className="asq-review-heading">
+                        <span className="asq-review-eyebrow">
+                            <ClipboardCheck size={13} />
+                            Trainer Console
+                        </span>
+                        <h1 className="asq-review-title">Student Review</h1>
+                        <p className="asq-review-subtitle">
+                            Review the student's profile and record an approval or rejection remark.
                         </p>
                     </div>
+                </div>
 
-                    <div>
-                        <strong>
-                            Phone
-                        </strong>
-                        <p>
-                            {student.phone}
-                        </p>
-                    </div>
+                {/* ---------- Content ---------- */}
+                <div className="asq-review-grid">
+                    <div className="asq-panel">
+                        <div className="asq-profile-id">
+                            <span className="asq-avatar">{initials(student.student_name) || "?"}</span>
+                            <div>
+                                <h2 className="asq-profile-name">{student.student_name}</h2>
+                                <span
+                                    className="asq-status-pill"
+                                    style={{ "--pill-fg": statusMeta.fg, "--pill-bg": statusMeta.bg }}
+                                >
+                                    {student.status}
+                                </span>
+                            </div>
+                        </div>
 
-                    <div>
-                        <strong>
-                            Qualification
-                        </strong>
-                        <p>
-                            {
-                                student.qualification
-                            }
-                        </p>
-                    </div>
+                        <div className="asq-info-grid">
+                            <InfoField icon={Phone} label="Phone" value={student.phone} />
+                            <InfoField icon={GraduationCap} label="Qualification" value={student.qualification} />
+                        </div>
 
-                    <div>
-                        <strong>
-                            Status
-                        </strong>
+                        <div className="asq-panel-title" style={{ marginBottom: 8 }}>
+                            <Tags size={16} />
+                            Skills
+                        </div>
+                        <p className="asq-skills-text">{student.skills || "No skills listed."}</p>
 
-                        <p>
-                            <span
-                                style={{
-                                    background:
-                                        "#ffe3ef",
-                                    color:
-                                        "#ED1464",
-                                    padding:
-                                        "6px 12px",
-                                    borderRadius:
-                                        "20px",
-                                    fontWeight:
-                                        "600",
-                                }}
+                        <div className="asq-panel-title" style={{ marginTop: 24, marginBottom: 10 }}>
+                            <FileText size={16} />
+                            Resume
+                        </div>
+                        {student.resume ? (
+                            <a
+                                href={`https://placement-management-system-29po.onrender.com${student.resume}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="asq-resume-link"
                             >
-                                {
-                                    student.status
-                                }
+                                <FileText size={16} />
+                                View Resume
+                            </a>
+                        ) : (
+                            <span className="asq-resume-empty">
+                                <FileX size={16} />
+                                No resume uploaded
                             </span>
-                        </p>
+                        )}
                     </div>
-                </div>
 
-                <div
-                    style={{
-                        marginTop: "20px",
-                    }}
-                >
-                    <strong>
-                        Skills
-                    </strong>
+                    <aside className="asq-panel">
+                        <h3 className="asq-panel-title">
+                            <MessageSquareText size={16} />
+                            Trainer Remark
+                        </h3>
 
-                    <p>
-                        {student.skills}
-                    </p>
-                </div>
+                        <textarea
+                            className="asq-textarea"
+                            value={remark}
+                            onChange={(e) => setRemark(e.target.value)}
+                            placeholder="Enter approval or rejection remarks..."
+                        />
 
-                <div
-                    style={{
-                        marginTop: "20px",
-                    }}
-                >
-                    <strong>
-                        Resume
-                    </strong>
+                        <div className="asq-decision-actions">
+                            <button className="asq-btn asq-btn-approve" onClick={approveStudent}>
+                                <CheckCircle2 size={16} />
+                                Approve
+                            </button>
 
-                    <br />
-                    <br />
-
-                    {student.resume ? (
-                        <a
-                            href={`https://placement-management-system-29po.onrender.com${student.resume}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            style={{
-                                background:
-                                    "#ED1464",
-                                color:
-                                    "#fff",
-                                padding:
-                                    "10px 18px",
-                                borderRadius:
-                                    "8px",
-                                textDecoration:
-                                    "none",
-                            }}
-                        >
-                            View Resume
-                        </a>
-                    ) : (
-                        "No Resume Uploaded"
-                    )}
-                </div>
-            </div>
-
-            {/* Remark Section */}
-
-            <div
-                style={{
-                    background: "#fff",
-                    padding: "30px",
-                    borderRadius: "15px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        color: "#ED1464",
-                        marginTop: 0,
-                    }}
-                >
-                    Trainer Remark
-                </h2>
-
-                <textarea
-                    value={remark}
-                    onChange={(e) =>
-                        setRemark(
-                            e.target.value
-                        )
-                    }
-                    placeholder="Enter approval or rejection remarks..."
-                    style={{
-                        width: "100%",
-                        minHeight: "120px",
-                        padding: "12px",
-                        border:
-                            "1px solid #ddd",
-                        borderRadius:
-                            "8px",
-                        boxSizing:
-                            "border-box",
-                        resize: "vertical",
-                    }}
-                />
-
-                <div
-                    style={{
-                        marginTop: "20px",
-                        display: "flex",
-                        gap: "15px",
-                    }}
-                >
-                    <button
-                        onClick={
-                            approveStudent
-                        }
-                        style={{
-                            background:
-                                "#ED1464",
-                            color: "#fff",
-                            border: "none",
-                            padding:
-                                "12px 25px",
-                            borderRadius:
-                                "8px",
-                            cursor:
-                                "pointer",
-                            fontWeight:
-                                "600",
-                        }}
-                    >
-                        Approve
-                    </button>
-
-                    <button
-                        onClick={
-                            rejectStudent
-                        }
-                        style={{
-                            background:
-                                "#dc3545",
-                            color: "#fff",
-                            border: "none",
-                            padding:
-                                "12px 25px",
-                            borderRadius:
-                                "8px",
-                            cursor:
-                                "pointer",
-                            fontWeight:
-                                "600",
-                        }}
-                    >
-                        Reject
-                    </button>
+                            <button className="asq-btn asq-btn-reject" onClick={rejectStudent}>
+                                <XCircle size={16} />
+                                Reject
+                            </button>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
 

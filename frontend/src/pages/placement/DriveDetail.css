@@ -1,0 +1,494 @@
+/* -------------------------------------------------------------------- */
+/* DriveDetails — scoped tokens (won't leak outside this page)          */
+/* -------------------------------------------------------------------- */
+.dd-root {
+  --dd-pink: #ed1965;
+  --dd-pink-deep: #ba0032;
+  --dd-pink-light: #f14784;
+  --dd-pink-tint: #fde8f0;
+  --dd-navy: #100e2e;
+  --dd-navy-soft: #6b6b80;
+  --dd-border: rgba(16, 14, 46, 0.08);
+  --dd-bg: #fafafc;
+
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px clamp(16px, 4vw, 40px) 60px;
+  font-family: "Montserrat", "Segoe UI", sans-serif;
+  color: var(--dd-navy);
+}
+
+/* ------------------------------ Back button ------------------------------ */
+
+.dd-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--dd-border);
+  background: #fff;
+  color: var(--dd-navy);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.dd-back-btn:hover {
+  background: var(--dd-pink-tint);
+  border-color: rgba(237, 25, 101, 0.3);
+}
+
+.dd-back-btn:active {
+  transform: scale(0.98);
+}
+
+.dd-back-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------- Header --------------------------------- */
+
+.dd-header {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 36px clamp(20px, 4vw, 44px);
+  margin-bottom: 28px;
+
+  background: linear-gradient(
+    120deg,
+    var(--dd-pink-deep) 0%,
+    var(--dd-pink) 55%,
+    var(--dd-pink-light) 100%
+  );
+  box-shadow: 0 16px 32px -16px rgba(186, 0, 50, 0.4);
+}
+
+.dd-header-blob {
+  position: absolute;
+  top: -30%;
+  right: -8%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.dd-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.dd-header-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.dd-header-title {
+  position: relative;
+  z-index: 1;
+  font-family: "Nunito Sans", "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 3.2vw, 34px);
+  color: #ffffff;
+  margin: 0 0 10px;
+}
+
+.dd-header-sub {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+}
+
+.dd-header-sub svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dd-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: transparent;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dd-edit-btn:hover {
+  background: #ffffff;
+  color: var(--dd-pink-deep);
+}
+
+.dd-edit-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* --------------------------------- Badges --------------------------------- */
+
+.dd-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dd-badge-green {
+  background: rgba(34, 197, 94, 0.22);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.dd-badge-blue {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.dd-badge-slate {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.dd-badge-red {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+/* ---------------------------------- Stats ---------------------------------- */
+
+.dd-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.dd-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--dd-border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 18px -12px rgba(16, 14, 46, 0.12);
+}
+
+.dd-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--dd-pink-tint);
+  color: var(--dd-pink);
+}
+
+.dd-stat-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dd-stat-label {
+  margin: 0 0 2px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--dd-navy-soft);
+}
+
+.dd-stat-value {
+  margin: 0;
+  font-family: "Nunito Sans", "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--dd-navy);
+}
+
+/* ---------------------------------- Panels ---------------------------------- */
+
+.dd-panel {
+  background: #fff;
+  border: 1px solid var(--dd-border);
+  border-radius: 18px;
+  padding: 24px clamp(18px, 3vw, 30px);
+  margin-bottom: 20px;
+  box-shadow: 0 6px 18px -14px rgba(16, 14, 46, 0.1);
+}
+
+.dd-panel-head {
+  margin-bottom: 18px;
+}
+
+.dd-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: "Nunito Sans", "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--dd-navy);
+}
+
+.dd-panel-title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--dd-pink);
+}
+
+/* Text blocks (description / eligibility) */
+
+.dd-text-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.dd-text-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--dd-navy-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.dd-text-label svg {
+  width: 14px;
+  height: 14px;
+}
+
+.dd-text-value {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--dd-navy);
+  white-space: pre-line;
+}
+
+/* Info grid (schedule / venue / coordinator) */
+
+.dd-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px 24px;
+}
+
+.dd-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dd-info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dd-navy-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dd-info-label svg {
+  width: 14px;
+  height: 14px;
+  color: var(--dd-pink);
+}
+
+.dd-info-value {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--dd-navy);
+  word-break: break-word;
+}
+
+.dd-link {
+  color: var(--dd-pink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dd-link:hover {
+  text-decoration: underline;
+}
+
+/* Notice preview */
+
+.dd-notice-preview {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--dd-border);
+  max-width: 420px;
+}
+
+.dd-notice-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------------------------------- Empty state ---------------------------------- */
+
+.dd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px dashed var(--dd-border);
+}
+
+.dd-empty-inline {
+  padding: 32px 16px;
+  border-style: solid;
+}
+
+.dd-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  width: 52px;
+  border-radius: 14px;
+  background: var(--dd-pink-tint);
+  color: var(--dd-pink);
+  margin-bottom: 14px;
+}
+
+.dd-empty-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dd-empty-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--dd-navy);
+}
+
+.dd-empty-sub {
+  margin: 0 0 18px;
+  font-size: 13.5px;
+  color: var(--dd-navy-soft);
+}
+
+.dd-empty-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: var(--dd-pink);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dd-empty-btn:hover {
+  background: var(--dd-pink-deep);
+}
+
+/* ---------------------------------- Skeleton ---------------------------------- */
+
+.dd-header-loading {
+  display: flex;
+  flex-direction: column;
+}
+
+.dd-skeleton {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+
+.dd-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  animation: dd-shimmer 1.4s infinite;
+}
+
+@keyframes dd-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+  0% {
+    transform: translateX(-100%);
+  }
+}
+
+/* ---------------------------------- Responsive ---------------------------------- */
+
+@media (max-width: 640px) {
+  .dd-header {
+    padding: 26px 20px;
+    border-radius: 16px;
+  }
+
+  .dd-stats {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .dd-panel {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+}

@@ -1,12 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+    Mail,
+    Phone,
+    GraduationCap,
+    CalendarDays,
+    UserCheck,
+    Sparkles,
+    MapPin,
+    BadgeCheck,
+    FileText,
+    Download,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./ViewStudent.css";
 
 const MEDIA_URL = (
     import.meta.env.VITE_API_URL || ""
 ).replace("/api", "");
+
 const ViewStudent = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [student, setStudent] = useState(null);
 
@@ -18,7 +35,7 @@ const ViewStudent = () => {
         try {
             const res = await api.get(`/student/placement/${id}/`);
             console.log(res.data);
-            
+
 
             setStudent(res.data);
         } catch (err) {
@@ -26,114 +43,108 @@ const ViewStudent = () => {
         }
     };
 
-    if (!student)
-        return <h2 style={{ padding: "40px" }}>Loading...</h2>;
+    if (!student) {
+        return (
+            <>
+                <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
+
+                <div className="vs-root">
+                    <div className="vs-skeleton-header" />
+                    <div className="vs-skeleton-card" />
+                </div>
+
+                <AppFooter version="v1.0.0" />
+            </>
+        );
+    }
+
+    const skills = student.skills
+        ? student.skills.split(",").map((s) => s.trim()).filter(Boolean)
+        : [];
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "30px",
-                }}
-            >
-                <h1>{student.student_name}</h1>
+        <>
+            {/* Site-wide branded header (logo, company name, logout) */}
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
 
-                <p>Student Profile</p>
+            <div className="vs-root">
+
+            <div className="vs-header">
+                <div className="vs-header-blob" />
+                <div className="vs-header-grid" />
+
+                <div className="vs-header-content">
+                    <div className="vs-avatar">
+                        {student.student_name?.charAt(0)?.toUpperCase()}
+                    </div>
+                    <div>
+                        <span className="vs-header-eyebrow">Student Profile</span>
+                        <h1 className="vs-header-title">{student.student_name}</h1>
+                        {student.status && (
+                            <span className="vs-status-badge">
+                                <BadgeCheck /> {student.status}
+                            </span>
+                        )}
+                    </div>
+                </div>
             </div>
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <table
-                    style={{
-                        width: "100%",
-                        borderSpacing: "18px",
-                        fontSize: "17px",
-                    }}
-                >
-                    <tbody>
-                        <tr>
-                            <td><b>Email</b></td>
-                            <td>{student.email}</td>
-                        </tr>
+            <div className="vs-card">
+                <div className="vs-grid">
+                    <Field icon={Mail} label="Email" value={student.email} />
+                    <Field icon={Phone} label="Phone" value={student.phone} />
+                    <Field icon={GraduationCap} label="Qualification" value={student.qualification} />
+                    <Field icon={CalendarDays} label="Passout Year" value={student.passout_year} />
+                    <Field icon={UserCheck} label="Trainer" value={student.trainer} />
+                    <Field icon={MapPin} label="Address" value={student.address} full />
 
-                        <tr>
-                            <td><b>Phone</b></td>
-                            <td>{student.phone}</td>
-                        </tr>
+                    <div className="vs-field vs-field-full">
+                        <span className="vs-label"><Sparkles /> Skills</span>
+                        {skills.length > 0 ? (
+                            <div className="vs-tags">
+                                {skills.map((skill, i) => (
+                                    <span className="vs-tag" key={i}>{skill}</span>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="vs-value">Not specified</p>
+                        )}
+                    </div>
 
-                        <tr>
-                            <td><b>Qualification</b></td>
-                            <td>{student.qualification}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Passout Year</b></td>
-                            <td>{student.passout_year}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Trainer</b></td>
-                            <td>{student.trainer}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Skills</b></td>
-                            <td>{student.skills}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Address</b></td>
-                            <td>{student.address}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Status</b></td>
-                            <td>{student.status}</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Resume</b></td>
-                            <td>
-                                {student.resume ? (
-                                    <a
-                                        href={`${MEDIA_URL}${student.resume}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        style={{
-                                            color: "#ED1464",
-                                            fontWeight: "600",
-                                        }}
-                                    >
-                                        View Resume
-                                    </a>
-                                ) : (
-                                    "No Resume"
-                                )}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div className="vs-field vs-field-full">
+                        <span className="vs-label"><FileText /> Resume</span>
+                        {student.resume ? (
+                            <a
+                                href={`${MEDIA_URL}${student.resume}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="vs-resume-card"
+                            >
+                                <div className="vs-resume-icon"><FileText /></div>
+                                <div>
+                                    <p className="vs-resume-title">View Resume</p>
+                                    <p className="vs-resume-sub">Opens in a new tab</p>
+                                </div>
+                                <Download className="vs-resume-download" />
+                            </a>
+                        ) : (
+                            <p className="vs-value">No resume uploaded</p>
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
+            </div>
+
+            <AppFooter version="v1.0.0" />
+        </>
     );
 };
+
+const Field = ({ icon: Icon, label, value, full }) => (
+    <div className={`vs-field ${full ? "vs-field-full" : ""}`}>
+        <span className="vs-label"><Icon /> {label}</span>
+        <p className="vs-value">{value || "-"}</p>
+    </div>
+);
 
 export default ViewStudent;

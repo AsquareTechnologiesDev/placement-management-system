@@ -1,0 +1,322 @@
+/* src/pages/student/StudentDriveDetail.css */
+
+.dd-root {
+  --dd-primary: #ED1965;
+  --dd-primary-dark: #D3004C;
+  --dd-primary-tint: #FDE8F0;
+  --dd-primary-tint-2: #FABAD1;
+  --dd-ink: #14161B;
+  --dd-slate: #5B6472;
+  --dd-slate-light: #8A93A3;
+  --dd-mist: #F7F8FB;
+  --dd-line: #E7E9EE;
+  --dd-white: #FFFFFF;
+  --dd-amber: #B9790A;
+  --dd-amber-bg: #FCF1DD;
+  --dd-font-display: 'Nunito Sans', sans-serif;
+  --dd-font-body: 'Montserrat', sans-serif;
+
+  min-height: 100vh;
+  background: var(--dd-mist);
+  padding: 36px;
+  font-family: var(--dd-font-body);
+  color: var(--dd-ink);
+}
+
+/* Loading / not found state */
+
+.dd-state-card {
+  max-width: 380px;
+  margin: 100px auto;
+  background: var(--dd-white);
+  border: 1px solid var(--dd-line);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+}
+
+.dd-state-card svg {
+  width: 30px;
+  height: 30px;
+  color: var(--dd-primary);
+  margin-bottom: 14px;
+}
+
+.dd-state-card p {
+  font-size: 14.5px;
+  color: var(--dd-slate);
+  margin: 0;
+}
+
+.dd-spin { animation: ddSpin 0.8s linear infinite; }
+@keyframes ddSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Card wrapper */
+
+.dd-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--dd-white);
+  border: 1px solid var(--dd-line);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(20, 22, 27, 0.06);
+}
+
+/* Header */
+
+.dd-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--dd-primary) 0%, var(--dd-primary-dark) 100%);
+  color: var(--dd-white);
+  padding: 40px 42px;
+  isolation: isolate;
+}
+
+.dd-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 75%);
+  z-index: 0;
+}
+
+.dd-header-blob {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  top: -120px;
+  right: -70px;
+  z-index: 0;
+}
+
+.dd-header-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.dd-header-eyebrow svg { width: 13px; height: 13px; }
+
+.dd-header-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--dd-font-display);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  max-width: 620px;
+}
+
+.dd-status-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Notice image */
+
+.dd-notice-wrap {
+  padding: 24px 32px 0;
+}
+
+.dd-notice-img {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+/* Body */
+
+.dd-body {
+  padding: 32px;
+}
+
+.dd-section {
+  margin-bottom: 28px;
+}
+
+.dd-section:last-of-type { margin-bottom: 0; }
+
+.dd-section-title {
+  margin: 0 0 14px;
+  font-family: var(--dd-font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--dd-primary-dark);
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--dd-line);
+}
+
+/* Text blocks (description / eligibility) */
+
+.dd-text-block { margin-bottom: 16px; }
+.dd-text-block:last-child { margin-bottom: 0; }
+
+.dd-text-block-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--dd-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.dd-text-block-label svg { width: 14px; height: 14px; color: var(--dd-primary); }
+
+.dd-text-block-value {
+  margin: 0;
+  background: var(--dd-mist);
+  border: 1px solid var(--dd-line);
+  border-radius: 12px;
+  padding: 15px 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--dd-ink);
+  white-space: pre-line;
+}
+
+/* Info grid */
+
+.dd-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.dd-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--dd-mist);
+  border: 1px solid var(--dd-line);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.dd-info-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--dd-primary-tint), var(--dd-primary-tint-2));
+  color: var(--dd-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dd-info-icon svg { width: 15px; height: 15px; }
+
+.dd-info-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dd-slate-light);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 3px;
+}
+
+.dd-info-value {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--dd-ink);
+  word-break: break-word;
+}
+
+/* CTA */
+
+.dd-cta {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1.5px solid var(--dd-line);
+  text-align: center;
+}
+
+.dd-register-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: linear-gradient(135deg, var(--dd-primary), var(--dd-primary-dark));
+  color: var(--dd-white);
+  padding: 15px 32px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 12px 24px -8px rgba(237, 25, 101, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dd-register-btn svg { width: 17px; height: 17px; }
+
+.dd-register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px -8px rgba(237, 25, 101, 0.48);
+}
+
+.dd-pending-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 560px;
+  background: var(--dd-amber-bg);
+  color: var(--dd-amber);
+  padding: 16px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.dd-pending-notice svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 640px) {
+  .dd-root { padding: 16px; }
+  .dd-header { padding: 28px 24px; }
+  .dd-header-title { font-size: 22px; }
+  .dd-notice-wrap { padding: 20px 20px 0; }
+  .dd-body { padding: 22px 20px; }
+}

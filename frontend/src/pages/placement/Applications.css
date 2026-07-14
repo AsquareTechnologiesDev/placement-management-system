@@ -1,0 +1,499 @@
+/* src/pages/placement/Applications.css */
+
+.ap-root {
+  --ap-primary: #ED1965;
+  --ap-primary-dark: #D3004C;
+  --ap-primary-tint: #FDE8F0;
+  --ap-primary-tint-2: #FABAD1;
+  --ap-ink: #14161B;
+  --ap-slate: #5B6472;
+  --ap-slate-light: #8A93A3;
+  --ap-mist: #F7F8FB;
+  --ap-line: #E7E9EE;
+  --ap-white: #FFFFFF;
+  --ap-font-display: 'Nunito Sans', sans-serif;
+  --ap-font-body: 'Montserrat', sans-serif;
+
+  --ap-green: #1B8A5A;
+  --ap-green-bg: #E5F6EE;
+  --ap-blue: #2560D6;
+  --ap-blue-bg: #E8EFFD;
+  --ap-red: #D3324B;
+  --ap-red-bg: #FCE9EC;
+  --ap-amber: #B9790A;
+  --ap-amber-bg: #FCF1DD;
+
+  min-height: 100vh;
+  background: var(--ap-mist);
+  padding: 36px;
+  font-family: var(--ap-font-body);
+  color: var(--ap-ink);
+}
+
+/* Loading / error state */
+
+.ap-state-card {
+  max-width: 420px;
+  margin: 80px auto;
+  background: var(--ap-white);
+  border: 1px solid var(--ap-line);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+}
+
+.ap-state-card svg {
+  width: 30px;
+  height: 30px;
+  color: var(--ap-primary);
+  margin-bottom: 14px;
+}
+
+.ap-state-card p {
+  font-size: 14.5px;
+  color: var(--ap-slate);
+  margin: 0 0 6px;
+}
+
+.ap-state-error svg { color: var(--ap-red); }
+
+.ap-retry-btn {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--ap-primary), var(--ap-primary-dark));
+  color: var(--ap-white);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: var(--ap-font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: transform 0.15s ease;
+}
+
+.ap-retry-btn:hover { transform: translateY(-2px); }
+.ap-retry-btn svg { width: 15px; height: 15px; margin: 0; color: var(--ap-white); }
+
+.ap-spin { animation: apSpin 0.8s linear infinite; }
+@keyframes apSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+
+.ap-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ap-primary) 0%, var(--ap-primary-dark) 100%);
+  color: var(--ap-white);
+  padding: 40px 42px;
+  border-radius: 24px;
+  margin-bottom: 24px;
+  isolation: isolate;
+}
+
+.ap-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 75%);
+  z-index: 0;
+}
+
+.ap-header-blob {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  top: -120px;
+  right: -70px;
+  z-index: 0;
+}
+
+.ap-header-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.ap-header-eyebrow svg { width: 13px; height: 13px; }
+
+.ap-header-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--ap-font-display);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.ap-header-sub {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.ap-stat-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.ap-stat-chip {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  padding: 10px 18px;
+  display: flex;
+  flex-direction: column;
+  min-width: 96px;
+}
+
+.ap-stat-value {
+  font-family: var(--ap-font-display);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ap-stat-label {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Toolbar */
+
+.ap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ap-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.ap-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--ap-slate-light);
+}
+
+.ap-search-input {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border: 1.5px solid var(--ap-line);
+  border-radius: 12px;
+  font-family: var(--ap-font-body);
+  font-size: 14px;
+  color: var(--ap-ink);
+  background: var(--ap-white);
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ap-search-input::placeholder { color: var(--ap-slate-light); }
+
+.ap-search-input:focus {
+  outline: none;
+  border-color: var(--ap-primary);
+  box-shadow: 0 0 0 4px rgba(237, 25, 101, 0.1);
+}
+
+.ap-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ap-filter-btn {
+  border: 1.5px solid var(--ap-line);
+  background: var(--ap-white);
+  color: var(--ap-slate);
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-family: var(--ap-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ap-filter-btn:hover {
+  border-color: var(--ap-primary-tint-2);
+}
+
+.ap-filter-btn-active,
+.ap-filter-btn-active:hover {
+  background: linear-gradient(135deg, var(--ap-primary), var(--ap-primary-dark));
+  border-color: transparent;
+  color: var(--ap-white);
+}
+
+.ap-result-count {
+  font-size: 12.5px;
+  color: var(--ap-slate-light);
+  margin: 0 0 14px 2px;
+}
+
+/* Table */
+
+.ap-table-card {
+  background: var(--ap-white);
+  border: 1px solid var(--ap-line);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+  overflow: hidden;
+}
+
+.ap-table-scroll {
+  overflow-x: auto;
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.ap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.ap-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--ap-mist);
+  text-align: left;
+  padding: 14px 18px;
+  font-family: var(--ap-font-display);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--ap-slate);
+  border-bottom: 1.5px solid var(--ap-line);
+  white-space: nowrap;
+}
+
+.ap-table thead th svg {
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  vertical-align: -2px;
+  color: var(--ap-primary);
+}
+
+.ap-table tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--ap-line);
+  color: var(--ap-ink);
+  vertical-align: middle;
+}
+
+.ap-table tbody tr:last-child td { border-bottom: none; }
+
+.ap-table tbody tr {
+  transition: background 0.12s ease;
+}
+
+.ap-table tbody tr:hover {
+  background: var(--ap-primary-tint);
+}
+
+.ap-muted { color: var(--ap-slate-light); }
+
+.ap-skills-cell {
+  display: inline-block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+/* Student cell */
+
+.ap-student-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ap-avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--ap-primary), var(--ap-primary-dark));
+  color: var(--ap-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ap-font-display);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.ap-student-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ap-student-name {
+  font-weight: 700;
+  color: var(--ap-ink);
+}
+
+.ap-student-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ap-slate-light);
+}
+
+.ap-student-email svg { width: 11px; height: 11px; }
+
+/* Resume link */
+
+.ap-resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ap-primary-dark);
+  background: var(--ap-primary-tint);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12.5px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.ap-resume-link:hover { background: var(--ap-primary-tint-2); }
+.ap-resume-link svg { width: 13px; height: 13px; }
+
+/* Status chip */
+
+.ap-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.ap-chip svg { width: 13px; height: 13px; }
+
+.ap-chip-hired { background: var(--ap-green-bg); color: var(--ap-green); }
+.ap-chip-shortlisted { background: var(--ap-blue-bg); color: var(--ap-blue); }
+.ap-chip-rejected { background: var(--ap-red-bg); color: var(--ap-red); }
+.ap-chip-pending { background: var(--ap-amber-bg); color: var(--ap-amber); }
+.ap-chip-default { background: var(--ap-mist); color: var(--ap-slate); }
+
+/* Empty state */
+
+.ap-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 60px 20px;
+  color: var(--ap-slate-light);
+}
+
+.ap-empty svg { width: 34px; height: 34px; color: var(--ap-primary-tint-2); }
+.ap-empty p { margin: 0; font-size: 14px; }
+
+/* Pagination */
+
+.ap-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.ap-page-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--ap-line);
+  background: var(--ap-white);
+  color: var(--ap-slate);
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-family: var(--ap-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ap-page-btn svg { width: 15px; height: 15px; }
+
+.ap-page-btn:hover:not(:disabled) {
+  border-color: var(--ap-primary);
+  color: var(--ap-primary-dark);
+}
+
+.ap-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ap-page-indicator {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ap-slate);
+}
+
+@media (max-width: 720px) {
+  .ap-root { padding: 20px; }
+  .ap-header { padding: 28px 24px; }
+  .ap-header-title { font-size: 24px; }
+  .ap-toolbar { flex-direction: column; align-items: stretch; }
+  .ap-filter-group { justify-content: flex-start; }
+}

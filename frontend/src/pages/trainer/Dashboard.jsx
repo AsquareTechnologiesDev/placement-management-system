@@ -1,6 +1,25 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    LayoutDashboard,
+    Users,
+    Clock,
+    UserCheck,
+    ArrowRight,
+    UserX,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./TrainerDashboard.css";
+
+const initials = (name = "") =>
+    name
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase())
+        .join("");
 
 const TrainerDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -14,291 +33,146 @@ const TrainerDashboard = () => {
     }, []);
 
     const fetchStudents = async () => {
-    try {
-        const { data } = await api.get(
-            "/student/trainer/students/"
-        );
+        try {
+            const { data } = await api.get(
+                "/student/trainer/students/"
+            );
 
-        setStudents(data);
-    } catch (error) {
-        console.error(
-            "Error loading students:",
-            error
-        );
-    }
-};
+            setStudents(data);
+        } catch (error) {
+            console.error(
+                "Error loading students:",
+                error
+            );
+        }
+    };
+
     const handleView = (studentId) => {
         navigate(
             `/trainer/student/${studentId}`
         );
     };
 
+    const pendingCount = students.filter((s) => s.status === "PENDING").length;
+    const activeCount = students.length - pendingCount;
+
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily:
-                    "'Segoe UI', sans-serif",
-            }}
-        >
-            {/* HEADER */}
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/trainer/dashboard")} />
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "30px",
-                    boxShadow:
-                        "0 5px 20px rgba(0,0,0,0.1)",
-                }}
-            >
-                <h1
-                    style={{
-                        margin: 0,
-                    }}
-                >
-                    Trainer Dashboard
-                </h1>
+        <div className="asq-trainer">
+            {/* ---------- Hero ---------- */}
+            <div className="asq-hero">
+                <svg className="asq-hero-motif" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M40 50 95 105 40 160 40 50Z" stroke="rgba(255,255,255,0.28)" strokeWidth="6" strokeLinejoin="round" />
+                    <path d="M115 50 170 105 115 160 115 50Z" stroke="rgba(255,255,255,0.16)" strokeWidth="6" strokeLinejoin="round" />
+                    <path d="M270 150 325 205 270 260 270 150Z" stroke="rgba(255,255,255,0.13)" strokeWidth="5" strokeLinejoin="round" />
+                </svg>
 
-                <p
-                    style={{
-                        marginTop: "10px",
-                    }}
-                >
-                    Manage assigned students and
-                    track their progress.
-                </p>
-            </div>
-
-            {/* STATS */}
-
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit,minmax(250px,1fr))",
-                    gap: "20px",
-                    marginBottom: "30px",
-                }}
-            >
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                        }}
-                    >
-                        Assigned Students
-                    </h3>
-
-                    <h1
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {students.length}
-                    </h1>
-                </div>
-
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                        }}
-                    >
-                        Pending Reviews
-                    </h3>
-
-                    <h1
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {students.filter(
-                            (s) =>
-                                s.status ===
-                                "PENDING"
-                        ).length}
-                    </h1>
-                </div>
-
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                        }}
-                    >
-                        Active Students
-                    </h3>
-
-                    <h1
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {
-                            students.length -
-                            students.filter(
-                                (s) =>
-                                    s.status ===
-                                    "PENDING"
-                            ).length
-                        }
-                    </h1>
+                <div className="asq-hero-content">
+                    <span className="asq-hero-eyebrow">
+                        <LayoutDashboard size={13} />
+                        Trainer Console
+                    </span>
+                    <h1 className="asq-hero-title">Trainer Dashboard</h1>
+                    <p className="asq-hero-subtitle">
+                        Manage your assigned students and track their progress.
+                    </p>
                 </div>
             </div>
 
-            {/* STUDENT SECTION */}
+            {/* ---------- Stats ---------- */}
+            <div className="asq-stats">
+                <div className="asq-stat-card">
+                    <span className="asq-stat-icon" style={{ "--stat-tint": "var(--brand-tint-50)", "--stat-fg": "var(--brand-primary-dark)" }}>
+                        <Users size={22} />
+                    </span>
+                    <div>
+                        <p className="asq-stat-label">Assigned Students</p>
+                        <h2 className="asq-stat-value">{students.length}</h2>
+                    </div>
+                </div>
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        marginBottom: "20px",
-                        color: "#333",
-                    }}
-                >
-                    Assigned Students
-                </h2>
+                <div className="asq-stat-card">
+                    <span className="asq-stat-icon" style={{ "--stat-tint": "var(--status-pending-tint)", "--stat-fg": "var(--status-pending)" }}>
+                        <Clock size={22} />
+                    </span>
+                    <div>
+                        <p className="asq-stat-label">Pending Reviews</p>
+                        <h2 className="asq-stat-value">{pendingCount}</h2>
+                    </div>
+                </div>
+
+                <div className="asq-stat-card">
+                    <span className="asq-stat-icon" style={{ "--stat-tint": "var(--status-active-tint)", "--stat-fg": "var(--status-active)" }}>
+                        <UserCheck size={22} />
+                    </span>
+                    <div>
+                        <p className="asq-stat-label">Active Students</p>
+                        <h2 className="asq-stat-value">{activeCount}</h2>
+                    </div>
+                </div>
+            </div>
+
+            {/* ---------- Roster ---------- */}
+            <div className="asq-roster">
+                <div className="asq-roster-header">
+                    <h2 className="asq-roster-title">Assigned Students</h2>
+                    {students.length > 0 && (
+                        <span className="asq-roster-count">{students.length} total</span>
+                    )}
+                </div>
 
                 {students.length === 0 ? (
-                    <div
-                        style={{
-                            textAlign: "center",
-                            padding: "40px",
-                            color: "#888",
-                        }}
-                    >
-                        No students assigned.
+                    <div className="asq-empty-state">
+                        <UserX size={44} color="#D3004C" />
+                        <h3 className="asq-empty-title">No students assigned</h3>
+                        <p className="asq-empty-text">
+                            Students you're assigned to mentor will show up here.
+                        </p>
                     </div>
                 ) : (
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit,minmax(280px,1fr))",
-                            gap: "20px",
-                        }}
-                    >
-                        {students.map(
-                            (student) => (
-                                <div
-                                    key={
-                                        student.id
-                                    }
-                                    style={{
-                                        border:
-                                            "1px solid #eee",
-                                        borderRadius:
-                                            "12px",
-                                        padding:
-                                            "20px",
-                                        transition:
-                                            "0.3s",
-                                    }}
-                                >
-                                    <h3
-                                        style={{
-                                            marginTop: 0,
-                                            color:
-                                                "#333",
-                                        }}
-                                    >
-                                        {
-                                            student.name
-                                        }
-                                    </h3>
+                    <div className="asq-roster-grid">
+                        {students.map((student) => {
+                            const isPending = student.status === "PENDING";
 
-                                    <p>
-                                        <strong>
-                                            Status:
-                                        </strong>{" "}
-                                        <span
-                                            style={{
-                                                color:
-                                                    "#ED1464",
-                                                fontWeight:
-                                                    "600",
-                                            }}
-                                        >
-                                            {
-                                                student.status
-                                            }
-                                        </span>
-                                    </p>
+                            return (
+                                <div key={student.id} className="asq-student-card">
+                                    <div className="asq-student-top">
+                                        <span className="asq-student-avatar">{initials(student.name) || "?"}</span>
+                                        <div>
+                                            <h3 className="asq-student-name">{student.name}</h3>
+                                            <span
+                                                className="asq-status-pill"
+                                                style={
+                                                    isPending
+                                                        ? { "--pill-fg": "var(--status-pending)", "--pill-bg": "var(--status-pending-tint)" }
+                                                        : { "--pill-fg": "var(--status-active)", "--pill-bg": "var(--status-active-tint)" }
+                                                }
+                                            >
+                                                {student.status}
+                                            </span>
+                                        </div>
+                                    </div>
 
                                     <button
-                                        onClick={() =>
-                                            handleView(
-                                                student.id
-                                            )
-                                        }
-                                        style={{
-                                            width:
-                                                "100%",
-                                            padding:
-                                                "12px",
-                                            background:
-                                                "#ED1464",
-                                            color:
-                                                "#fff",
-                                            border:
-                                                "none",
-                                            borderRadius:
-                                                "8px",
-                                            cursor:
-                                                "pointer",
-                                            fontWeight:
-                                                "600",
-                                        }}
+                                        className="asq-student-cta"
+                                        onClick={() => handleView(student.id)}
                                     >
                                         View Student
+                                        <ArrowRight size={15} />
                                     </button>
                                 </div>
-                            )
-                        )}
+                            );
+                        })}
                     </div>
                 )}
             </div>
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
 

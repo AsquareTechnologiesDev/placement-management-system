@@ -1,11 +1,28 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+    IdCard,
+    Phone,
+    GraduationCap,
+    CalendarDays,
+    UserCog,
+    MapPin,
+    Sparkles,
+    FileText,
+    FileX,
+    Loader2,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./ViewProfile.css";
 
 const MEDIA_URL = (
     import.meta.env.VITE_API_URL || ""
 ).replace("/api", "");
 
 const ViewProfile = () => {
+    const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
 
     // const token = localStorage.getItem("access_token");
@@ -27,277 +44,110 @@ const ViewProfile = () => {
 };
     if (!profile) {
         return (
-            <div
-                style={{
-                    minHeight: "100vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontSize: "20px",
-                }}
-            >
-                Loading Profile...
-            </div>
+            <>
+                <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+                <div className="vp-root">
+                    <div className="vp-state-card">
+                        <Loader2 className="vp-spin" />
+                        <p>Loading profile...</p>
+                    </div>
+                </div>
+                <AppFooter version="v1.0.0" />
+            </>
         );
     }
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+
+        <div className="vp-root">
+
             {/* Header */}
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    My Profile
-                </h1>
-
-                <p
-                    style={{
-                        marginTop: "10px",
-                    }}
-                >
+            <div className="vp-header">
+                <div className="vp-header-blob" />
+                <div className="vp-header-grid" />
+                <span className="vp-header-eyebrow">
+                    <IdCard /> Placement Profile
+                </span>
+                <h1 className="vp-header-title">My Profile</h1>
+                <p className="vp-header-sub">
                     View your placement profile details.
                 </p>
             </div>
 
             {/* Profile Card */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <div
-                    style={{
-                        textAlign: "center",
-                        marginBottom: "30px",
-                    }}
-                >
-                    <div
-                        style={{
-                            width: "100px",
-                            height: "100px",
-                            borderRadius: "50%",
-                            background: "#ED1464",
-                            color: "#fff",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "36px",
-                            fontWeight: "bold",
-                            margin: "0 auto",
-                        }}
-                    >
-                        {profile.student_name
-                            ?.charAt(0)
-                            ?.toUpperCase()}
+            <div className="vp-card">
+
+                <div className="vp-identity">
+                    <div className="vp-avatar">
+                        {profile.student_name?.charAt(0)?.toUpperCase()}
                     </div>
 
-                    <h2
-                        style={{
-                            marginTop: "15px",
-                            color: "#333",
-                        }}
-                    >
-                        {profile.student_name}
-                    </h2>
+                    <h2 className="vp-name">{profile.student_name}</h2>
 
-                    <span
-                        style={{
-                            background: "#ffe3ef",
-                            color: "#ED1464",
-                            padding: "8px 15px",
-                            borderRadius: "20px",
-                            fontWeight: "600",
-                        }}
-                    >
-                        {profile.status}
-                    </span>
+                    <span className="vp-status-chip">{profile.status}</span>
                 </div>
 
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(300px,1fr))",
-                        gap: "20px",
-                    }}
-                >
-                    <ProfileItem
-                        label="Phone"
-                        value={profile.phone}
-                    />
-
-                    <ProfileItem
-                        label="Qualification"
-                        value={
-                            profile.qualification
-                        }
-                    />
-
-                    <ProfileItem
-                        label="Passout Year"
-                        value={
-                            profile.passout_year
-                        }
-                    />
-
-                    <ProfileItem
-                        label="Trainer"
-                        value={
-                            profile.trainer
-                        }
-                    />
+                <div className="vp-info-grid">
+                    <ProfileItem icon={Phone} label="Phone" value={profile.phone} />
+                    <ProfileItem icon={GraduationCap} label="Qualification" value={profile.qualification} />
+                    <ProfileItem icon={CalendarDays} label="Passout Year" value={profile.passout_year} />
+                    <ProfileItem icon={UserCog} label="Trainer" value={profile.trainer} />
                 </div>
 
-                <div
-                    style={{
-                        marginTop: "25px",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#ED1464",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Address
-                    </h3>
-
-                    <div
-                        style={{
-                            background:
-                                "#f8f9fc",
-                            padding: "15px",
-                            borderRadius:
-                                "10px",
-                        }}
-                    >
-                        {profile.address}
+                <div className="vp-section">
+                    <h3 className="vp-section-title"><MapPin /> Address</h3>
+                    <div className="vp-section-body">
+                        {profile.address || "-"}
                     </div>
                 </div>
 
-                <div
-                    style={{
-                        marginTop: "25px",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#ED1464",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Skills
-                    </h3>
-
-                    <div
-                        style={{
-                            background:
-                                "#f8f9fc",
-                            padding: "15px",
-                            borderRadius:
-                                "10px",
-                        }}
-                    >
-                        {profile.skills}
+                <div className="vp-section">
+                    <h3 className="vp-section-title"><Sparkles /> Skills</h3>
+                    <div className="vp-section-body">
+                        {profile.skills || "-"}
                     </div>
                 </div>
 
-                <div
-                    style={{
-                        marginTop: "25px",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#ED1464",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Resume
-                    </h3>
+                <div className="vp-section">
+                    <h3 className="vp-section-title"><FileText /> Resume</h3>
 
                     {profile.resume ? (
                         <a
                             href={`${MEDIA_URL}${profile.resume}`}
                             target="_blank"
                             rel="noreferrer"
-                            style={{
-                                display:
-                                    "inline-block",
-                                background:
-                                    "#ED1464",
-                                color: "#fff",
-                                textDecoration:
-                                    "none",
-                                padding:
-                                    "12px 20px",
-                                borderRadius:
-                                    "8px",
-                                fontWeight:
-                                    "600",
-                            }}
+                            className="vp-resume-btn"
                         >
-                            View Resume
+                            <FileText /> View Resume
                         </a>
                     ) : (
-                        <p>
-                            No Resume Uploaded
+                        <p className="vp-no-resume">
+                            <FileX /> No Resume Uploaded
                         </p>
                     )}
                 </div>
             </div>
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
 
-const ProfileItem = ({
-    label,
-    value,
-}) => (
-    <div
-        style={{
-            background: "#f8f9fc",
-            padding: "15px",
-            borderRadius: "10px",
-        }}
-    >
-        <h4
-            style={{
-                margin: "0 0 8px 0",
-                color: "#ED1464",
-            }}
-        >
-            {label}
-        </h4>
-
-        <p
-            style={{
-                margin: 0,
-                color: "#333",
-            }}
-        >
-            {value || "-"}
-        </p>
+const ProfileItem = ({ icon: Icon, label, value }) => (
+    <div className="vp-info-item">
+        <div className="vp-info-icon">
+            <Icon />
+        </div>
+        <div>
+            <h4 className="vp-info-label">{label}</h4>
+            <p className="vp-info-value">{value || "-"}</p>
+        </div>
     </div>
 );
 

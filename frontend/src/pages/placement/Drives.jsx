@@ -1,6 +1,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    CalendarClock,
+    Plus,
+    Building2,
+    Wallet,
+    Users,
+    Layers,
+    Calendar,
+    Clock,
+    Laptop2,
+    MapPin,
+    Eye,
+    Pencil,
+    Inbox,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Drives.css";
+
+const STATUS_STYLES = {
+    upcoming: "dr-badge-blue",
+    ongoing: "dr-badge-green",
+    open: "dr-badge-green",
+    active: "dr-badge-green",
+    completed: "dr-badge-slate",
+    closed: "dr-badge-slate",
+    cancelled: "dr-badge-red",
+};
+
+const getStatusClass = (status) => {
+    const key = (status || "").toLowerCase();
+    return STATUS_STYLES[key] || "dr-badge-blue";
+};
 
 const Drives = () => {
     const navigate = useNavigate();
@@ -21,30 +54,22 @@ const Drives = () => {
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f7f8fc",
-                padding: "30px",
-                fontFamily: "Segoe UI",
-            }}
-        >
+        <>
+            {/* Site-wide branded header (logo, company name, logout) */}
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
+
+            <div className="dr-root">
+
             {/* Header */}
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "30px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    Placement Drives
-                </h1>
-
-                <p style={{ marginTop: 10 }}>
+            <div className="dr-header">
+                <div className="dr-header-blob" />
+                <div className="dr-header-grid" />
+                <span className="dr-header-eyebrow">
+                    <CalendarClock /> Placement Drives
+                </span>
+                <h1 className="dr-header-title">Placement Drives</h1>
+                <p className="dr-header-sub">
                     Manage all placement drives.
                 </p>
             </div>
@@ -52,223 +77,79 @@ const Drives = () => {
             {/* Add Drive */}
 
             <button
-                onClick={() =>
-                    navigate("/placement/drives/create")
-                }
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    border: "none",
-                    padding: "12px 25px",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    marginBottom: "30px",
-                    fontWeight: "600",
-                }}
+                onClick={() => navigate("/placement/drives/create")}
+                className="dr-create-btn"
             >
-                + Create New Drive
+                <Plus />
+                Create New Drive
             </button>
 
             {drives.length === 0 ? (
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "40px",
-                        borderRadius: "15px",
-                        textAlign: "center",
-                        boxShadow:
-                            "0 3px 10px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h3>No Drives Available</h3>
+                <div className="dr-empty">
+                    <div className="dr-empty-icon"><Inbox /></div>
+                    <p className="dr-empty-title">No drives available</p>
+                    <p className="dr-empty-sub">Drives you create will show up here.</p>
                 </div>
             ) : (
-                drives.map((drive) => (
-                    <div
-                        key={drive.id}
-                        style={{
-                            background: "#fff",
-                            borderRadius: "15px",
-                            padding: "25px",
-                            marginBottom: "25px",
-                            boxShadow:
-                                "0 4px 12px rgba(0,0,0,0.08)",
-                        }}
-                    >
-                        <h2
-                            style={{
-                                color: "#ED1464",
-                                marginTop: 0,
-                            }}
-                        >
-                            {drive.title}
-                        </h2>
-
-                        <hr
-                            style={{
-                                border: "none",
-                                borderTop:
-                                    "1px solid #eee",
-                            }}
-                        />
-
-                        <div
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns:
-                                    "repeat(auto-fit,minmax(280px,1fr))",
-                                gap: "18px",
-                                marginTop: "20px",
-                            }}
-                        >
-                            <Info
-                                label="Company"
-                                value={
-                                    drive.company_name
-                                }
-                            />
-
-                            <Info
-                                label="Package"
-                                value={
-                                    drive.package
-                                }
-                            />
-
-                            <Info
-                                label="Available Positions"
-                                value={
-                                    drive.available_positions
-                                }
-                            />
-
-                            <Info
-                                label="Openings"
-                                value={
-                                    drive.openings
-                                }
-                            />
-
-                            <Info
-                                label="Drive Date"
-                                value={
-                                    drive.drive_datetime
-                                }
-                            />
-
-                            <Info
-                                label="Registration Deadline"
-                                value={
-                                    drive.registration_deadline
-                                }
-                            />
-
-                            <Info
-                                label="Mode"
-                                value={drive.mode}
-                            />
-
-                            <Info
-                                label="Venue"
-                                value={drive.venue}
-                            />
-
-                            <div>
-                                <strong>
-                                    Status
-                                </strong>
-
-                                <br />
-
-                                <span
-                                    style={{
-                                        display:
-                                            "inline-block",
-                                        marginTop:
-                                            "8px",
-                                        background:
-                                            "#d4edda",
-                                        color:
-                                            "#155724",
-                                        padding:
-                                            "6px 15px",
-                                        borderRadius:
-                                            "20px",
-                                        fontWeight:
-                                            "600",
-                                    }}
-                                >
-                                    🟢{" "}
-                                    {
-                                        drive.status
-                                    }
+                <div className="dr-list">
+                    {drives.map((drive) => (
+                        <div key={drive.id} className="dr-card">
+                            <div className="dr-card-top">
+                                <h2 className="dr-card-title">{drive.title}</h2>
+                                <span className={`dr-badge ${getStatusClass(drive.status)}`}>
+                                    {drive.status || "Unknown"}
                                 </span>
                             </div>
-                        </div>
 
-                        <div
-                            style={{
-                                marginTop: "30px",
-                                display: "flex",
-                                gap: "15px",
-                            }}
-                        >
-                            <button
-                                onClick={() =>
-                                    navigate(
-                                        `/placement/drives/${drive.id}`
-                                    )
-                                }
-                                style={
-                                    buttonStyle
-                                }
-                            >
-                                View Details
-                            </button>
+                            <div className="dr-divider" />
 
-                            <button
-                                onClick={() =>
-                                    navigate(
-                                        `/placement/drives/edit/${drive.id}`
-                                    )
-                                }
-                                style={
-                                    buttonStyle
-                                }
-                            >
-                                Edit
-                            </button>
+                            <div className="dr-info-grid">
+                                <Info icon={Building2} label="Company" value={drive.company_name} />
+                                <Info icon={Wallet} label="Package" value={drive.package} />
+                                <Info icon={Users} label="Available Positions" value={drive.available_positions} />
+                                <Info icon={Layers} label="Openings" value={drive.openings} />
+                                <Info icon={Calendar} label="Drive Date" value={drive.drive_datetime} />
+                                <Info icon={Clock} label="Registration Deadline" value={drive.registration_deadline} />
+                                <Info icon={Laptop2} label="Mode" value={drive.mode} />
+                                <Info icon={MapPin} label="Venue" value={drive.venue} />
+                            </div>
+
+                            <div className="dr-actions">
+                                <button
+                                    onClick={() => navigate(`/placement/drives/${drive.id}`)}
+                                    className="dr-btn dr-btn-primary"
+                                >
+                                    <Eye />
+                                    View Details
+                                </button>
+
+                                <button
+                                    onClick={() => navigate(`/placement/drives/edit/${drive.id}`)}
+                                    className="dr-btn dr-btn-outline"
+                                >
+                                    <Pencil />
+                                    Edit
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))
+                    ))}
+                </div>
             )}
-        </div>
+            </div>
+
+            <AppFooter version="v1.0.0" />
+        </>
     );
 };
 
-const Info = ({ label, value }) => (
-    <div>
-        <strong>{label}</strong>
-
-        <p
-            style={{
-                marginTop: 6,
-                color: "#555",
-            }}
-        >
-            {value || "-"}
-        </p>
+const Info = ({ icon: Icon, label, value }) => (
+    <div className="dr-info-item">
+        <span className="dr-info-label">
+            <Icon />
+            {label}
+        </span>
+        <p className="dr-info-value">{value || "-"}</p>
     </div>
 );
-
-const buttonStyle = {
-    background: "#ED1464",
-    color: "#fff",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontWeight: "600",
-};
 
 export default Drives;

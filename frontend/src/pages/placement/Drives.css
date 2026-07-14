@@ -1,0 +1,326 @@
+/* src/pages/placement/Drives.css */
+
+.dr-root {
+  --dr-primary: #ED1965;
+  --dr-primary-dark: #D3004C;
+  --dr-primary-tint: #FDE8F0;
+  --dr-primary-tint-2: #FABAD1;
+  --dr-ink: #14161B;
+  --dr-slate: #5B6472;
+  --dr-slate-light: #8A93A3;
+  --dr-mist: #F7F8FB;
+  --dr-line: #E7E9EE;
+  --dr-white: #FFFFFF;
+  --dr-font-display: 'Nunito Sans', sans-serif;
+  --dr-font-body: 'Montserrat', sans-serif;
+
+  min-height: 100vh;
+  background: var(--dr-mist);
+  padding: 36px;
+  font-family: var(--dr-font-body);
+  color: var(--dr-ink);
+}
+
+/* Header */
+
+.dr-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--dr-primary) 0%, var(--dr-primary-dark) 100%);
+  color: var(--dr-white);
+  padding: 40px 42px;
+  border-radius: 24px;
+  margin-bottom: 28px;
+  isolation: isolate;
+}
+
+.dr-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 75%);
+  z-index: 0;
+}
+
+.dr-header-blob {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  top: -120px;
+  right: -70px;
+  z-index: 0;
+}
+
+.dr-header-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.dr-header-eyebrow svg { width: 13px; height: 13px; }
+
+.dr-header-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--dr-font-display);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.dr-header-sub {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* Create button */
+
+.dr-create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--dr-primary), var(--dr-primary-dark));
+  color: var(--dr-white);
+  padding: 13px 24px;
+  border-radius: 12px;
+  font-family: var(--dr-font-body);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px -6px rgba(237, 25, 101, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  margin-bottom: 28px;
+}
+
+.dr-create-btn svg { width: 16px; height: 16px; }
+
+.dr-create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px -6px rgba(237, 25, 101, 0.42);
+}
+
+.dr-create-btn:active { transform: translateY(0); }
+
+.dr-create-btn:focus-visible {
+  outline: 2px solid var(--dr-primary-dark);
+  outline-offset: 2px;
+}
+
+/* Drive list */
+
+.dr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dr-card {
+  background: var(--dr-white);
+  border: 1px solid var(--dr-line);
+  border-radius: 20px;
+  padding: 28px 30px;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.dr-card:hover {
+  border-color: var(--dr-primary-tint-2);
+  box-shadow: 0 16px 30px -12px rgba(237, 25, 101, 0.16);
+}
+
+.dr-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dr-card-title {
+  margin: 0;
+  font-family: var(--dr-font-display);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--dr-ink);
+}
+
+.dr-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.dr-badge-green { background: #E3F6E9; color: #1B7A3D; }
+.dr-badge-blue  { background: #E6EFFD; color: #1D4ED8; }
+.dr-badge-slate { background: #EEF0F3; color: #5B6472; }
+.dr-badge-red   { background: #FDECEC; color: #C0263B; }
+
+.dr-divider {
+  border-top: 1px solid var(--dr-line);
+  margin: 18px 0 20px;
+}
+
+/* Info grid */
+
+.dr-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.dr-info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dr-slate-light);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.dr-info-label svg {
+  width: 13px;
+  height: 13px;
+  color: var(--dr-primary);
+}
+
+.dr-info-value {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--dr-ink);
+  font-weight: 500;
+}
+
+/* Actions */
+
+.dr-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--dr-line);
+}
+
+.dr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-family: var(--dr-font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.dr-btn svg { width: 15px; height: 15px; }
+
+.dr-btn-primary {
+  background: linear-gradient(135deg, var(--dr-primary), var(--dr-primary-dark));
+  color: var(--dr-white);
+  box-shadow: 0 8px 18px -6px rgba(237, 25, 101, 0.35);
+}
+
+.dr-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -6px rgba(237, 25, 101, 0.42);
+}
+
+.dr-btn-outline {
+  background: var(--dr-white);
+  color: var(--dr-primary-dark);
+  border: 1.5px solid var(--dr-line);
+}
+
+.dr-btn-outline:hover {
+  border-color: var(--dr-primary-tint-2);
+  background: var(--dr-primary-tint);
+  transform: translateY(-2px);
+}
+
+.dr-btn:active { transform: translateY(0); }
+
+.dr-btn:focus-visible {
+  outline: 2px solid var(--dr-primary-dark);
+  outline-offset: 2px;
+}
+
+/* Empty state */
+
+.dr-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 56px 20px;
+  text-align: center;
+  background: var(--dr-white);
+  border: 1.5px dashed var(--dr-line);
+  border-radius: 20px;
+}
+
+.dr-empty-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--dr-primary-tint);
+  color: var(--dr-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.dr-empty-icon svg { width: 20px; height: 20px; }
+
+.dr-empty-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dr-ink);
+}
+
+.dr-empty-sub {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--dr-slate);
+}
+
+@media (max-width: 640px) {
+  .dr-root { padding: 20px; }
+  .dr-header { padding: 28px 24px; }
+  .dr-header-title { font-size: 24px; }
+  .dr-actions { flex-direction: column; }
+  .dr-btn { width: 100%; justify-content: center; }
+}

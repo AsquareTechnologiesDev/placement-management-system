@@ -1,0 +1,252 @@
+/* src/pages/placement/ViewStudent.css */
+
+.vs-root {
+  --vs-primary: #ED1965;
+  --vs-primary-dark: #D3004C;
+  --vs-primary-tint: #FDE8F0;
+  --vs-primary-tint-2: #FABAD1;
+  --vs-ink: #14161B;
+  --vs-slate: #5B6472;
+  --vs-slate-light: #8A93A3;
+  --vs-mist: #F7F8FB;
+  --vs-line: #E7E9EE;
+  --vs-white: #FFFFFF;
+  --vs-font-display: 'Nunito Sans', sans-serif;
+  --vs-font-body: 'Montserrat', sans-serif;
+
+  min-height: 100vh;
+  background: var(--vs-mist);
+  padding: 36px;
+  font-family: var(--vs-font-body);
+  color: var(--vs-ink);
+}
+
+/* Header */
+
+.vs-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--vs-primary) 0%, var(--vs-primary-dark) 100%);
+  color: var(--vs-white);
+  padding: 38px 42px;
+  border-radius: 24px;
+  margin-bottom: 28px;
+  isolation: isolate;
+}
+
+.vs-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 75%);
+  z-index: 0;
+}
+
+.vs-header-blob {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  top: -120px;
+  right: -70px;
+  z-index: 0;
+}
+
+.vs-header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vs-avatar {
+  flex-shrink: 0;
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--vs-font-display);
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.vs-header-eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 4px;
+}
+
+.vs-header-title {
+  margin: 0 0 8px;
+  font-family: var(--vs-font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.vs-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.vs-status-badge svg { width: 13px; height: 13px; }
+
+/* Card */
+
+.vs-card {
+  background: var(--vs-white);
+  border: 1px solid var(--vs-line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+}
+
+.vs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+}
+
+.vs-field-full { grid-column: 1 / -1; }
+
+.vs-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vs-slate-light);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.vs-label svg { width: 13px; height: 13px; color: var(--vs-primary); }
+
+.vs-value {
+  margin: 7px 0 0;
+  font-size: 15px;
+  color: var(--vs-ink);
+  line-height: 1.55;
+}
+
+.vs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.vs-tag {
+  background: var(--vs-primary-tint);
+  color: var(--vs-primary-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 6px 13px;
+  border-radius: 999px;
+}
+
+/* Resume card */
+
+.vs-resume-card {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--vs-mist);
+  border: 1px solid var(--vs-line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  max-width: 320px;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.vs-resume-card:hover {
+  border-color: var(--vs-primary-tint-2);
+  background: var(--vs-primary-tint);
+  transform: translateY(-2px);
+}
+
+.vs-resume-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--vs-primary), var(--vs-primary-dark));
+  color: var(--vs-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-resume-icon svg { width: 18px; height: 18px; }
+
+.vs-resume-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--vs-ink);
+}
+
+.vs-resume-sub {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  color: var(--vs-slate);
+}
+
+.vs-resume-download {
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  color: var(--vs-primary-dark);
+  flex-shrink: 0;
+}
+
+/* Loading skeleton */
+
+.vs-skeleton-header,
+.vs-skeleton-card {
+  border-radius: 20px;
+  background: linear-gradient(90deg, #EEF0F3 25%, #F6F7F9 37%, #EEF0F3 63%);
+  background-size: 400% 100%;
+  animation: vs-shimmer 1.4s ease infinite;
+}
+
+.vs-skeleton-header { height: 120px; margin-bottom: 28px; }
+.vs-skeleton-card { height: 320px; }
+
+@keyframes vs-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-root * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+@media (max-width: 640px) {
+  .vs-root { padding: 20px; }
+  .vs-header { padding: 26px 24px; }
+  .vs-header-content { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .vs-card { padding: 22px 20px; }
+}

@@ -1,0 +1,293 @@
+/* src/pages/student/ViewProfile.css */
+
+.vp-root {
+  --vp-primary: #ED1965;
+  --vp-primary-dark: #D3004C;
+  --vp-primary-tint: #FDE8F0;
+  --vp-primary-tint-2: #FABAD1;
+  --vp-ink: #14161B;
+  --vp-slate: #5B6472;
+  --vp-slate-light: #8A93A3;
+  --vp-mist: #F7F8FB;
+  --vp-line: #E7E9EE;
+  --vp-white: #FFFFFF;
+  --vp-font-display: 'Nunito Sans', sans-serif;
+  --vp-font-body: 'Montserrat', sans-serif;
+
+  min-height: 100vh;
+  background: var(--vp-mist);
+  padding: 36px;
+  font-family: var(--vp-font-body);
+  color: var(--vp-ink);
+}
+
+/* Loading state */
+
+.vp-state-card {
+  max-width: 360px;
+  margin: 100px auto;
+  background: var(--vp-white);
+  border: 1px solid var(--vp-line);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+}
+
+.vp-state-card svg {
+  width: 30px;
+  height: 30px;
+  color: var(--vp-primary);
+  margin-bottom: 14px;
+}
+
+.vp-state-card p {
+  font-size: 14.5px;
+  color: var(--vp-slate);
+  margin: 0;
+}
+
+.vp-spin { animation: vpSpin 0.8s linear infinite; }
+@keyframes vpSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+
+.vp-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--vp-primary) 0%, var(--vp-primary-dark) 100%);
+  color: var(--vp-white);
+  padding: 40px 42px;
+  border-radius: 24px;
+  margin-bottom: 28px;
+  isolation: isolate;
+}
+
+.vp-header-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 75%);
+  z-index: 0;
+}
+
+.vp-header-blob {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  top: -120px;
+  right: -70px;
+  z-index: 0;
+}
+
+.vp-header-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.vp-header-eyebrow svg { width: 13px; height: 13px; }
+
+.vp-header-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--vp-font-display);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.vp-header-sub {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Profile card */
+
+.vp-card {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--vp-white);
+  border: 1px solid var(--vp-line);
+  border-radius: 20px;
+  padding: 34px;
+  box-shadow: 0 2px 10px rgba(20, 22, 27, 0.04);
+}
+
+.vp-identity {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.vp-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--vp-primary), var(--vp-primary-dark));
+  color: var(--vp-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--vp-font-display);
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 auto 16px;
+  box-shadow: 0 10px 22px -8px rgba(237, 25, 101, 0.4);
+}
+
+.vp-name {
+  margin: 0 0 12px;
+  font-family: var(--vp-font-display);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--vp-ink);
+}
+
+.vp-status-chip {
+  display: inline-block;
+  background: var(--vp-primary-tint);
+  color: var(--vp-primary-dark);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Info grid */
+
+.vp-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.vp-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--vp-mist);
+  border: 1px solid var(--vp-line);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.vp-info-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--vp-primary-tint), var(--vp-primary-tint-2));
+  color: var(--vp-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vp-info-icon svg { width: 16px; height: 16px; }
+
+.vp-info-label {
+  margin: 0 0 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--vp-slate-light);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.vp-info-value {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-ink);
+}
+
+/* Sections */
+
+.vp-section {
+  margin-top: 24px;
+}
+
+.vp-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-family: var(--vp-font-display);
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--vp-primary-dark);
+}
+
+.vp-section-title svg { width: 16px; height: 16px; }
+
+.vp-section-body {
+  background: var(--vp-mist);
+  border: 1px solid var(--vp-line);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 14px;
+  color: var(--vp-ink);
+  line-height: 1.6;
+}
+
+.vp-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--vp-primary), var(--vp-primary-dark));
+  color: var(--vp-white);
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13.5px;
+  box-shadow: 0 10px 20px -8px rgba(237, 25, 101, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.vp-resume-btn svg { width: 15px; height: 15px; }
+
+.vp-resume-btn:hover { transform: translateY(-2px); }
+
+.vp-no-resume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--vp-slate-light);
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.vp-no-resume svg { width: 16px; height: 16px; }
+
+@media (max-width: 640px) {
+  .vp-root { padding: 20px; }
+  .vp-header { padding: 28px 24px; }
+  .vp-header-title { font-size: 24px; }
+  .vp-card { padding: 24px 20px; }
+}

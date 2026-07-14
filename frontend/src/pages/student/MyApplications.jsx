@@ -1,6 +1,56 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    ClipboardList,
+    Coins,
+    MapPin,
+    Calendar,
+    Clock,
+    SendHorizonal,
+    CheckCircle2,
+    XCircle,
+    Trophy,
+    HelpCircle,
+    Inbox,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./MyApplications.css";
+
+/* Maps each application status to an icon + a CSS custom-property pair
+   that drives the pill's background/foreground color (see .css file). */
+const STATUS_META = {
+    APPLIED: { icon: SendHorizonal, fg: "var(--status-applied)", bg: "var(--status-applied-tint)" },
+    SHORTLISTED: { icon: CheckCircle2, fg: "var(--status-shortlisted)", bg: "var(--status-shortlisted-tint)" },
+    REJECTED: { icon: XCircle, fg: "var(--status-rejected)", bg: "var(--status-rejected-tint)" },
+    HIRED: { icon: Trophy, fg: "var(--status-hired)", bg: "var(--status-hired-tint)" },
+};
+
+const StatusPill = ({ status }) => {
+    const meta = STATUS_META[status] || { icon: HelpCircle, fg: "var(--status-default)", bg: "var(--status-default-tint)" };
+    const StatusIcon = meta.icon;
+
+    return (
+        <span
+            className="asq-status-pill"
+            style={{ "--pill-fg": meta.fg, "--pill-bg": meta.bg }}
+        >
+            <StatusIcon size={13} />
+            {status}
+        </span>
+    );
+};
+
+const MetaRow = ({ icon: IconCmp, label, value }) => (
+    <div className="asq-meta-row">
+        <span className="asq-meta-icon">
+            <IconCmp size={15} />
+        </span>
+        <span className="asq-meta-label">{label}</span>
+        <span className="asq-meta-value">{value}</span>
+    </div>
+);
 
 const MyApplications = () => {
     const navigate = useNavigate();
@@ -27,260 +77,131 @@ const MyApplications = () => {
         }
     };
 
-    const pageStyle = {
-        minHeight: "100vh",
-        background: "#f4f6f9",
-        padding: "40px",
-        fontFamily: "Segoe UI",
-    };
-
-    const headerStyle = {
-        background: "#e91e63",
-        color: "#fff",
-        padding: "25px 30px",
-        borderRadius: "15px",
-        marginBottom: "30px",
-        boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-    };
-
-    const gridStyle = {
-        display: "grid",
-        gridTemplateColumns:
-            "repeat(auto-fit,minmax(360px,1fr))",
-        gap: "25px",
-    };
-
-    const cardStyle = {
-        background: "#fff",
-        borderRadius: "15px",
-        padding: "25px",
-        boxShadow: "0 5px 15px rgba(0,0,0,0.08)",
-    };
-
-    const labelStyle = {
-        fontWeight: "bold",
-        color: "#555",
-        width: "140px",
-        display: "inline-block",
-    };
-
-    const statusStyle = (status) => {
-        let background = "#999";
-
-        switch (status) {
-            case "APPLIED":
-                background = "#17a2b8";
-                break;
-
-            case "SHORTLISTED":
-                background = "#28a745";
-                break;
-
-            case "REJECTED":
-                background = "#dc3545";
-                break;
-
-            case "HIRED":
-                background = "#6f42c1";
-                break;
-
-            default:
-                background = "#6c757d";
-        }
-
-        return {
-            display: "inline-block",
-            marginTop: "15px",
-            padding: "8px 18px",
-            borderRadius: "20px",
-            background,
-            color: "#fff",
-            fontWeight: "bold",
-        };
-    };
-
     if (loading) {
         return (
-            <div style={{ padding: "40px" }}>
-                <h2>Loading...</h2>
-            </div>
+            <>
+                <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+                <div className="asq-applications">
+                    <div className="asq-grid">
+                        {[0, 1, 2].map((i) => (
+                            <div key={i} className="asq-skeleton-card">
+                                <div className="asq-skel asq-skel-title" />
+                                <div className="asq-skel asq-skel-sub" />
+                                <div className="asq-skel asq-skel-line" />
+                                <div className="asq-skel asq-skel-line" />
+                                <div className="asq-skel asq-skel-line" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <AppFooter version="v1.0.0" />
+            </>
         );
     }
 
     return (
-        <div style={pageStyle}>
-            <div style={headerStyle}>
-                <h1 style={{ margin: 0 }}>
-                    My Job Applications
-                </h1>
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
 
-                <p style={{ marginTop: "10px" }}>
-                    Track all your submitted job
-                    applications.
-                </p>
-            </div>
+        <div className="asq-applications">
+            {/* ---------- Hero ---------- */}
+            <div className="asq-hero">
+                <svg className="asq-hero-motif" viewBox="0 0 520 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M40 60 100 120 40 180 40 60Z" stroke="rgba(255,255,255,0.28)" strokeWidth="6" strokeLinejoin="round" />
+                    <path d="M120 60 180 120 120 180 120 60Z" stroke="rgba(255,255,255,0.16)" strokeWidth="6" strokeLinejoin="round" />
+                    <path d="M280 160 340 220 280 280 280 160Z" stroke="rgba(255,255,255,0.14)" strokeWidth="5" strokeLinejoin="round" />
+                    <path d="M350 20 410 80 350 140 350 20Z" stroke="rgba(255,255,255,0.1)" strokeWidth="5" strokeLinejoin="round" />
+                </svg>
 
-            {applications.length === 0 ? (
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "50px",
-                        textAlign: "center",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 5px 15px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <h2>No Applications Yet</h2>
-
-                    <p>
-                        You haven't applied for any
-                        jobs.
+                <div className="asq-hero-content">
+                    <span className="asq-hero-eyebrow">
+                        <ClipboardList size={13} />
+                        Application Tracker
+                    </span>
+                    <h1 className="asq-hero-title">My Job Applications</h1>
+                    <p className="asq-hero-subtitle">
+                        Every role you've applied to, with its current status, in one place.
                     </p>
 
+                    {applications.length > 0 && (
+                        <div className="asq-hero-chip">
+                            <ClipboardList size={16} />
+                            {applications.length} {applications.length === 1 ? "application" : "applications"} submitted
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* ---------- Body ---------- */}
+            {applications.length === 0 ? (
+                <div className="asq-empty-state">
+                    <Inbox size={48} color="#D3004C" />
+                    <h2 className="asq-empty-title">No applications yet</h2>
+                    <p className="asq-empty-text">
+                        You haven't applied for any jobs. Browse open roles and submit your first application.
+                    </p>
                     <button
-                        onClick={() =>
-                            navigate("/student/jobs")
-                        }
-                        style={{
-                            marginTop: "20px",
-                            background: "#e91e63",
-                            color: "#fff",
-                            border: "none",
-                            padding: "12px 25px",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                        }}
+                        className="asq-cta-inline"
+                        onClick={() => navigate("/student/jobs")}
                     >
                         Browse Jobs
                     </button>
                 </div>
             ) : (
-                <div style={gridStyle}>
+                <div className="asq-grid">
                     {applications.map((app) => (
-                        <div
-                            key={app.id}
-                            style={cardStyle}
-                        >
-                            <h2
-                                style={{
-                                    marginTop: 0,
-                                    color:
-                                        "#e91e63",
-                                }}
-                            >
-                                {app.job_title}
-                            </h2>
+                        <article key={app.id} className="asq-card">
+                            <div className="asq-card-accent" />
 
-                            <h3
-                                style={{
-                                    color: "#555",
-                                    marginTop:
-                                        "-5px",
-                                }}
-                            >
-                                {
-                                    app.company_name
-                                }
-                            </h3>
+                            <div className="asq-card-body">
+                                <div className="asq-card-top">
+                                    <div>
+                                        <h2 className="asq-job-title">{app.job_title}</h2>
+                                        <p className="asq-company">{app.company_name}</p>
+                                    </div>
 
-                            <hr />
+                                    <StatusPill status={app.status} />
+                                </div>
 
-                            <p>
-                                <span
-                                    style={
-                                        labelStyle
-                                    }
-                                >
-                                    Package
-                                </span>
-
-                                {app.package ||
-                                    "-"}
-                            </p>
-
-                            <p>
-                                <span
-                                    style={
-                                        labelStyle
-                                    }
-                                >
-                                    Location
-                                </span>
-
-                                {app.location ||
-                                    "-"}
-                            </p>
-
-                            <p>
-                                <span
-                                    style={
-                                        labelStyle
-                                    }
-                                >
-                                    Last Date
-                                </span>
-
-                                {new Date(
-                                    app.deadline
-                                ).toLocaleDateString()}
-                            </p>
-
-                            <p>
-                                <span
-                                    style={
-                                        labelStyle
-                                    }
-                                >
-                                    Applied On
-                                </span>
-
-                                {new Date(
-                                    app.applied_at
-                                ).toLocaleString()}
-                            </p>
-
-                            <div
-                                style={statusStyle(
-                                    app.status
-                                )}
-                            >
-                                {app.status}
+                                <div className="asq-meta-list">
+                                    <MetaRow icon={Coins} label="Package" value={app.package || "Not disclosed"} />
+                                    <MetaRow icon={MapPin} label="Location" value={app.location || "Not specified"} />
+                                    <MetaRow
+                                        icon={Calendar}
+                                        label="Last date"
+                                        value={new Date(app.deadline).toLocaleDateString("en-IN", {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                        })}
+                                    />
+                                    <MetaRow
+                                        icon={Clock}
+                                        label="Applied on"
+                                        value={new Date(app.applied_at).toLocaleDateString("en-IN", {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                        })}
+                                    />
+                                </div>
                             </div>
 
                             <button
-                                onClick={() =>
-                                    navigate(
-                                        `/student/jobs/${app.job}`
-                                    )
-                                }
-                                style={{
-                                    width: "100%",
-                                    marginTop:
-                                        "25px",
-                                    padding:
-                                        "12px",
-                                    background:
-                                        "#e91e63",
-                                    color:
-                                        "#fff",
-                                    border: "none",
-                                    borderRadius:
-                                        "8px",
-                                    cursor:
-                                        "pointer",
-                                    fontWeight:
-                                        "bold",
-                                }}
+                                className="asq-cta"
+                                onClick={() => navigate(`/student/jobs/${app.job}`)}
                             >
                                 View Job
                             </button>
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
 

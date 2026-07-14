@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Montserrat:wght@400;500;600&display=swap');
+
+/* ---------- Brand tokens (Asquare Technologies Presence Book) ---------- */
+.asq-review {
+    --brand-primary: #ED1965;
+    --brand-primary-dark: #D3004C;
+    --brand-primary-deep: #A00019;
+    --brand-tint-50: #FDE8F0;
+    --brand-tint-100: #FABAD1;
+    --brand-tint-200: #F8A3C1;
+    --brand-ink: #15121A;
+    --brand-slate: #6B7280;
+    --brand-slate-light: #9CA3AF;
+    --brand-bg: #F6F5F8;
+    --brand-surface: #FFFFFF;
+    --brand-border: #ECE8EE;
+
+    --status-pending: #9A6A00;
+    --status-pending-tint: #FCF1D9;
+    --status-approved: #0F7A5C;
+    --status-approved-tint: #E4F5EF;
+    --status-rejected: #B42318;
+    --status-rejected-tint: #FCEAE8;
+
+    min-height: 100vh;
+    background: var(--brand-bg);
+    padding: clamp(20px, 4vw, 48px);
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    color: var(--brand-ink);
+}
+
+.asq-review-shell {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.asq-review-header {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(120deg, var(--brand-primary) 0%, var(--brand-primary-dark) 55%, var(--brand-primary-deep) 100%);
+    border-radius: 24px;
+    padding: clamp(26px, 4vw, 40px);
+    margin-bottom: 26px;
+    box-shadow: 0 20px 45px rgba(237, 25, 101, 0.22);
+}
+
+.asq-review-motif {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 45%;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.asq-review-heading {
+    position: relative;
+    max-width: 560px;
+}
+
+.asq-review-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 12px;
+}
+
+.asq-review-title {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0;
+}
+
+.asq-review-subtitle {
+    margin: 10px 0 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 460px;
+}
+
+/* ---------- Layout ---------- */
+.asq-review-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .asq-review-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Panels ---------- */
+.asq-panel {
+    background: var(--brand-surface);
+    border: 1px solid var(--brand-border);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 2px 10px rgba(21, 18, 26, 0.04);
+}
+
+.asq-panel + .asq-panel {
+    margin-top: 20px;
+}
+
+.asq-panel-title {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--brand-ink);
+    margin: 0 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.asq-panel-title svg {
+    color: var(--brand-primary-dark);
+}
+
+/* ---------- Profile identity ---------- */
+.asq-profile-id {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.asq-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--brand-tint-50);
+    color: var(--brand-primary-dark);
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.asq-profile-name {
+    margin: 0;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--brand-ink);
+}
+
+.asq-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-top: 5px;
+    text-transform: capitalize;
+    background: var(--pill-bg, var(--status-pending-tint));
+    color: var(--pill-fg, var(--status-pending));
+}
+
+/* ---------- Info grid ---------- */
+.asq-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.asq-info-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.asq-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--brand-tint-50);
+    color: var(--brand-primary-dark);
+    flex-shrink: 0;
+}
+
+.asq-info-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-slate-light);
+    margin-bottom: 2px;
+}
+
+.asq-info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-ink);
+    word-break: break-word;
+}
+
+.asq-skills-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--brand-slate);
+}
+
+/* ---------- Resume link ---------- */
+.asq-resume-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+    color: #fff;
+    padding: 11px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13.5px;
+    font-family: 'Nunito Sans', sans-serif;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asq-resume-link:hover {
+    background: linear-gradient(135deg, var(--brand-primary-dark), var(--brand-primary-deep));
+    box-shadow: 0 10px 22px rgba(237, 25, 101, 0.28);
+}
+
+.asq-resume-empty {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--brand-slate-light);
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+/* ---------- Remark / decision panel ---------- */
+.asq-textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 14px;
+    border: 1px solid var(--brand-border);
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--brand-ink);
+    resize: vertical;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asq-textarea:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px var(--brand-tint-50);
+}
+
+.asq-textarea::placeholder {
+    color: var(--brand-slate-light);
+}
+
+.asq-decision-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.asq-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.asq-btn:active {
+    transform: scale(0.98);
+}
+
+.asq-btn:focus-visible {
+    outline: 2px solid var(--brand-primary-dark);
+    outline-offset: 3px;
+}
+
+.asq-btn-approve {
+    background: var(--status-approved);
+    color: #fff;
+}
+
+.asq-btn-approve:hover {
+    background: #0c6249;
+    box-shadow: 0 10px 22px rgba(15, 122, 92, 0.28);
+}
+
+.asq-btn-reject {
+    background: #fff;
+    color: var(--status-rejected);
+    border: 1.5px solid var(--status-rejected-tint);
+}
+
+.asq-btn-reject:hover {
+    background: var(--status-rejected-tint);
+    border-color: var(--status-rejected);
+}
+
+/* ---------- Loading state ---------- */
+.asq-loading-shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.asq-skel {
+    background: linear-gradient(90deg, #eee 25%, #f6f6f6 37%, #eee 63%);
+    background-size: 400% 100%;
+    animation: asq-shimmer 1.4s ease infinite;
+    border-radius: 14px;
+}
+
+@keyframes asq-shimmer {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}

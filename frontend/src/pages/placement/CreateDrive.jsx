@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
 
 const CreateDrive = () => {
     const navigate = useNavigate();
@@ -122,6 +124,9 @@ const CreateDrive = () => {
     };
     
     return (
+        <>
+        <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
+
         <div
         style={{
             minHeight: "100vh",
@@ -703,6 +708,9 @@ const CreateDrive = () => {
         
         </form>
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
 

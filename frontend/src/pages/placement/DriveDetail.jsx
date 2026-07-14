@@ -1,513 +1,314 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+    ArrowLeft,
+    Pencil,
+    Building2,
+    Wallet,
+    Users,
+    Layers,
+    Calendar,
+    Clock,
+    Link2,
+    Laptop2,
+    MapPin,
+    Map,
+    User,
+    Mail,
+    Phone,
+    FileText,
+    ClipboardCheck,
+    ImageOff,
+    AlertCircle,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./DriveDetail.css";
 
-const DriveDetail = () => {
+const STATUS_STYLES = {
+    upcoming: "dd-badge-blue",
+    ongoing: "dd-badge-green",
+    open: "dd-badge-green",
+    active: "dd-badge-green",
+    completed: "dd-badge-slate",
+    closed: "dd-badge-slate",
+    cancelled: "dd-badge-red",
+};
+
+const getStatusClass = (status) => {
+    const key = (status || "").toLowerCase();
+    return STATUS_STYLES[key] || "dd-badge-blue";
+};
+
+const DriveDetails = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
 
-    const navigate = useNavigate();
-
     const [drive, setDrive] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         fetchDrive();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
 
     const fetchDrive = async () => {
+        setIsLoading(true);
+        setError(false);
+
         try {
-            const response = await api.get(
-                `/companies/drives/${id}/`
-            );
-
-            console.log(response.data);
-
+            const response = await api.get(`/companies/drives/${id}/`);
             setDrive(response.data);
-        } catch (error) {
-            console.error(error);
-
-            alert("Unable to load drive.");
+        } catch (err) {
+            console.error(err);
+            setError(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const pageStyle = {
-        background: "#f6f8fc",
-        minHeight: "100vh",
-        padding: "40px",
-        fontFamily: "Segoe UI",
-    };
-
-    const cardStyle = {
-        background: "#fff",
-        borderRadius: "18px",
-        padding: "30px",
-        marginBottom: "25px",
-        boxShadow: "0 8px 25px rgba(0,0,0,.08)",
-    };
-
-    const sectionTitle = {
-        color: "#ED1464",
-        marginBottom: "20px",
-    };
-
-    const labelStyle = {
-        fontWeight: "600",
-        color: "#666",
-        marginBottom: "5px",
-    };
-
-    const valueStyle = {
-        fontSize: "17px",
-        marginBottom: "18px",
-        color: "#333",
-    };
-
-    const badge = {
-        display: "inline-block",
-        background: "#28a745",
-        color: "#fff",
-        padding: "8px 18px",
-        borderRadius: "30px",
-        fontWeight: "600",
-    };
-
-    if (!drive) {
-        return (
-            <div style={pageStyle}>
-                <h2>Loading...</h2>
-            </div>
-        );
-    }
-
     return (
-        <div style={pageStyle}>
+        <>
+            {/* Site-wide branded header (logo, company name, logout) */}
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
 
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "25px",
-                }}
-            >
-                <div>
-                    <h1
-                        style={{
-                            color: "#ED1464",
-                            marginBottom: "5px",
-                        }}
-                    >
-                        Placement Drive Details
-                    </h1>
-
-                    <p style={{ color: "#666" }}>
-                        Complete information about this
-                        placement drive.
-                    </p>
-                </div>
+            <div className="dd-root">
 
                 <button
-                    onClick={() => navigate(-1)}
-                    style={{
-                        background: "#ED1464",
-                        color: "#fff",
-                        border: "none",
-                        padding: "12px 25px",
-                        borderRadius: "8px",
-                        cursor: "pointer",
-                    }}
+                    onClick={() => navigate("/placement/drives")}
+                    className="dd-back-btn"
                 >
-                    ← Back
+                    <ArrowLeft />
+                    Back to Drives
                 </button>
-            </div>
 
-            {/* Notice Image */}
-
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Notice
-                </h2>
-
-                {drive.notice_image ? ( 
-                    <img
-                        src={drive.notice_image}
-                        alt="Notice"
-                        style={{
-                            width: "100%",
-                            maxHeight: "450px",
-                            objectFit: "cover",
-                            borderRadius: "12px",
-                        }}
-                    />
+                {isLoading ? (
+                    <div className="dd-header dd-header-loading">
+                        <div className="dd-header-blob" />
+                        <div className="dd-header-grid" />
+                        <div className="dd-skeleton" style={{ width: 140, height: 24, marginBottom: 16 }} />
+                        <div className="dd-skeleton" style={{ width: "60%", height: 36, marginBottom: 12 }} />
+                        <div className="dd-skeleton" style={{ width: "40%", height: 18 }} />
+                    </div>
+                ) : error || !drive ? (
+                    <div className="dd-empty">
+                        <div className="dd-empty-icon"><AlertCircle /></div>
+                        <p className="dd-empty-title">Drive not found</p>
+                        <p className="dd-empty-sub">
+                            This placement drive may have been removed, or the link is incorrect.
+                        </p>
+                        <button
+                            onClick={() => navigate("/placement/drives")}
+                            className="dd-empty-btn"
+                        >
+                            Go back to Drives
+                        </button>
+                    </div>
                 ) : (
-                    <p>No notice uploaded.</p>
-                )}
-            </div>
-            
+                    <>
+                        {/* Header */}
 
-            {/* Basic Details */}
+                        <div className="dd-header">
+                            <div className="dd-header-blob" />
+                            <div className="dd-header-grid" />
 
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Basic Information
-                </h2>
+                            <div className="dd-header-top">
+                                <span className={`dd-badge ${getStatusClass(drive.status)}`}>
+                                    {drive.status || "Unknown"}
+                                </span>
 
-                <div style={labelStyle}>
-                    Company
-                </div>
+                                <button
+                                    onClick={() => navigate(`/placement/drives/edit/${drive.id}`)}
+                                    className="dd-edit-btn"
+                                >
+                                    <Pencil />
+                                    Edit Drive
+                                </button>
+                            </div>
 
-                <div style={valueStyle}>
-                    {drive.company_name}
-                </div>
+                            <h1 className="dd-header-title">{drive.title}</h1>
 
-                <div style={labelStyle}>
-                    Drive Title
-                </div>
-
-                <div style={valueStyle}>
-                    {drive.title}
-                </div>
-
-                <div style={labelStyle}>
-                    Description
-                </div>
-
-                <div style={valueStyle}>
-                    {drive.description}
-                </div>
-
-                <div style={labelStyle}>
-                    Eligibility
-                </div>
-
-                <div style={valueStyle}>
-                    {drive.eligibility}
-                </div>
-            </div>
-                        {/* Job Details */}
-
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Job Details
-                </h2>
-
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(250px,1fr))",
-                        gap: "25px",
-                    }}
-                >
-                    <div>
-                        <div style={labelStyle}>
-                            Package
+                            <p className="dd-header-sub">
+                                <Building2 />
+                                {drive.company_name || "Company not specified"}
+                            </p>
                         </div>
 
-                        <div style={valueStyle}>
-                            {drive.package}
-                        </div>
-                    </div>
+                        {/* Overview stats */}
 
-                    <div>
-                        <div style={labelStyle}>
-                            Available Positions
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.available_positions}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            Number of Openings
+                        <div className="dd-stats">
+                            <Stat icon={Wallet} label="Package" value={drive.package} />
+                            <Stat icon={Layers} label="Available Positions" value={drive.available_positions} />
+                            <Stat icon={Users} label="Openings" value={drive.openings} />
+                            <Stat icon={Laptop2} label="Mode" value={drive.mode} />
                         </div>
 
-                        <div style={valueStyle}>
-                            {drive.openings}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        {/* Description & Eligibility */}
 
-            {/* Drive Schedule */}
+                        {(drive.description || drive.eligibility) && (
+                            <div className="dd-panel">
+                                <div className="dd-panel-head">
+                                    <h2 className="dd-panel-title">
+                                        <FileText /> Overview
+                                    </h2>
+                                </div>
 
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Drive Schedule
-                </h2>
+                                <div className="dd-text-grid">
+                                    {drive.description && (
+                                        <div className="dd-text-block">
+                                            <span className="dd-text-label">Description</span>
+                                            <p className="dd-text-value">{drive.description}</p>
+                                        </div>
+                                    )}
 
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(250px,1fr))",
-                        gap: "25px",
-                    }}
-                >
-                    <div>
-                        <div style={labelStyle}>
-                            Drive Date & Time
-                        </div>
+                                    {drive.eligibility && (
+                                        <div className="dd-text-block">
+                                            <span className="dd-text-label">
+                                                <ClipboardCheck /> Eligibility
+                                            </span>
+                                            <p className="dd-text-value">{drive.eligibility}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
 
-                        <div style={valueStyle}>
-                            {drive.drive_datetime
-                                ? new Date(
-                                      drive.drive_datetime
-                                  ).toLocaleString()
-                                : "-"}
-                        </div>
-                    </div>
+                        {/* Schedule */}
 
-                    <div>
-                        <div style={labelStyle}>
-                            Registration Deadline
-                        </div>
+                        <div className="dd-panel">
+                            <div className="dd-panel-head">
+                                <h2 className="dd-panel-title">
+                                    <Calendar /> Schedule
+                                </h2>
+                            </div>
 
-                        <div style={valueStyle}>
-                            {drive.registration_deadline
-                                ? new Date(
-                                      drive.registration_deadline
-                                  ).toLocaleString()
-                                : "-"}
-                        </div>
-                    </div>
-
-                    <div
-                        style={{
-                            gridColumn: "1 / -1",
-                        }}
-                    >
-                        <div style={labelStyle}>
-                            Registration Link
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.registration_link ? (
-                                <a
-                                    href={
-                                        drive.registration_link
+                            <div className="dd-info-grid">
+                                <Info icon={Calendar} label="Drive Date & Time" value={drive.drive_datetime} />
+                                <Info icon={Clock} label="Registration Deadline" value={drive.registration_deadline} />
+                                <Info
+                                    icon={Link2}
+                                    label="Registration Link"
+                                    value={
+                                        drive.registration_link ? (
+                                            <a
+                                                href={drive.registration_link}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="dd-link"
+                                            >
+                                                {drive.registration_link}
+                                            </a>
+                                        ) : null
                                     }
+                                />
+                            </div>
+                        </div>
+
+                        {/* Venue */}
+
+                        <div className="dd-panel">
+                            <div className="dd-panel-head">
+                                <h2 className="dd-panel-title">
+                                    <MapPin /> Venue
+                                </h2>
+                            </div>
+
+                            <div className="dd-info-grid">
+                                <Info icon={Laptop2} label="Mode" value={drive.mode} />
+                                <Info icon={MapPin} label="Venue" value={drive.venue} />
+                                <Info icon={Map} label="City" value={drive.city} />
+                                <Info icon={Map} label="State" value={drive.state} />
+                            </div>
+                        </div>
+
+                        {/* Coordinator */}
+
+                        <div className="dd-panel">
+                            <div className="dd-panel-head">
+                                <h2 className="dd-panel-title">
+                                    <User /> Coordinator
+                                </h2>
+                            </div>
+
+                            <div className="dd-info-grid">
+                                <Info icon={User} label="Name" value={drive.coordinator_name} />
+                                <Info
+                                    icon={Mail}
+                                    label="Email"
+                                    value={
+                                        drive.coordinator_email ? (
+                                            <a href={`mailto:${drive.coordinator_email}`} className="dd-link">
+                                                {drive.coordinator_email}
+                                            </a>
+                                        ) : null
+                                    }
+                                />
+                                <Info
+                                    icon={Phone}
+                                    label="Phone"
+                                    value={
+                                        drive.coordinator_phone ? (
+                                            <a href={`tel:${drive.coordinator_phone}`} className="dd-link">
+                                                {drive.coordinator_phone}
+                                            </a>
+                                        ) : null
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        {/* Notice */}
+
+                        <div className="dd-panel">
+                            <div className="dd-panel-head">
+                                <h2 className="dd-panel-title">Notice</h2>
+                            </div>
+
+                            {drive.notice_image ? (
+                                <a
+                                    href={drive.notice_image}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{
-                                        color: "#ED1464",
-                                        fontWeight: "600",
-                                        textDecoration:
-                                            "none",
-                                    }}
+                                    className="dd-notice-preview"
                                 >
-                                    {drive.registration_link}
+                                    <img src={drive.notice_image} alt="Drive notice" />
                                 </a>
                             ) : (
-                                "-"
+                                <div className="dd-empty dd-empty-inline">
+                                    <div className="dd-empty-icon"><ImageOff /></div>
+                                    <p className="dd-empty-title">No notice uploaded</p>
+                                </div>
                             )}
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Venue Details */}
-
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Venue Details
-                </h2>
-
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(250px,1fr))",
-                        gap: "25px",
-                    }}
-                >
-                    <div>
-                        <div style={labelStyle}>
-                            Mode
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.mode}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            Venue
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.venue}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            City
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.city}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            State
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.state}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Coordinator */}
-
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Coordinator Details
-                </h2>
-
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(250px,1fr))",
-                        gap: "25px",
-                    }}
-                >
-                    <div>
-                        <div style={labelStyle}>
-                            Coordinator Name
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.coordinator_name}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            Email
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.coordinator_email}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style={labelStyle}>
-                            Phone
-                        </div>
-
-                        <div style={valueStyle}>
-                            {drive.coordinator_phone}
-                        </div>
-                    </div>
-                </div>
-            </div>
-                        {/* Status */}
-
-            <div style={cardStyle}>
-                <h2 style={sectionTitle}>
-                    Drive Status
-                </h2>
-
-                <span
-                    style={{
-                        ...badge,
-                        background:
-                            drive.status === "PUBLISHED"
-                                ? "#28a745"
-                                : drive.status === "CLOSED"
-                                ? "#dc3545"
-                                : "#ffc107",
-                        color:
-                            drive.status === "DRAFT"
-                                ? "#000"
-                                : "#fff",
-                    }}
-                >
-                    {drive.status}
-                </span>
-
-                <div style={{ marginTop: "30px" }}>
-                    <div style={labelStyle}>
-                        Created At
-                    </div>
-
-                    <div style={valueStyle}>
-                        {drive.created_at
-                            ? new Date(
-                                  drive.created_at
-                              ).toLocaleString()
-                            : "-"}
-                    </div>
-
-                    <div style={labelStyle}>
-                        Last Updated
-                    </div>
-
-                    <div style={valueStyle}>
-                        {drive.updated_at
-                            ? new Date(
-                                  drive.updated_at
-                              ).toLocaleString()
-                            : "-"}
-                    </div>
-                </div>
-            </div>
-
-            {/* Footer Buttons */}
-
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "20px",
-                    marginTop: "40px",
-                }}
-            >
-                <button
-                    onClick={() => navigate(-1)}
-                    style={{
-                        background: "#6c757d",
-                        color: "#fff",
-                        border: "none",
-                        padding: "14px 35px",
-                        borderRadius: "8px",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                    }}
-                >
-                    Back
-                </button>
-
-                {drive.registration_link && (
-                    <a
-                        href={drive.registration_link}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                            background: "#ED1464",
-                            color: "#fff",
-                            padding: "14px 35px",
-                            borderRadius: "8px",
-                            textDecoration: "none",
-                            fontWeight: "600",
-                        }}
-                    >
-                        Apply Now
-                    </a>
+                    </>
                 )}
             </div>
 
-        </div>
+            <AppFooter version="v1.0.0" />
+        </>
     );
 };
 
-export default DriveDetail;
+const Stat = ({ icon: Icon, label, value }) => (
+    <div className="dd-stat-card">
+        <div className="dd-stat-icon"><Icon /></div>
+        <div>
+            <p className="dd-stat-label">{label}</p>
+            <h3 className="dd-stat-value">{value || "-"}</h3>
+        </div>
+    </div>
+);
+
+const Info = ({ icon: Icon, label, value }) => (
+    <div className="dd-info-item">
+        <span className="dd-info-label">
+            <Icon />
+            {label}
+        </span>
+        <p className="dd-info-value">{value || "-"}</p>
+    </div>
+);
+
+export default DriveDetails;

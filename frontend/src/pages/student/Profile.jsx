@@ -1,10 +1,30 @@
 // src/pages/student/Profile.jsx
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+    IdCard,
+    User,
+    Phone,
+    GraduationCap,
+    CalendarDays,
+    UserCog,
+    MapPin,
+    Sparkles,
+    Upload,
+    FileCheck2,
+    Send,
+    Loader2,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Profile.css";
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [status, setStatus] = useState("DRAFT");
+    const [submitting, setSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         student_name: "",
@@ -75,6 +95,8 @@ setFormData((prev) => ({
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setSubmitting(true);
+
         try {
             const payload =
                 new FormData();
@@ -143,394 +165,181 @@ setFormData((prev) => ({
                 "Save Error:",
                 error
             );
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    const inputStyle = {
-        width: "100%",
-        padding: "12px",
-        marginTop: "8px",
-        border:
-            "1px solid #ddd",
-        borderRadius: "8px",
-        boxSizing:
-            "border-box",
-        fontSize: "14px",
-    };
-
-    const textareaStyle = {
-        width: "100%",
-        padding: "12px",
-        marginTop: "8px",
-        border:
-            "1px solid #ddd",
-        borderRadius: "8px",
-        minHeight: "100px",
-        boxSizing:
-            "border-box",
-        fontSize: "14px",
-    };
-
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background:
-                    "#f8f9fc",
-                padding: "30px",
-                fontFamily:
-                    "'Segoe UI', sans-serif",
-            }}
-        >
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+
+        <div className="pf-root">
+
             {/* Header */}
 
-            <div
-                style={{
-                    background:
-                        "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius:
-                        "15px",
-                    marginBottom:
-                        "25px",
-                }}
-            >
-                <h1
-                    style={{
-                        margin: 0,
-                    }}
-                >
-                    Student Profile
-                </h1>
-
-                <p
-                    style={{
-                        marginTop:
-                            "10px",
-                    }}
-                >
-                    Complete your
-                    profile to
-                    participate in
-                    placement
-                    activities.
+            <div className="pf-header">
+                <div className="pf-header-blob" />
+                <div className="pf-header-grid" />
+                <span className="pf-header-eyebrow">
+                    <IdCard /> Placement Profile
+                </span>
+                <h1 className="pf-header-title">Student Profile</h1>
+                <p className="pf-header-sub">
+                    Complete your profile to participate in placement activities.
                 </p>
             </div>
 
             {/* Status */}
 
-            <div
-                style={{
-                    background:
-                        "#fff",
-                    padding: "20px",
-                    borderRadius:
-                        "15px",
-                    marginBottom:
-                        "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h3
-                    style={{
-                        margin: 0,
-                        color:
-                            "#555",
-                    }}
-                >
-                    Profile Status
-                </h3>
-
-                <div
-                    style={{
-                        display:
-                            "inline-block",
-                        marginTop:
-                            "10px",
-                        background:
-                            "#ffe3ef",
-                        color:
-                            "#ED1464",
-                        padding:
-                            "8px 15px",
-                        borderRadius:
-                            "20px",
-                        fontWeight:
-                            "600",
-                    }}
-                >
-                    {status}
-                </div>
+            <div className="pf-status-card">
+                <h3 className="pf-status-label">Profile Status</h3>
+                <div className="pf-status-chip">{status}</div>
             </div>
 
             {/* Form */}
 
-            <form
-                onSubmit={
-                    handleSubmit
-                }
-            >
-                <div
-                    style={{
-                        background:
-                            "#fff",
-                        padding:
-                            "30px",
-                        borderRadius:
-                            "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,0.08)",
-                    }}
-                >
-                    <div
-                        style={{
-                            display:
-                                "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit,minmax(300px,1fr))",
-                            gap: "20px",
-                        }}
-                    >
-                        <div>
-                            <label>
-                                Student
-                                Name
-                            </label>
+            <form onSubmit={handleSubmit}>
+                <div className="pf-form-card">
 
+                    <div className="pf-grid">
+                        <Field icon={User} label="Student Name">
                             <input
                                 type="text"
                                 name="student_name"
-                                value={
-                                    formData.student_name
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                style={
-                                    inputStyle
-                                }
+                                value={formData.student_name}
+                                onChange={handleChange}
+                                className="pf-input"
                             />
-                        </div>
+                        </Field>
 
-                        <div>
-                            <label>
-                                Phone
-                            </label>
-
+                        <Field icon={Phone} label="Phone">
                             <input
                                 type="text"
                                 name="phone"
-                                value={
-                                    formData.phone
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                style={
-                                    inputStyle
-                                }
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="pf-input"
                             />
-                        </div>
+                        </Field>
 
-                        <div>
-                            <label>
-                                Qualification
-                            </label>
-
+                        <Field icon={GraduationCap} label="Qualification">
                             <input
                                 type="text"
                                 name="qualification"
-                                value={
-                                    formData.qualification
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                style={
-                                    inputStyle
-                                }
+                                value={formData.qualification}
+                                onChange={handleChange}
+                                className="pf-input"
                             />
-                        </div>
+                        </Field>
 
-                        <div>
-                            <label>
-                                Passout
-                                Year
-                            </label>
-
+                        <Field icon={CalendarDays} label="Passout Year">
                             <input
                                 type="number"
                                 name="passout_year"
-                                value={
-                                    formData.passout_year
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                style={
-                                    inputStyle
-                                }
+                                value={formData.passout_year}
+                                onChange={handleChange}
+                                className="pf-input"
                             />
-                        </div>
+                        </Field>
 
-                        <div>
-                            <label>
-                                Trainer
-                            </label>
-
+                        <Field icon={UserCog} label="Trainer">
                             <select
                                 name="trainer"
-                                value={
-                                    formData.trainer
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                style={
-                                    inputStyle
-                                }
+                                value={formData.trainer}
+                                onChange={handleChange}
+                                className="pf-select"
                             >
-                                <option value="">
-                                    Select
-                                    Trainer
-                                </option>
+                                <option value="">Select Trainer</option>
 
-                                {Array.isArray(
-                                    trainers
-                                ) &&
-                                    trainers.map(
-                                        (
-                                            trainer
-                                        ) => (
-                                            <option
-                                                key={
-                                                    trainer.id
-                                                }
-                                                value={
-                                                    trainer.id
-                                                }
-                                            >
-                                                {
-                                                    trainer.name
-                                                }
-                                            </option>
-                                        )
-                                    )}
+                                {Array.isArray(trainers) &&
+                                    trainers.map((trainer) => (
+                                        <option key={trainer.id} value={trainer.id}>
+                                            {trainer.name}
+                                        </option>
+                                    ))}
                             </select>
-                        </div>
+                        </Field>
                     </div>
 
-                    <div
-                        style={{
-                            marginTop:
-                                "20px",
-                        }}
-                    >
-                        <label>
-                            Address
+                    <div className="pf-field-block">
+                        <Field icon={MapPin} label="Address" area>
+                            <textarea
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                className="pf-textarea"
+                            />
+                        </Field>
+                    </div>
+
+                    <div className="pf-field-block">
+                        <Field icon={Sparkles} label="Skills" area>
+                            <textarea
+                                name="skills"
+                                value={formData.skills}
+                                onChange={handleChange}
+                                className="pf-textarea"
+                                placeholder="Python, Django, React..."
+                            />
+                        </Field>
+                    </div>
+
+                    <div className="pf-field-block">
+                        <label className="pf-label"><Upload /> Resume</label>
+
+                        <label className="pf-file-drop">
+                            <Upload />
+                            <span>
+                                {formData.resume
+                                    ? formData.resume.name
+                                    : "Click to upload your resume"}
+                            </span>
+                            {formData.resume && (
+                                <FileCheck2 className="pf-file-check" />
+                            )}
+                            <input
+                                type="file"
+                                name="resume"
+                                onChange={handleChange}
+                                className="pf-file-input-hidden"
+                            />
                         </label>
-
-                        <textarea
-                            name="address"
-                            value={
-                                formData.address
-                            }
-                            onChange={
-                                handleChange
-                            }
-                            style={
-                                textareaStyle
-                            }
-                        />
                     </div>
 
-                    <div
-                        style={{
-                            marginTop:
-                                "20px",
-                        }}
-                    >
-                        <label>
-                            Skills
-                        </label>
-
-                        <textarea
-                            name="skills"
-                            value={
-                                formData.skills
-                            }
-                            onChange={
-                                handleChange
-                            }
-                            style={
-                                textareaStyle
-                            }
-                            placeholder="Python, Django, React..."
-                        />
-                    </div>
-
-                    <div
-                        style={{
-                            marginTop:
-                                "20px",
-                        }}
-                    >
-                        <label>
-                            Resume
-                        </label>
-
-                        <br />
-
-                        <input
-                            type="file"
-                            name="resume"
-                            onChange={
-                                handleChange
-                            }
-                            style={{
-                                marginTop:
-                                    "10px",
-                            }}
-                        />
-                    </div>
-
-                    <div
-                        style={{
-                            marginTop:
-                                "30px",
-                        }}
-                    >
-                        <button
-                            type="submit"
-                            style={{
-                                background:
-                                    "#ED1464",
-                                color:
-                                    "#fff",
-                                border:
-                                    "none",
-                                padding:
-                                    "12px 30px",
-                                borderRadius:
-                                    "8px",
-                                cursor:
-                                    "pointer",
-                                fontWeight:
-                                    "600",
-                                fontSize:
-                                    "15px",
-                            }}
-                        >
-                            Submit
-                            Profile
+                    <div className="pf-submit-row">
+                        <button type="submit" className="pf-submit-btn" disabled={submitting}>
+                            {submitting ? (
+                                <>
+                                    <Loader2 className="pf-spin" />
+                                    Submitting...
+                                </>
+                            ) : (
+                                <>
+                                    <Send />
+                                    Submit Profile
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
 };
+
+const Field = ({ icon: Icon, label, area, children }) => (
+    <div className="pf-field">
+        <label className="pf-label">{label}</label>
+        <div className={`pf-input-wrap${area ? " pf-input-wrap-area" : ""}`}>
+            <Icon className="pf-input-icon" />
+            {children}
+        </div>
+    </div>
+);
 
 export default Profile;

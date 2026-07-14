@@ -1,6 +1,25 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    LayoutDashboard,
+    UserCheck,
+    Rocket,
+    Briefcase,
+    Eye,
+    Edit3,
+    ClipboardList,
+    ArrowRight,
+    Building2,
+    Wallet,
+    CalendarClock,
+    Inbox,
+    CheckCircle2,
+    Loader2,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Dashboard.css";
 
 const StudentDashboard = () => {
 
@@ -60,537 +79,228 @@ const StudentDashboard = () => {
 
     if (loading) {
         return (
-            <h2
-                style={{
-                    textAlign: "center",
-                    marginTop: "80px",
-                }}
-            >
-                Loading...
-            </h2>
+            <>
+                <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+                <div className="sd-root">
+                    <div className="sd-state-card">
+                        <Loader2 className="sd-spin" />
+                        <p>Loading your dashboard...</p>
+                    </div>
+                </div>
+                <AppFooter version="v1.0.0" />
+            </>
         );
     }
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
+        <>
+        {/* Site-wide branded header (logo, company name, subtitle, logout) */}
+        <AppHeader onLogoClick={() => navigate("/student/dashboard")} />
+
+        <div className="sd-root">
 
             {/* Header */}
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "30px",
-                    borderRadius: "18px",
-                    marginBottom: "30px",
-                }}
-            >
-                <h1
-                    style={{
-                        margin: 0,
-                        fontSize: "32px",
-                    }}
-                >
-                    Student Dashboard
-                </h1>
-
-                <p
-                    style={{
-                        marginTop: "10px",
-                        opacity: 0.9,
-                        fontSize: "16px",
-                    }}
-                >
-                    Welcome,
-                    {" "}
-                    <strong>
-                        {dashboard.student_name}
-                    </strong>
-
+            <div className="sd-header">
+                <div className="sd-header-blob" />
+                <div className="sd-header-grid" />
+                <span className="sd-header-eyebrow">
+                    <LayoutDashboard /> Student Portal
+                </span>
+                <h1 className="sd-header-title">Student Dashboard</h1>
+                <p className="sd-header-sub">
+                    Welcome, <strong>{dashboard.student_name}</strong>
                     <br />
-
-                    Explore placement drives,
-                    available jobs and manage
-                    your profile.
+                    Explore placement drives, available jobs and manage your profile.
                 </p>
             </div>
 
             {/* Statistics */}
 
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit,minmax(220px,1fr))",
-                    gap: "20px",
-                    marginBottom: "30px",
-                }}
-            >
+            <div className="sd-stat-grid">
 
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Profile Status
-                    </h3>
-
-                    <h2
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {dashboard.status || "DRAFT"}
-                    </h2>
+                <div className="sd-stat-card">
+                    <div className="sd-stat-icon">
+                        <UserCheck />
+                    </div>
+                    <div>
+                        <h3 className="sd-stat-label">Profile Status</h3>
+                        <h2 className="sd-stat-value">{dashboard.status || "DRAFT"}</h2>
+                    </div>
                 </div>
 
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Active Drives
-                    </h3>
-
-                    <h2
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {drives.length}
-                    </h2>
+                <div className="sd-stat-card">
+                    <div className="sd-stat-icon">
+                        <Rocket />
+                    </div>
+                    <div>
+                        <h3 className="sd-stat-label">Active Drives</h3>
+                        <h2 className="sd-stat-value">{drives.length}</h2>
+                    </div>
                 </div>
 
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "25px",
-                        borderRadius: "15px",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#777",
-                            marginBottom: "10px",
-                        }}
-                    >
-                        Available Jobs
-                    </h3>
-
-                    <h2
-                        style={{
-                            color: "#ED1464",
-                            margin: 0,
-                        }}
-                    >
-                        {jobs.length}
-                    </h2>
+                <div className="sd-stat-card">
+                    <div className="sd-stat-icon">
+                        <Briefcase />
+                    </div>
+                    <div>
+                        <h3 className="sd-stat-label">Available Jobs</h3>
+                        <h2 className="sd-stat-value">{jobs.length}</h2>
+                    </div>
                 </div>
 
             </div>
-                        {/* Quick Actions */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    marginBottom: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        color: "#333",
-                    }}
-                >
-                    Quick Actions
-                </h2>
+            {/* Quick Actions */}
 
-                <div
-                    style={{
-                        display: "flex",
-                        gap: "15px",
-                        flexWrap: "wrap",
-                        marginTop: "20px",
-                    }}
-                >
+            <div className="sd-card">
+                <h2 className="sd-card-title">Quick Actions</h2>
+
+                <div className="sd-action-grid">
                     <button
-                        onClick={() =>
-                            navigate("/student/view-profile")
-                        }
-                        style={buttonStyle}
+                        onClick={() => navigate("/student/view-profile")}
+                        className="sd-action-card"
                     >
-                        View Profile
+                        <Eye />
+                        <span>View Profile</span>
                     </button>
 
                     <button
-                        onClick={() =>
-                            navigate("/student/profile")
-                        }
-                        style={buttonStyle}
+                        onClick={() => navigate("/student/profile")}
+                        className="sd-action-card"
                     >
-                        Edit Profile
+                        <Edit3 />
+                        <span>Edit Profile</span>
                     </button>
 
                     <button
-                        onClick={() =>
-                            navigate("/student/drives")
-                        }
-                        style={buttonStyle}
+                        onClick={() => navigate("/student/drives")}
+                        className="sd-action-card"
                     >
-                        View Drives
+                        <Rocket />
+                        <span>View Drives</span>
                     </button>
 
                     <button
-                        onClick={() =>
-                            navigate("/student/jobs")
-                        }
-                        style={buttonStyle}
+                        onClick={() => navigate("/student/jobs")}
+                        className="sd-action-card"
                     >
-                        View Jobs
+                        <Briefcase />
+                        <span>View Jobs</span>
                     </button>
 
                     <button
-                        onClick={() =>
-                            navigate("/student/my-applications")
-                        }
-                        style={buttonStyle}
+                        onClick={() => navigate("/student/my-applications")}
+                        className="sd-action-card"
                     >
-                        My Applications
+                        <ClipboardList />
+                        <span>My Applications</span>
                     </button>
                 </div>
             </div>
 
             {/* Latest Placement Drives */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    marginBottom: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        marginBottom: "20px",
-                    }}
-                >
-                    Latest Placement Drives
-                </h2>
+            <div className="sd-card">
+                <h2 className="sd-card-title">Latest Placement Drives</h2>
 
                 {drives.length === 0 ? (
-                    <p
-                        style={{
-                            color: "#666",
-                        }}
-                    >
-                        No active placement drives.
-                    </p>
+                    <div className="sd-empty">
+                        <Inbox />
+                        <p>No active placement drives.</p>
+                    </div>
                 ) : (
-                    drives
-                        .slice(0, 3)
-                        .map((drive) => (
-                            <div
-                                key={drive.id}
-                                style={{
-                                    border:
-                                        "1px solid #eee",
-                                    borderRadius:
-                                        "12px",
-                                    padding: "18px",
-                                    marginBottom:
-                                        "15px",
-                                    display: "flex",
-                                    justifyContent:
-                                        "space-between",
-                                    alignItems:
-                                        "center",
-                                }}
-                            >
-                                <div>
-                                    <h3
-                                        style={{
-                                            margin: 0,
-                                            color:
-                                                "#ED1464",
-                                        }}
-                                    >
-                                        {drive.title}
-                                    </h3>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Company:
-                                        </strong>{" "}
-                                        {
-                                            drive.company_name
-                                        }
-                                    </p>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Package:
-                                        </strong>{" "}
-                                        {
-                                            drive.package
-                                        }
-                                    </p>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Registration Ends:
-                                        </strong>{" "}
-                                        {new Date(
-                                            drive.registration_deadline
-                                        ).toLocaleDateString()}
-                                    </p>
+                    drives.slice(0, 3).map((drive) => (
+                        <div key={drive.id} className="sd-list-item">
+                            <div className="sd-list-item-body">
+                                <h3 className="sd-list-item-title">{drive.title}</h3>
+                                <div className="sd-list-item-meta">
+                                    <span><Building2 /> {drive.company_name}</span>
+                                    <span><Wallet /> {drive.package}</span>
+                                    <span>
+                                        <CalendarClock /> Ends{" "}
+                                        {new Date(drive.registration_deadline).toLocaleDateString()}
+                                    </span>
                                 </div>
-
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/student/drives/${drive.id}`
-                                        )
-                                    }
-                                    style={
-                                        buttonStyle
-                                    }
-                                >
-                                    View
-                                </button>
                             </div>
-                        ))
+
+                            <button
+                                onClick={() => navigate(`/student/drives/${drive.id}`)}
+                                className="sd-view-btn"
+                            >
+                                View <ArrowRight />
+                            </button>
+                        </div>
+                    ))
                 )}
             </div>
-                        {/* Latest Available Jobs */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    marginBottom: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        marginBottom: "20px",
-                    }}
-                >
-                    Latest Available Jobs
-                </h2>
+            {/* Latest Available Jobs */}
+
+            <div className="sd-card">
+                <h2 className="sd-card-title">Latest Available Jobs</h2>
 
                 {jobs.length === 0 ? (
-                    <p style={{ color: "#666" }}>
-                        No active jobs available.
-                    </p>
+                    <div className="sd-empty">
+                        <Inbox />
+                        <p>No active jobs available.</p>
+                    </div>
                 ) : (
-                    jobs
-                        .slice(0, 3)
-                        .map((job) => (
-                            <div
-                                key={job.id}
-                                style={{
-                                    border:
-                                        "1px solid #eee",
-                                    borderRadius:
-                                        "12px",
-                                    padding: "18px",
-                                    marginBottom:
-                                        "15px",
-                                    display: "flex",
-                                    justifyContent:
-                                        "space-between",
-                                    alignItems:
-                                        "center",
-                                }}
-                            >
-                                <div>
-                                    <h3
-                                        style={{
-                                            margin: 0,
-                                            color:
-                                                "#ED1464",
-                                        }}
-                                    >
-                                        {job.title}
-                                    </h3>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Company:
-                                        </strong>{" "}
-                                        {
-                                            job.company_name
-                                        }
-                                    </p>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Package:
-                                        </strong>{" "}
-                                        {
-                                            job.package
-                                        }
-                                    </p>
-
-                                    <p
-                                        style={{
-                                            margin:
-                                                "8px 0",
-                                        }}
-                                    >
-                                        <strong>
-                                            Deadline:
-                                        </strong>{" "}
-                                        {job.deadline}
-                                    </p>
+                    jobs.slice(0, 3).map((job) => (
+                        <div key={job.id} className="sd-list-item">
+                            <div className="sd-list-item-body">
+                                <h3 className="sd-list-item-title">{job.title}</h3>
+                                <div className="sd-list-item-meta">
+                                    <span><Building2 /> {job.company_name}</span>
+                                    <span><Wallet /> {job.package}</span>
+                                    <span><CalendarClock /> {job.deadline}</span>
                                 </div>
-
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/student/jobs/${job.id}`
-                                        )
-                                    }
-                                    style={buttonStyle}
-                                >
-                                    View
-                                </button>
                             </div>
-                        ))
+
+                            <button
+                                onClick={() => navigate(`/student/jobs/${job.id}`)}
+                                className="sd-view-btn"
+                            >
+                                View <ArrowRight />
+                            </button>
+                        </div>
+                    ))
                 )}
             </div>
 
             {/* Latest Updates */}
 
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                    }}
-                >
-                    Latest Updates
-                </h2>
+            <div className="sd-card">
+                <h2 className="sd-card-title">Latest Updates</h2>
 
-                <ul
-                    style={{
-                        lineHeight: "2",
-                        color: "#555",
-                        paddingLeft: "20px",
-                    }}
-                >
+                <ul className="sd-updates-list">
                     <li>
-                        Complete your profile
-                        before applying for jobs.
+                        <CheckCircle2 />
+                        Complete your profile before applying for jobs.
                     </li>
 
                     <li>
-                        Keep checking placement
-                        drives regularly.
+                        <CheckCircle2 />
+                        Keep checking placement drives regularly.
                     </li>
 
                     <li>
-                        Only active jobs and
-                        published drives are shown.
+                        <CheckCircle2 />
+                        Only active jobs and published drives are shown.
                     </li>
 
                     <li>
-                        Upload your latest resume
-                        for better opportunities.
+                        <CheckCircle2 />
+                        Upload your latest resume for better opportunities.
                     </li>
                 </ul>
             </div>
 
         </div>
+
+        <AppFooter version="v1.0.0" />
+        </>
     );
-};
-
-/* Shared Button Style */
-
-const buttonStyle = {
-    background: "#ED1464",
-    color: "#fff",
-    border: "none",
-    padding: "12px 20px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "14px",
 };
 
 export default StudentDashboard;

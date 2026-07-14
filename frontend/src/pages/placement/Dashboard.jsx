@@ -1,6 +1,21 @@
+//src/pages/placement/Dashboard.jsx
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import {
+    Building2,
+    Users,
+    Briefcase,
+    CalendarClock,
+    ClipboardList,
+    Award,
+    ClipboardX,
+    ArrowUpRight,
+    Sparkles,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Dashboard.css";
 
 const PlacementDashboard = () => {
     const navigate = useNavigate();
@@ -13,6 +28,8 @@ const PlacementDashboard = () => {
         applications: 0,
         placements: 0,
     });
+
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchDashboard();
@@ -27,251 +44,124 @@ const PlacementDashboard = () => {
             setStats(res.data);
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    const statCards = [
+        { icon: Building2, label: "Companies", value: stats.companies },
+        { icon: Users, label: "Approved Students", value: stats.approved_students },
+        { icon: Briefcase, label: "Jobs", value: stats.jobs },
+        { icon: CalendarClock, label: "Placement Drives", value: stats.drives },
+        { icon: ClipboardList, label: "Applications", value: stats.applications },
+        { icon: Award, label: "Placements", value: stats.placements },
+    ];
+
+    const quickActions = [
+        { label: "Manage Companies", desc: "Add or edit partner companies", icon: Building2, path: "/placement/companies" },
+        { label: "Placement Drives", desc: "Schedule and track drives", icon: CalendarClock, path: "/placement/drives" },
+        { label: "Approved Students", desc: "View eligible candidates", icon: Users, path: "/placement/students" },
+        { label: "Manage Jobs", desc: "Post and update openings", icon: Briefcase, path: "/placement/jobs" },
+        { label: "View Applications", desc: "Review candidate applications", icon: ClipboardList, path: "/placement/applications" },
+    ];
+
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
-            {/* Header */}
+        <>
+            {/* Site-wide branded header (logo, company name, subtitle) */}
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "30px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    Placement Dashboard
-                </h1>
+            <div className="pd-root">
 
-                <p style={{ marginTop: "10px" }}>
-                    Manage companies, approved
-                    students and placement
-                    activities.
-                </p>
+                {/* Page hero — page-specific title/eyebrow, no duplicate logo */}
+
+                <div className="pd-header">
+                    <div className="pd-header-blob" />
+                    <div className="pd-header-blob pd-header-blob-2" />
+                    <div className="pd-header-grid" />
+
+                    <span className="pd-header-eyebrow">
+                        <Sparkles /> Placement Cell
+                    </span>
+                    <h1 className="pd-header-title">Placement Dashboard</h1>
+                    <p className="pd-header-sub">
+                        Manage companies, approved students and placement
+                        activities.
+                    </p>
+                </div>
+
+                {/* Statistics */}
+
+                <div className="pd-section-label">Overview</div>
+
+                <div className="pd-stats">
+                    {statCards.map(({ icon: Icon, label, value }, i) => (
+                        <div
+                            className="pd-stat-card"
+                            key={label}
+                            style={{ animationDelay: `${i * 60}ms` }}
+                        >
+                            <div className="pd-stat-icon"><Icon /></div>
+                            <div>
+                                <p className="pd-stat-label">{label}</p>
+                                {isLoading ? (
+                                    <div className="pd-skeleton" style={{ width: 56, height: 30 }} />
+                                ) : (
+                                    <h1 className="pd-stat-value">{value}</h1>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Quick Actions */}
+
+                <div className="pd-panel">
+                    <div className="pd-panel-head">
+                        <h2 className="pd-panel-title">Quick Actions</h2>
+                        <p className="pd-panel-subtitle">Jump straight into common tasks</p>
+                    </div>
+
+                    <div className="pd-actions">
+                        {quickActions.map(({ label, desc, icon: Icon, path }) => (
+                            <button
+                                key={path}
+                                onClick={() => navigate(path)}
+                                className="pd-action-card"
+                            >
+                                <div className="pd-action-icon"><Icon /></div>
+                                <div className="pd-action-text">
+                                    <span className="pd-action-label">{label}</span>
+                                    <span className="pd-action-desc">{desc}</span>
+                                </div>
+                                <ArrowUpRight className="pd-action-arrow" />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Recent Activity */}
+
+                <div className="pd-panel">
+                    <div className="pd-panel-head">
+                        <h2 className="pd-panel-title">Recent Activity</h2>
+                        <p className="pd-panel-subtitle">Latest updates across the placement cell</p>
+                    </div>
+
+                    <div className="pd-empty">
+                        <div className="pd-empty-icon">
+                            <ClipboardX />
+                        </div>
+                        <p className="pd-empty-title">No recent activity</p>
+                        <p className="pd-empty-sub">New placement activity will show up here as it happens.</p>
+                    </div>
+                </div>
+
             </div>
 
-            {/* Statistics */}
-
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit,minmax(220px,1fr))",
-                    gap: "20px",
-                    marginBottom: "30px",
-                }}
-            >
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Companies
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.companies}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Approved Students
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.approved_students}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Jobs
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.jobs}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Placement Drives
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.drives}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Applications
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.applications}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3 style={titleStyle}>
-                        Placements
-                    </h3>
-
-                    <h1 style={valueStyle}>
-                        {stats.placements}
-                    </h1>
-                </div>
-            </div>
-
-            {/* Quick Actions */}
-
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        color: "#333",
-                    }}
-                >
-                    Quick Actions
-                </h2>
-
-                <div
-                    style={{
-                        display: "flex",
-                        gap: "15px",
-                        flexWrap: "wrap",
-                        marginTop: "20px",
-                    }}
-                >
-                    <button
-                        onClick={() =>
-                            navigate("/placement/companies")
-                        }
-                        style={buttonStyle}
-                    >
-                        Manage Companies
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            navigate("/placement/drives")
-                        }
-                        style={buttonStyle}
-                    >
-                        Placement Drives
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            navigate("/placement/students")
-                        }
-                        style={buttonStyle}
-                    >
-                        Approved Students
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            navigate("/placement/jobs")
-                        }
-                        style={buttonStyle}
-                    >
-                        Manage Jobs
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            navigate("/placement/applications")
-                        }
-                        style={buttonStyle}
-                    >
-                        View Applications
-                    </button>
-                </div>
-            </div>
-
-            {/* Recent Activity */}
-
-            <div
-                style={{
-                    background: "#fff",
-                    borderRadius: "15px",
-                    padding: "25px",
-                    marginTop: "30px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,0.08)",
-                }}
-            >
-                <h2
-                    style={{
-                        marginTop: 0,
-                        color: "#333",
-                    }}
-                >
-                    Recent Activity
-                </h2>
-
-                <div
-                    style={{
-                        padding: "20px",
-                        textAlign: "center",
-                        color: "#888",
-                        border:
-                            "1px dashed #ddd",
-                        borderRadius: "10px",
-                    }}
-                >
-                    No recent activity available.
-                </div>
-            </div>
-        </div>
+            <AppFooter version="v1.0.0" />
+        </>
     );
-};
-
-const cardStyle = {
-    background: "#fff",
-    padding: "25px",
-    borderRadius: "15px",
-    boxShadow:
-        "0 3px 12px rgba(0,0,0,0.08)",
-};
-
-const titleStyle = {
-    color: "#777",
-    marginBottom: "10px",
-};
-
-const valueStyle = {
-    color: "#ED1464",
-    margin: 0,
-};
-
-const buttonStyle = {
-    background: "#ED1464",
-    color: "#fff",
-    border: "none",
-    padding: "12px 20px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontWeight: "600",
 };
 
 export default PlacementDashboard;

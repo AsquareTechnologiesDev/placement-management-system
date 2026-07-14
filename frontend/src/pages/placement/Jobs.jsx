@@ -1,7 +1,21 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    Briefcase,
+    Plus,
+    Building2,
+    Wallet,
+    MapPin,
+    Users,
+    Clock,
+    Eye,
+    ClipboardList,
+    Inbox,
+} from "lucide-react";
 import api from "../../api/axios";
+import AppHeader from "../../components/AppHeader";
+import AppFooter from "../../components/AppFooter";
+import "./Jobs.css";
 
 const Jobs = () => {
     const navigate = useNavigate();
@@ -23,267 +37,108 @@ const Jobs = () => {
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "#f8f9fc",
-                padding: "30px",
-                fontFamily: "'Segoe UI', sans-serif",
-            }}
-        >
-            {/* Header */}
+        <>
+            <AppHeader onLogoClick={() => navigate("/placement/dashboard")} />
+            <div className="jb-root">
 
-            <div
-                style={{
-                    background: "#ED1464",
-                    color: "#fff",
-                    padding: "25px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                }}
-            >
-                <h1 style={{ margin: 0 }}>
-                    Job Management
-                </h1>
+                {/* Header */}
 
-                <p style={{ marginTop: "10px" }}>
-                    Manage all placement jobs.
-                </p>
-            </div>
-
-            {/* Create Job */}
-
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginBottom: "25px",
-                }}
-            >
-                <button
-                    onClick={() =>
-                        navigate(
-                            "/placement/jobs/create"
-                        )
-                    }
-                    style={{
-                        background: "#ED1464",
-                        color: "#fff",
-                        border: "none",
-                        padding: "12px 22px",
-                        borderRadius: "8px",
-                        cursor: "pointer",
-                        fontWeight: "600",
-                    }}
-                >
-                    + Create Job
-                </button>
-            </div>
-
-            {/* Job Count */}
-
-            <div
-                style={{
-                    background: "#fff",
-                    padding: "20px",
-                    borderRadius: "15px",
-                    marginBottom: "25px",
-                    boxShadow:
-                        "0 3px 12px rgba(0,0,0,.08)",
-                }}
-            >
-                <h3
-                    style={{
-                        margin: 0,
-                        color: "#555",
-                    }}
-                >
-                    Total Jobs
-                </h3>
-
-                <h1
-                    style={{
-                        color: "#ED1464",
-                        marginBottom: 0,
-                    }}
-                >
-                    {jobs.length}
-                </h1>
-            </div>
-
-            {/* Job Cards */}
-
-            {jobs.length === 0 ? (
-                <div
-                    style={{
-                        background: "#fff",
-                        padding: "40px",
-                        borderRadius: "15px",
-                        textAlign: "center",
-                        boxShadow:
-                            "0 3px 12px rgba(0,0,0,.08)",
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: "#888",
-                        }}
-                    >
-                        No jobs available.
-                    </h3>
+                <div className="jb-header">
+                    <div className="jb-header-blob" />
+                    <div className="jb-header-grid" />
+                    <span className="jb-header-eyebrow">
+                        <Briefcase /> Job Openings
+                    </span>
+                    <h1 className="jb-header-title">Job Management</h1>
+                    <p className="jb-header-sub">
+                        Manage all placement jobs.
+                    </p>
                 </div>
-            ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                            "repeat(auto-fit,minmax(350px,1fr))",
-                        gap: "20px",
-                    }}
-                >
-                    {jobs.map((job) => (
-                        <div
-                            key={job.id}
-                            style={{
-                                background: "#fff",
-                                borderRadius: "15px",
-                                padding: "25px",
-                                boxShadow:
-                                    "0 3px 12px rgba(0,0,0,.08)",
-                            }}
-                        >
-                            <h2
-                                style={{
-                                    marginTop: 0,
-                                    color: "#333",
-                                }}
-                            >
-                                {job.title}
-                            </h2>
 
-                            <p>
-                                <strong>Company</strong>
-                                <br />
-                                {job.company_name}
-                            </p>
+                {/* Create Job */}
 
-                            <p>
-                                <strong>Package</strong>
-                                <br />
-                                {job.package}
-                            </p>
-
-                            <p>
-                                <strong>Location</strong>
-                                <br />
-                                {job.location}
-                            </p>
-
-                            <p>
-                                <strong>Vacancies</strong>
-                                <br />
-                                {job.vacancies}
-                            </p>
-
-                            <p>
-                                <strong>Status</strong>
-                                <br />
-                                <span
-                                    style={{
-                                        background:
-                                            job.status ===
-                                            "OPEN"
-                                                ? "#d4edda"
-                                                : "#f8d7da",
-                                        color:
-                                            job.status ===
-                                            "OPEN"
-                                                ? "#155724"
-                                                : "#721c24",
-                                        padding:
-                                            "6px 12px",
-                                        borderRadius:
-                                            "20px",
-                                        fontSize:
-                                            "13px",
-                                        fontWeight:
-                                            "600",
-                                    }}
-                                >
-                                    {job.status}
-                                </span>
-                            </p>
-
-                            <p>
-                                <strong>Deadline</strong>
-                                <br />
-                                {job.deadline}
-                            </p>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    gap: "10px",
-                                    marginTop: "20px",
-                                }}
-                            >
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/placement/jobs/${job.id}`
-                                        )
-                                    }
-                                    style={{
-                                        flex: 1,
-                                        background:
-                                            "#ED1464",
-                                        color: "#fff",
-                                        border: "none",
-                                        padding:
-                                            "12px",
-                                        borderRadius:
-                                            "8px",
-                                        cursor:
-                                            "pointer",
-                                        fontWeight:
-                                            "600",
-                                    }}
-                                >
-                                    View
-                                </button>
-
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/placement/jobs/${job.id}/applications`
-                                        )
-                                    }
-                                    style={{
-                                        flex: 1,
-                                        background:
-                                            "#333",
-                                        color: "#fff",
-                                        border: "none",
-                                        padding:
-                                            "12px",
-                                        borderRadius:
-                                            "8px",
-                                        cursor:
-                                            "pointer",
-                                        fontWeight:
-                                            "600",
-                                    }}
-                                >
-                                    Applications
-                                </button>
-                            </div>
+                <div className="jb-toolbar">
+                    <div className="jb-stat-card">
+                        <div className="jb-stat-icon"><Briefcase /></div>
+                        <div>
+                            <p className="jb-stat-label">Total Jobs</p>
+                            <h1 className="jb-stat-value">{jobs.length}</h1>
                         </div>
-                    ))}
+                    </div>
+
+                    <button
+                        onClick={() => navigate("/placement/jobs/create")}
+                        className="jb-create-btn"
+                    >
+                        <Plus />
+                        Create Job
+                    </button>
                 </div>
-            )}
-        </div>
+
+                {/* Job Cards */}
+
+                {jobs.length === 0 ? (
+                    <div className="jb-empty">
+                        <div className="jb-empty-icon"><Inbox /></div>
+                        <p className="jb-empty-title">No jobs available</p>
+                        <p className="jb-empty-sub">Jobs you create will show up here.</p>
+                    </div>
+                ) : (
+                    <div className="jb-grid">
+                        {jobs.map((job) => (
+                            <div key={job.id} className="jb-card">
+                                <div className="jb-card-top">
+                                    <h2 className="jb-card-title">{job.title}</h2>
+                                    <span className={`jb-badge ${job.status === "OPEN" ? "jb-badge-green" : "jb-badge-red"}`}>
+                                        {job.status}
+                                    </span>
+                                </div>
+
+                                <div className="jb-divider" />
+
+                                <div className="jb-info-grid">
+                                    <Info icon={Building2} label="Company" value={job.company_name} />
+                                    <Info icon={Wallet} label="Package" value={job.package} />
+                                    <Info icon={MapPin} label="Location" value={job.location} />
+                                    <Info icon={Users} label="Vacancies" value={job.vacancies} />
+                                    <Info icon={Clock} label="Deadline" value={job.deadline} />
+                                </div>
+
+                                <div className="jb-actions">
+                                    <button
+                                        onClick={() => navigate(`/placement/jobs/${job.id}`)}
+                                        className="jb-btn jb-btn-primary"
+                                    >
+                                        <Eye />
+                                        View
+                                    </button>
+
+                                    <button
+                                        onClick={() => navigate(`/placement/jobs/${job.id}/applications`)}
+                                        className="jb-btn jb-btn-dark"
+                                    >
+                                        <ClipboardList />
+                                        Applications
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            <AppFooter version="v1.0.0" />
+        </>
     );
 };
 
-export default Jobs;
+const Info = ({ icon: Icon, label, value }) => (
+    <div className="jb-info-item">
+        <span className="jb-info-label">
+            <Icon />
+            {label}
+        </span>
+        <p className="jb-info-value">{value || "-"}</p>
+    </div>
+);
 
+export default Jobs;
