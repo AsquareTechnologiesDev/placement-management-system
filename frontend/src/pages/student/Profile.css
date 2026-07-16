@@ -5,6 +5,8 @@
   --pf-primary-dark: #D3004C;
   --pf-primary-tint: #FDE8F0;
   --pf-primary-tint-2: #FABAD1;
+  --pf-error: #DC2626;
+  --pf-error-bg: #FEF2F2;
   --pf-ink: #14161B;
   --pf-slate: #5B6472;
   --pf-slate-light: #8A93A3;
@@ -159,6 +161,12 @@
 
 .pf-label svg { width: 14px; height: 14px; color: var(--pf-primary); }
 
+.pf-label-required::after {
+  content: '*';
+  color: var(--pf-primary);
+  margin-left: 2px;
+}
+
 /* Icon-in-field inputs */
 
 .pf-input-wrap { position: relative; }
@@ -199,6 +207,8 @@
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
+.pf-input::placeholder { color: var(--pf-slate-light); }
+
 .pf-textarea {
   min-height: 100px;
   resize: vertical;
@@ -222,6 +232,39 @@
   background-position: right 14px center;
   padding-right: 36px;
   cursor: pointer;
+}
+
+/* ========= Validation ========= */
+
+.input-error .pf-input,
+.input-error .pf-select,
+.input-error .pf-textarea {
+  border-color: var(--pf-error);
+  background: var(--pf-error-bg);
+}
+
+.input-error .pf-input-icon {
+  color: var(--pf-error);
+}
+
+.input-error .pf-input:focus,
+.input-error .pf-select:focus,
+.input-error .pf-textarea:focus {
+  border-color: var(--pf-error);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+}
+
+.error-text {
+  margin-top: 6px;
+  color: var(--pf-error);
+  font-size: 12px;
+  font-weight: 600;
+  animation: pfFadeDown 0.2s ease;
+}
+
+@keyframes pfFadeDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* File upload */
@@ -294,9 +337,14 @@
 
 .pf-submit-btn svg { width: 16px; height: 16px; }
 
-.pf-submit-btn:hover {
+.pf-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 14px 26px -6px rgba(237, 25, 101, 0.42);
+}
+
+.pf-submit-btn:focus-visible {
+  outline: 2px solid var(--pf-primary-dark);
+  outline-offset: 2px;
 }
 
 .pf-submit-btn:disabled {

@@ -5,6 +5,8 @@
   --cj-primary-dark: #D3004C;
   --cj-primary-tint: #FDE8F0;
   --cj-primary-tint-2: #FABAD1;
+  --cj-error: #DC2626;
+  --cj-error-bg: #FEF2F2;
   --cj-ink: #14161B;
   --cj-slate: #5B6472;
   --cj-slate-light: #8A93A3;
@@ -266,6 +268,39 @@
   background-position: right 14px center;
   padding-right: 36px;
   cursor: pointer;
+}
+
+/* ========= Validation ========= */
+
+.input-error .cj-input,
+.input-error .cj-select,
+.input-error .cj-textarea {
+  border-color: var(--cj-error);
+  background: var(--cj-error-bg);
+}
+
+.input-error .cj-input-icon {
+  color: var(--cj-error);
+}
+
+.input-error .cj-input:focus,
+.input-error .cj-select:focus,
+.input-error .cj-textarea:focus {
+  border-color: var(--cj-error);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+}
+
+.error-text {
+  margin-top: 6px;
+  color: var(--cj-error);
+  font-size: 12px;
+  font-weight: 600;
+  animation: cjFadeDown 0.2s ease;
+}
+
+@keyframes cjFadeDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .cj-field-footer {

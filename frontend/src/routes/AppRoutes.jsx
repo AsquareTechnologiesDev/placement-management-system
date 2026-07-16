@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import Login from "../pages/Login";
 
@@ -17,7 +18,7 @@ import Companies from "../pages/placement/Companies";
 import ViewStudent from "../pages/placement/ViewStudent";
 import Drives from "../pages/placement/Drives";
 import CreateDrive from "../pages/placement/CreateDrive";
-import Jobs from "../pages/placement/Jobs"; 
+import Jobs from "../pages/placement/Jobs";
 import CreateJob from "../pages/placement/CreateJob";
 import DriveDetail from "../pages/placement/DriveDetail";
 import StudentJobs from "../pages/student/StudentJobs";
@@ -25,19 +26,36 @@ import StudentJobDetail from "../pages/student/StudentJobDetail";
 import Applications from "../pages/placement/Applications";
 import MyApplications from "../pages/student/MyApplications";
 
-
 const AppRoutes = () => {
     return (
         <BrowserRouter>
+
+            {/* Global Toast Notifications */}
+            <Toaster
+                position="top-right"
+                richColors
+                closeButton
+                expand={true}
+                duration={3000}
+                toastOptions={{
+                    style: {
+                        fontFamily: "Montserrat, sans-serif",
+                    },
+                }}
+            />
+
             <Routes>
-                <Route 
-                    path="/" 
-                    element={<Login />} 
+
+                <Route
+                    path="/"
+                    element={<Login />}
                 />
+
                 <Route
                     path="/register"
                     element={<Register />}
                 />
+
                 <Route
                     path="/admin/dashboard"
                     element={<AdminDashboard />}
@@ -57,40 +75,47 @@ const AppRoutes = () => {
                     path="/student/dashboard"
                     element={<StudentDashboard />}
                 />
+
                 <Route
                     path="/student/profile"
                     element={<Profile />}
                 />
+
                 <Route
                     path="/trainer/student/:id"
                     element={<StudentDetail />}
                 />
+
                 <Route
                     path="/student/view-profile"
                     element={<ViewProfile />}
                 />
+
                 <Route
                     path="/placement/students"
                     element={<Students />}
                 />
+
                 <Route
                     path="/placement/companies"
                     element={<Companies />}
                 />
+
                 <Route
                     path="/placement/student/:id"
                     element={<ViewStudent />}
                 />
+
                 <Route
                     path="/placement/drives"
                     element={<Drives />}
                 />
-                
 
                 <Route
                     path="/placement/drives/create"
                     element={<CreateDrive />}
                 />
+
                 <Route
                     path="/placement/jobs"
                     element={<Jobs />}
@@ -100,10 +125,12 @@ const AppRoutes = () => {
                     path="/placement/jobs/create"
                     element={<CreateJob />}
                 />
+
                 <Route
                     path="/placement/drives/:id"
                     element={<DriveDetail />}
                 />
+
                 <Route
                     path="/student/drives"
                     element={<StudentDrives />}
@@ -113,6 +140,7 @@ const AppRoutes = () => {
                     path="/student/drives/:id"
                     element={<StudentDriveDetail />}
                 />
+
                 <Route
                     path="/student/jobs"
                     element={<StudentJobs />}
@@ -122,16 +150,19 @@ const AppRoutes = () => {
                     path="/student/jobs/:id"
                     element={<StudentJobDetail />}
                 />
+
                 <Route
                     path="/student/my-applications"
                     element={<MyApplications />}
                 />
+
                 <Route
                     path="/placement/applications"
                     element={<Applications />}
                 />
-                
+
             </Routes>
+
         </BrowserRouter>
     );
 };

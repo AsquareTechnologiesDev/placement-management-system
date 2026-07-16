@@ -15,6 +15,7 @@ import {
     CheckCircle2,
     XCircle,
 } from "lucide-react";
+import { toast } from "sonner";
 import api from "../../api/axios";
 import AppHeader from "../../components/AppHeader";
 import AppFooter from "../../components/AppFooter";
@@ -23,10 +24,7 @@ import "./CreateJob.css";
 const CreateJob = () => {
     const navigate = useNavigate();
 
-    const [companies, setCompanies] = useState([]);
-    const [submitting, setSubmitting] = useState(false);
-
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         company: "",
         title: "",
         description: "",
@@ -36,7 +34,12 @@ const CreateJob = () => {
         vacancies: 1,
         deadline: "",
         status: "OPEN",
-    });
+    };
+
+    const [companies, setCompanies] = useState([]);
+    const [formData, setFormData] = useState(initialFormData);
+    const [errors, setErrors] = useState({});
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
         fetchCompanies();
@@ -45,20 +48,61 @@ const CreateJob = () => {
     const fetchCompanies = async () => {
         try {
             const res = await api.get("/companies/");
-
-            console.log(res.data);
-
             setCompanies(res.data);
         } catch (err) {
-            console.log(err);
+            console.error(err);
+            toast.error("Unable to load companies.");
         }
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.company)
+            newErrors.company = "Please select a company.";
+
+        if (!formData.title.trim())
+            newErrors.title = "Job title is required.";
+
+        if (!formData.description.trim())
+            newErrors.description = "Description is required.";
+
+        if (
+            formData.vacancies === "" ||
+            isNaN(formData.vacancies) ||
+            Number(formData.vacancies) < 1
+        )
+            newErrors.vacancies = "Vacancies must be at least 1.";
+
+        if (!formData.deadline)
+            newErrors.deadline = "Deadline is required.";
+        else {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (new Date(formData.deadline) < today)
+                newErrors.deadline = "Deadline cannot be in the past.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value } = e.target;
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+
+        if (errors[name]) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: "",
+            }));
+        }
     };
 
     const handleStatusSelect = (value) => {
@@ -71,21 +115,38 @@ const CreateJob = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setSubmitting(true);
+        if (submitting) return;
+
+        if (!validateForm()) {
+            toast.error("Please fix the highlighted fields.");
+            return;
+        }
 
         try {
-            await api.post(
-                "/companies/jobs/",
-                formData
-            );
+            setSubmitting(true);
 
-            alert("Job created successfully.");
+            await api.post("/companies/jobs/", formData);
 
-            navigate("/placement/jobs");
+            toast.success("Job created successfully.");
+
+            setTimeout(() => {
+                navigate("/placement/jobs");
+            }, 1500);
         } catch (err) {
-            console.log(err.response?.data);
-            alert("Failed to create job.");
-        } finally {
+            console.error(err.response?.data);
+
+            if (err.response?.data?.detail) {
+                toast.error(err.response.data.detail);
+            } else if (typeof err.response?.data === "object" && err.response?.data) {
+                const firstError = Object.values(err.response.data)[0];
+
+                toast.error(
+                    Array.isArray(firstError) ? firstError[0] : String(firstError)
+                );
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+
             setSubmitting(false);
         }
     };
@@ -112,16 +173,15 @@ const CreateJob = () => {
 
                 {/* Form */}
 
-                <form onSubmit={handleSubmit} className="cj-form">
+                <form onSubmit={handleSubmit} className="cj-form" noValidate>
 
                     <Section num="01" icon={FileText} title="Basic Information">
                         <div className="cj-grid">
-                            <Field icon={Building2} label="Company" required>
+                            <Field icon={Building2} label="Company" required error={errors.company}>
                                 <select
                                     name="company"
                                     value={formData.company}
                                     onChange={handleChange}
-                                    required
                                     className="cj-select"
                                 >
                                     <option value="">Select Company</option>
@@ -133,13 +193,12 @@ const CreateJob = () => {
                                 </select>
                             </Field>
 
-                            <Field icon={BriefcaseBusiness} label="Job Title" required>
+                            <Field icon={BriefcaseBusiness} label="Job Title" required error={errors.title}>
                                 <input
                                     type="text"
                                     name="title"
                                     value={formData.title}
                                     onChange={handleChange}
-                                    required
                                     className="cj-input"
                                     placeholder="e.g. Frontend Engineer"
                                 />
@@ -151,6 +210,7 @@ const CreateJob = () => {
                                 required
                                 full
                                 area
+                                error={errors.description}
                                 footer={
                                     <span className="cj-char-count">
                                         {formData.description.length} characters
@@ -162,7 +222,6 @@ const CreateJob = () => {
                                     value={formData.description}
                                     onChange={handleChange}
                                     rows="4"
-                                    required
                                     className="cj-textarea"
                                     placeholder="Describe the role, responsibilities, and what makes it a great opportunity..."
                                 />
@@ -205,7 +264,7 @@ const CreateJob = () => {
                                 />
                             </Field>
 
-                            <Field icon={Users} label="Vacancies">
+                            <Field icon={Users} label="Vacancies" error={errors.vacancies}>
                                 <input
                                     type="number"
                                     name="vacancies"
@@ -216,13 +275,12 @@ const CreateJob = () => {
                                 />
                             </Field>
 
-                            <Field icon={CalendarDays} label="Deadline" required>
+                            <Field icon={CalendarDays} label="Deadline" required error={errors.deadline}>
                                 <input
                                     type="date"
                                     name="deadline"
                                     value={formData.deadline}
                                     onChange={handleChange}
-                                    required
                                     className="cj-input"
                                 />
                             </Field>
@@ -288,13 +346,14 @@ const Section = ({ num, icon: Icon, title, children }) => (
     </div>
 );
 
-const Field = ({ icon: Icon, label, required, full, area, footer, children }) => (
+const Field = ({ icon: Icon, label, required, full, area, footer, error, children }) => (
     <div className={`cj-field${full ? " cj-field-full" : ""}`}>
         <label className={`cj-label${required ? " cj-label-required" : ""}`}>{label}</label>
-        <div className={`cj-input-wrap${area ? " cj-input-wrap-area" : ""}`}>
+        <div className={`cj-input-wrap${area ? " cj-input-wrap-area" : ""}${error ? " input-error" : ""}`}>
             <Icon className="cj-input-icon" />
             {children}
         </div>
+        {error && <p className="error-text">{error}</p>}
         {footer && <div className="cj-field-footer">{footer}</div>}
     </div>
 );

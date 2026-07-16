@@ -1,8 +1,7 @@
 /* -------------------------------------------------------------------- */
-/* AppHeader — design tokens (scoped, won't leak into the rest of the app) */
-/* Colors sourced directly from the Asquare Presence Book color-shades   */
-/* page: #BA0032 (deep), #ED1965 (primary), #F14784 (light).            */
+/* AppHeader — Premium Asquare Header                                   */
 /* -------------------------------------------------------------------- */
+
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Montserrat:wght@400;500;600&display=swap");
 
 .app-header {
@@ -24,7 +23,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
+
   height: 76px;
   padding: 0 clamp(16px, 4vw, 40px);
   overflow: hidden;
@@ -35,11 +35,12 @@
     var(--asq-pink) 55%,
     var(--asq-pink-light) 100%
   );
-  box-shadow: 0 8px 24px -10px rgba(186, 0, 50, 0.45);
+
+  box-shadow: 0 10px 26px -10px rgba(186, 0, 50, 0.45);
 }
 
-/* Soft corner glow — quiet echo of the blob motif used on the dashboard
-   hero, so the global header and page hero feel like one family. */
+/* Decorative Glow */
+
 .app-header__inner::before {
   content: "";
   position: absolute;
@@ -48,105 +49,144 @@
   width: 260px;
   height: 260px;
   border-radius: 50%;
+
   background: radial-gradient(
     circle,
     rgba(255, 255, 255, 0.16) 0%,
     transparent 70%
   );
+
   pointer-events: none;
 }
 
-/* Signature accent: a slim cream hairline that closes the header off from
-   the page below — the one restrained, structural touch. */
+/* Divider */
+
 .app-header__divider {
-  height: 2px;
   width: 100%;
+  height: 2px;
+
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    var(--asq-cream) 50%,
-    rgba(255, 255, 255, 0.5) 100%
+    rgba(255,255,255,.5),
+    var(--asq-cream),
+    rgba(255,255,255,.5)
   );
-  opacity: 0.8;
+
+  opacity: .85;
 }
 
-/* -------------------------------- Brand -------------------------------- */
+/* ------------------------------------------------------------------ */
+/* LEFT SIDE */
+/* ------------------------------------------------------------------ */
 
-.app-header__brand {
-  position: relative;
-  z-index: 1;
+.app-header__left {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: none;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* BRAND */
+/* ------------------------------------------------------------------ */
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  background: transparent;
   border: none;
-  padding: 6px 10px;
-  margin-left: -10px;
-  border-radius: 12px;
+
+  padding: 8px 10px;
+  margin-left: -6px;
+
+  border-radius: 14px;
+
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  transition:
+    background-color .25s ease,
+    transform .2s ease;
 }
 
 .app-header__brand:hover {
-  background-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255,255,255,.12);
 }
 
 .app-header__brand:active {
-  transform: scale(0.98);
+  transform: scale(.985);
 }
 
 .app-header__brand:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid white;
   outline-offset: 2px;
 }
 
-/* No boxed badge — the logo sits directly on the pink field, which is
-   exactly the contrast the light-colored logo file needs. */
+/* ------------------------------------------------------------------ */
+/* LOGO */
+/* ------------------------------------------------------------------ */
+
 .app-header__logo {
-  height: 38px;
   width: auto;
+  height: 38px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(59, 0, 0, 0.25));
-  transition: transform 0.25s ease;
+
+  filter: drop-shadow(
+    0 2px 6px rgba(59,0,0,.25)
+  );
+
+  transition: transform .3s ease;
 }
 
 .app-header__brand:hover .app-header__logo {
   transform: rotate(-4deg) scale(1.05);
 }
 
+/* ------------------------------------------------------------------ */
+/* TEXT */
+/* ------------------------------------------------------------------ */
+
 .app-header__brand-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   line-height: 1.2;
   text-align: left;
 }
 
 .app-header__name {
-  font-family: "Nunito Sans", "Montserrat", sans-serif;
-  font-weight: 800;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 16px;
-  letter-spacing: 0.04em;
-  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: .04em;
+
+  color: #fff;
+
   white-space: nowrap;
 }
 
 .app-header__subtitle {
   font-family: "Montserrat", sans-serif;
-  font-weight: 500;
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+
+  color: rgba(255,255,255,.82);
+
   white-space: nowrap;
 }
 
-/* ------------------------------- Actions -------------------------------- */
+/* ------------------------------------------------------------------ */
+/* ACTIONS */
+/* ------------------------------------------------------------------ */
 
 .app-header__actions {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   gap: 12px;
+
+  z-index: 1;
   flex-shrink: 0;
 }
 
@@ -154,42 +194,139 @@
   display: flex;
   align-items: center;
   gap: 6px;
+
   height: 38px;
   padding: 0 16px;
+
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  border: 1px solid rgba(255,255,255,.55);
+
   background: transparent;
-  color: #ffffff;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
+
+  color: white;
+
   font-size: 13px;
+  font-weight: 600;
+
   cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.2s ease, color 0.2s ease,
-    border-color 0.2s ease, transform 0.15s ease;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease,
+    transform .15s ease;
 }
 
 .app-header__logout:hover {
-  background: #ffffff;
+  background: white;
   color: var(--asq-pink-deep);
-  border-color: #ffffff;
+  border-color: white;
 }
 
 .app-header__logout:active {
-  transform: scale(0.97);
+  transform: scale(.97);
 }
 
 .app-header__logout:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid white;
   outline-offset: 2px;
 }
+/* ------------------------------------------------------------------ */
+/* PREMIUM BACK BUTTON */
+/* ------------------------------------------------------------------ */
 
-/* ------------------------------ Responsive ------------------------------ */
+.app-header__back {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: #ffffff;
+
+  cursor: pointer;
+  flex-shrink: 0;
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.app-header__back:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+
+  transform: translateX(-4px);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.app-header__back:active {
+  transform: translateX(-2px) scale(.95);
+}
+
+.app-header__back:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, .9);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ */
+/* RESPONSIVE */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+  .app-header__inner {
+    height: 68px;
+    padding: 0 18px;
+  }
+
+  .app-header__left {
+    gap: 10px;
+  }
+
+  .app-header__logo {
+    height: 32px;
+  }
+
+  .app-header__name {
+    font-size: 15px;
+  }
+
+  .app-header__subtitle {
+    font-size: 12px;
+  }
+
+  .app-header__back {
+    width: 38px;
+    height: 38px;
+  }
+
+  .app-header__logout {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
+  }
+}
 
 @media (max-width: 640px) {
+
   .app-header__inner {
     height: 64px;
-    padding: 0 16px;
+    padding: 0 14px;
   }
 
   .app-header__logo {
@@ -204,18 +341,42 @@
     display: none;
   }
 
-  .app-header__logout span {
-    display: none;
+  .app-header__back {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
   }
 
   .app-header__logout {
-    padding: 0;
     width: 38px;
+    padding: 0;
     justify-content: center;
+  }
+
+  .app-header__logout span {
+    display: none;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
+
+  .app-header__left {
+    gap: 8px;
+  }
+
+  .app-header__brand {
+    gap: 10px;
+    padding: 6px;
+  }
+
+  .app-header__logo {
+    height: 24px;
+  }
+
+  .app-header__name {
+    font-size: 13px;
+  }
+
   .app-header__actions {
     gap: 8px;
   }
