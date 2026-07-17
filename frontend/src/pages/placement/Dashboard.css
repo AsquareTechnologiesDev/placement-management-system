@@ -75,6 +75,27 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* Subtle floating motion for the header blobs — purely ambient,
+   respects prefers-reduced-motion via the rule above. */
+
+@keyframes pd-float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-10px, 14px); }
+}
+
+@keyframes pd-float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(12px, -10px); }
+}
+
+.pd-header-float {
+  animation: pd-float 9s ease-in-out infinite;
+}
+
+.pd-header-float-slow {
+  animation: pd-float-slow 12s ease-in-out infinite;
+}
+
 .pd-header-eyebrow {
   position: relative;
   z-index: 1;
@@ -164,9 +185,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
-.pd-stat-icon svg { width: 20px; height: 20px; }
+.pd-stat-icon svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.pd-stat-card:hover .pd-stat-icon {
+  transform: scale(1.08) rotate(-4deg);
+  background: linear-gradient(135deg, var(--pd-primary), var(--pd-primary-dark));
+  color: var(--pd-white);
+}
 
 .pd-stat-label {
   color: var(--pd-slate);
@@ -182,6 +214,7 @@
   margin: 0;
   color: var(--pd-ink);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .pd-skeleton {
@@ -234,6 +267,8 @@
 }
 
 .pd-action-card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -257,6 +292,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease;
 }
 
 .pd-action-icon svg { width: 19px; height: 19px; }
@@ -288,7 +324,7 @@
   width: 16px;
   height: 16px;
   color: var(--pd-slate-light);
-  transition: transform 0.15s ease, color 0.15s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .pd-action-card:hover {
@@ -298,8 +334,12 @@
   box-shadow: 0 12px 24px -10px rgba(237, 25, 101, 0.2);
 }
 
+.pd-action-card:hover .pd-action-icon {
+  transform: scale(1.06);
+}
+
 .pd-action-card:hover .pd-action-arrow {
-  transform: translate(2px, -2px);
+  transform: translate(3px, -3px);
   color: var(--pd-primary-dark);
 }
 
@@ -310,6 +350,28 @@
   outline-offset: 2px;
 }
 
+/* Ripple interaction — a short expanding circle from the click point */
+
+.pd-action-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(237, 25, 101, 0.28) 0%, rgba(237, 25, 101, 0) 70%);
+  transform: scale(0);
+  pointer-events: none;
+  animation: pd-ripple 0.55s ease-out forwards;
+}
+
+@keyframes pd-ripple {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
 /* Empty state */
 
 .pd-empty {
@@ -318,38 +380,69 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 48px 20px;
+  padding: 52px 20px 44px;
   text-align: center;
   border: 1.5px dashed var(--pd-line);
   border-radius: 16px;
 }
 
 .pd-empty-icon {
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--pd-primary-tint);
   color: var(--pd-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.pd-empty-icon svg { width: 20px; height: 20px; }
+.pd-empty-icon svg { width: 22px; height: 22px; }
 
 .pd-empty-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--pd-font-display);
+  font-size: 15px;
+  font-weight: 800;
   color: var(--pd-ink);
 }
 
 .pd-empty-sub {
-  margin: 0;
+  margin: 0 0 18px;
   font-size: 12.5px;
   color: var(--pd-slate);
-  max-width: 320px;
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+.pd-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--pd-primary), var(--pd-primary-dark));
+  color: var(--pd-white);
+  font-family: var(--pd-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 20px -8px rgba(237, 25, 101, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pd-empty-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px -8px rgba(237, 25, 101, 0.46);
+}
+
+.pd-empty-cta:active { transform: translateY(0); }
+
+.pd-empty-cta:focus-visible {
+  outline: 2px solid var(--pd-primary-dark);
+  outline-offset: 2px;
 }
 
 @media (max-width: 640px) {

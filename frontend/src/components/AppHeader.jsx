@@ -9,13 +9,18 @@ import "./AppHeader.css";
  * ------------------------------------------------------------------
  * Reusable application header with integrated back navigation.
  *
+ * Layout: 3-column CSS Grid (logo | title | actions). The center
+ * column sits in the grid's "auto" track between two equal "1fr"
+ * tracks, so the title stays mathematically centered no matter how
+ * wide the logo or the action buttons are.
+ *
  * Props:
- * - actions:      Extra content rendered before logout.
+ * - actions:      Extra content rendered above Logout.
  * - subtitle:     Custom subtitle.
- * - onLogoClick:  Click handler for brand.
+ * - onLogoClick:  Click handler for the logo.
  * - showLogout:   Show/hide logout button.
  * - onLogout:     Custom logout function.
- * - showBack:     Show/hide back arrow (default: true).
+ * - showBack:     Show/hide back button (default: true).
  * ------------------------------------------------------------------
  */
 
@@ -44,7 +49,7 @@ export default function AppHeader({
     navigate("/");
   };
 
-  const handleBrandClick = () => {
+  const handleLogoClick = () => {
     if (onLogoClick) {
       onLogoClick();
     }
@@ -53,23 +58,12 @@ export default function AppHeader({
   return (
     <header className="app-header">
       <div className="app-header__inner">
-        {/* ---------------- Left Section ---------------- */}
+        {/* ---------------- Left: Logo ---------------- */}
         <div className="app-header__left">
-          {showBack && (
-            <button
-              type="button"
-              className="app-header__back"
-              onClick={handleBack}
-              aria-label="Go back"
-            >
-              <ArrowLeft size={20} strokeWidth={2.3} />
-            </button>
-          )}
-
           <button
             type="button"
             className="app-header__brand"
-            onClick={handleBrandClick}
+            onClick={handleLogoClick}
             aria-label="Asquare Technologies home"
           >
             <img
@@ -77,40 +71,45 @@ export default function AppHeader({
               alt="Asquare Technologies Logo"
               className="app-header__logo"
             />
-
-            <span className="app-header__brand-text">
-              <span className="app-header__name">
-                ASQUARE CAREER CONNECT
-              </span>
-
-              <span className="app-header__subtitle">
-                {subtitle || "Placement Management System"}
-              </span>
-            </span>
           </button>
         </div>
 
-        {/* ---------------- Right Section ---------------- */}
+        {/* ---------------- Center: Title (mathematically centered) ---------------- */}
+        <div className="app-header__center">
+          <span className="app-header__name">ASQUARE CAREER CONNECT</span>
+          <span className="app-header__subtitle">
+            {subtitle || "Placement Management System"}
+          </span>
+        </div>
+
+        {/* ---------------- Right: Stacked actions ---------------- */}
         <div className="app-header__actions">
-          {actions}
+          {actions && <div className="app-header__extra-actions">{actions}</div>}
 
           {showLogout && (
             <button
               type="button"
-              className="app-header__logout"
+              className="app-header__nav-btn app-header__logout"
               onClick={handleLogout}
             >
-              <LogOut size={17} strokeWidth={2.2} />
+              <LogOut size={16} strokeWidth={2.3} />
               <span>Logout</span>
+            </button>
+          )}
+
+          {showBack && (
+            <button
+              type="button"
+              className="app-header__nav-btn app-header__back"
+              onClick={handleBack}
+              aria-label="Go back"
+            >
+              <ArrowLeft size={16} strokeWidth={2.3} />
+              <span>Back</span>
             </button>
           )}
         </div>
       </div>
-
-      <div
-        className="app-header__divider"
-        aria-hidden="true"
-      />
     </header>
   );
 }

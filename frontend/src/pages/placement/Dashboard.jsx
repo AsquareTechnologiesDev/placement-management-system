@@ -1,6 +1,6 @@
 //src/pages/placement/Dashboard.jsx
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Building2,
     Users,
@@ -11,11 +11,48 @@ import {
     ClipboardX,
     ArrowUpRight,
     Sparkles,
+    Trophy,
 } from "lucide-react";
 import api from "../../api/axios";
 import AppHeader from "../../components/AppHeader";
 import AppFooter from "../../components/AppFooter";
 import "./Dashboard.css";
+
+/* ==================================================
+   Animated counter — counts up from 0 to value once
+   the dashboard stats have finished loading.
+================================================== */
+
+const AnimatedValue = ({ value = 0, duration = 700 }) => {
+    const [displayValue, setDisplayValue] = useState(0);
+    const frameRef = useRef(null);
+
+    useEffect(() => {
+        const target = Number(value) || 0;
+        const startTime = performance.now();
+
+        const tick = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+
+            setDisplayValue(Math.round(eased * target));
+
+            if (progress < 1) {
+                frameRef.current = requestAnimationFrame(tick);
+            }
+        };
+
+        frameRef.current = requestAnimationFrame(tick);
+
+        return () => {
+            if (frameRef.current) cancelAnimationFrame(frameRef.current);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+
+    return <>{displayValue}</>;
+};
 
 const PlacementDashboard = () => {
     const navigate = useNavigate();
@@ -30,6 +67,7 @@ const PlacementDashboard = () => {
     });
 
     const [isLoading, setIsLoading] = useState(true);
+    const [ripple, setRipple] = useState(null);
 
     useEffect(() => {
         fetchDashboard();
@@ -64,7 +102,33 @@ const PlacementDashboard = () => {
         { label: "Approved Students", desc: "View eligible candidates", icon: Users, path: "/placement/students" },
         { label: "Manage Jobs", desc: "Post and update openings", icon: Briefcase, path: "/placement/jobs" },
         { label: "View Applications", desc: "Review candidate applications", icon: ClipboardList, path: "/placement/applications" },
+        { label: "Placements", desc: "Manage successful student placements", icon: Trophy, path: "/placement/placements" },
     ];
+
+    /* ---------------- Ripple + navigate ---------------- */
+
+    const handleActionClick = (path, event) => {
+        const button = event.currentTarget;
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 1.6;
+
+        setRipple({
+            path,
+            key: Date.now(),
+            x: event.clientX - rect.left - size / 2,
+            y: event.clientY - rect.top - size / 2,
+            size,
+        });
+
+        window.setTimeout(() => navigate(path), 220);
+    };
+
+    const handleActionKeyDown = (path, event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            navigate(path);
+        }
+    };
 
     return (
         <>
@@ -76,8 +140,8 @@ const PlacementDashboard = () => {
                 {/* Page hero — page-specific title/eyebrow, no duplicate logo */}
 
                 <div className="pd-header">
-                    <div className="pd-header-blob" />
-                    <div className="pd-header-blob pd-header-blob-2" />
+                    <div className="pd-header-blob pd-header-float" />
+                    <div className="pd-header-blob pd-header-blob-2 pd-header-float-slow" />
                     <div className="pd-header-grid" />
 
                     <span className="pd-header-eyebrow">
@@ -107,7 +171,9 @@ const PlacementDashboard = () => {
                                 {isLoading ? (
                                     <div className="pd-skeleton" style={{ width: 56, height: 30 }} />
                                 ) : (
-                                    <h1 className="pd-stat-value">{value}</h1>
+                                    <h1 className="pd-stat-value">
+                                        <AnimatedValue value={value} />
+                                    </h1>
                                 )}
                             </div>
                         </div>
@@ -126,7 +192,9 @@ const PlacementDashboard = () => {
                         {quickActions.map(({ label, desc, icon: Icon, path }) => (
                             <button
                                 key={path}
-                                onClick={() => navigate(path)}
+                                type="button"
+                                onClick={(e) => handleActionClick(path, e)}
+                                onKeyDown={(e) => handleActionKeyDown(path, e)}
                                 className="pd-action-card"
                             >
                                 <div className="pd-action-icon"><Icon /></div>
@@ -135,6 +203,20 @@ const PlacementDashboard = () => {
                                     <span className="pd-action-desc">{desc}</span>
                                 </div>
                                 <ArrowUpRight className="pd-action-arrow" />
+
+                                {ripple && ripple.path === path && (
+                                    <span
+                                        key={ripple.key}
+                                        className="pd-action-ripple"
+                                        style={{
+                                            left: ripple.x,
+                                            top: ripple.y,
+                                            width: ripple.size,
+                                            height: ripple.size,
+                                        }}
+                                        onAnimationEnd={() => setRipple(null)}
+                                    />
+                                )}
                             </button>
                         ))}
                     </div>
@@ -152,8 +234,20 @@ const PlacementDashboard = () => {
                         <div className="pd-empty-icon">
                             <ClipboardX />
                         </div>
-                        <p className="pd-empty-title">No recent activity</p>
-                        <p className="pd-empty-sub">New placement activity will show up here as it happens.</p>
+                        <p className="pd-empty-title">No recent activity yet</p>
+                        <p className="pd-empty-sub">
+                            Updates from drives, applications and placements will
+                            show up here as they happen.
+                        </p>
+
+                        <button
+                            type="button"
+                            className="pd-empty-cta"
+                            onClick={() => navigate("/placement/placements")}
+                        >
+                            <Trophy size={15} />
+                            View Placements
+                        </button>
                     </div>
                 </div>
 

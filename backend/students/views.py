@@ -13,12 +13,14 @@ from .serializers import  (
     TrainerActionSerializer,
     
 )
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
 
 class StudentProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
         profile, created = StudentProfile.objects.get_or_create(
@@ -31,16 +33,17 @@ class StudentProfileAPIView(APIView):
 
     def post(self, request):
         print("REQUEST DATA:", request.data)
+        print("REQUEST FILES:", request.FILES)
 
         profile, created = StudentProfile.objects.get_or_create(
-        user=request.user
+            user=request.user
         )
 
         serializer = StudentProfileSerializer(
             profile,
             data=request.data,
             partial=True
-            )
+        )
 
         serializer.is_valid(raise_exception=True)
 
@@ -49,17 +52,25 @@ class StudentProfileAPIView(APIView):
         serializer.save(status="PENDING")
 
         return Response(serializer.data)
+
     def put(self, request):
+        print("REQUEST DATA:", request.data)
+        print("REQUEST FILES:", request.FILES)
+
         profile, created = StudentProfile.objects.get_or_create(
             user=request.user
         )
 
         serializer = StudentProfileSerializer(
             profile,
-            data=request.data
+            data=request.data,
+            partial=True
         )
 
         serializer.is_valid(raise_exception=True)
+
+        print("VALIDATED DATA:", serializer.validated_data)
+
         serializer.save()
 
         return Response(serializer.data)

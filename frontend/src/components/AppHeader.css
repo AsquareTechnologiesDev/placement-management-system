@@ -1,15 +1,16 @@
 /* -------------------------------------------------------------------- */
-/* AppHeader — Premium Asquare Header                                   */
+/* AppHeader — Premium Asquare Header (v3: original colors, slim buttons)*/
 /* -------------------------------------------------------------------- */
 
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Montserrat:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 
 .app-header {
   --asq-pink-deep: #ba0032;
   --asq-pink: #ed1965;
-  --asq-pink-light: #f14784;
-  --asq-cream: #fde8f0;
-  --asq-ink: #3b0000;
+  --asq-divider: rgba(255, 255, 255, 0.25);
+  --asq-btn-bg: rgba(255, 255, 255, 0.15);
+  --asq-btn-border: rgba(255, 255, 255, 0.35);
+  --asq-btn-text: #ffffff;
 
   position: sticky;
   top: 0;
@@ -18,284 +19,246 @@
   font-family: "Montserrat", "Segoe UI", sans-serif;
 }
 
+/* ------------------------------------------------------------------ */
+/* GRID SHELL                                                          */
+/* ------------------------------------------------------------------ */
+
 .app-header__inner {
   position: relative;
-  display: flex;
+  display: grid;
+  /* Equal 1fr tracks on either side keep the title mathematically
+     centered no matter how wide the logo or the button stack are. */
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  gap: 20px;
 
-  height: 76px;
-  padding: 0 clamp(16px, 4vw, 40px);
-  overflow: hidden;
+  min-height: 92px; /* within the 90-100px range */
+  padding: 0 clamp(24px, 3vw, 28px);
 
-  background: linear-gradient(
-    120deg,
-    var(--asq-pink-deep) 0%,
-    var(--asq-pink) 55%,
-    var(--asq-pink-light) 100%
-  );
-
-  box-shadow: 0 10px 26px -10px rgba(186, 0, 50, 0.45);
-}
-
-/* Decorative Glow */
-
-.app-header__inner::before {
-  content: "";
-  position: absolute;
-  top: -60%;
-  right: -6%;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.16) 0%,
-    transparent 70%
-  );
-
-  pointer-events: none;
-}
-
-/* Divider */
-
-.app-header__divider {
-  width: 100%;
-  height: 2px;
-
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,.5),
-    var(--asq-cream),
-    rgba(255,255,255,.5)
-  );
-
-  opacity: .85;
+  background: linear-gradient(135deg, var(--asq-pink-deep) 0%, var(--asq-pink) 100%);
+  box-shadow: 0 8px 20px rgba(186, 0, 50, 0.15);
 }
 
 /* ------------------------------------------------------------------ */
-/* LEFT SIDE */
+/* LEFT — LOGO + DIVIDER                                                */
 /* ------------------------------------------------------------------ */
 
 .app-header__left {
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
-  gap: 14px;
-  z-index: 1;
+  gap: 16px;
 }
 
-/* ------------------------------------------------------------------ */
-/* BRAND */
-/* ------------------------------------------------------------------ */
+.app-header__left::after {
+  content: "";
+  width: 1px;
+  height: 32px;
+  background: var(--asq-divider);
+}
 
 .app-header__brand {
   display: flex;
   align-items: center;
-  gap: 14px;
-
   background: transparent;
   border: none;
-
-  padding: 8px 10px;
-  margin-left: -6px;
-
-  border-radius: 14px;
-
+  padding: 6px;
+  border-radius: 12px;
   cursor: pointer;
-
-  transition:
-    background-color .25s ease,
-    transform .2s ease;
+  transition: background-color 0.25s ease, transform 0.2s ease;
 }
 
 .app-header__brand:hover {
-  background: rgba(255,255,255,.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .app-header__brand:active {
-  transform: scale(.985);
+  transform: scale(0.97);
 }
 
 .app-header__brand:focus-visible {
-  outline: 2px solid white;
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 
-/* ------------------------------------------------------------------ */
-/* LOGO */
-/* ------------------------------------------------------------------ */
-
 .app-header__logo {
+  height: 40px;
   width: auto;
-  height: 38px;
-  object-fit: contain;
-
-  filter: drop-shadow(
-    0 2px 6px rgba(59,0,0,.25)
-  );
-
-  transition: transform .3s ease;
-}
-
-.app-header__brand:hover .app-header__logo {
-  transform: rotate(-4deg) scale(1.05);
+  max-width: 220px;
+  object-fit: contain; /* never stretch or distort */
+  display: block;
 }
 
 /* ------------------------------------------------------------------ */
-/* TEXT */
+/* CENTER — TITLE (perfectly centered)                                  */
 /* ------------------------------------------------------------------ */
 
-.app-header__brand-text {
+.app-header__center {
+  grid-column: 2;
+  justify-self: center;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-
-  line-height: 1.2;
-  text-align: left;
+  align-items: center;
+  text-align: center;
+  line-height: 1.25;
+  white-space: nowrap;
 }
 
 .app-header__name {
-  font-family: "Nunito Sans", sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: .04em;
-
-  color: #fff;
-
-  white-space: nowrap;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: clamp(22px, 1.6vw, 24px);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #ffffff;
 }
 
 .app-header__subtitle {
+  margin-top: 2px;
   font-family: "Montserrat", sans-serif;
-  font-size: 12.5px;
+  font-size: 13.5px;
   font-weight: 500;
-
-  color: rgba(255,255,255,.82);
-
-  white-space: nowrap;
+  color: #ffffff;
 }
 
 /* ------------------------------------------------------------------ */
-/* ACTIONS */
+/* RIGHT — STACKED, SLIMMER ACTIONS                                     */
 /* ------------------------------------------------------------------ */
 
 .app-header__actions {
+  grid-column: 3;
+  justify-self: end;
+
   display: flex;
-  align-items: center;
-  gap: 12px;
-
-  z-index: 1;
-  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
 }
 
-.app-header__logout {
+.app-header__extra-actions {
   display: flex;
-  align-items: center;
-  gap: 6px;
-
-  height: 38px;
-  padding: 0 16px;
-
-  border-radius: 10px;
-
-  border: 1px solid rgba(255,255,255,.55);
-
-  background: transparent;
-
-  color: white;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    background .25s ease,
-    color .25s ease,
-    border-color .25s ease,
-    transform .15s ease;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
 }
 
-.app-header__logout:hover {
-  background: white;
-  color: var(--asq-pink-deep);
-  border-color: white;
-}
-
-.app-header__logout:active {
-  transform: scale(.97);
-}
-
-.app-header__logout:focus-visible {
-  outline: 2px solid white;
-  outline-offset: 2px;
-}
-/* ------------------------------------------------------------------ */
-/* PREMIUM BACK BUTTON */
-/* ------------------------------------------------------------------ */
-
-.app-header__back {
-  width: 42px;
-  height: 42px;
-
+/* Shared button base — equal width/height for Logout & Back */
+.app-header__nav-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
+  width: 104px;
+  height: 36px;
+  padding: 0 14px;
 
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  color: #ffffff;
-
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
-  flex-shrink: 0;
+
+  color: var(--asq-btn-text);
+  border: 1px solid var(--asq-btn-border);
 
   transition:
-    transform .25s ease,
-    background .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+    background-color 0.25s ease,
+    transform 0.15s ease,
+    border-color 0.25s ease;
+}
+
+.app-header__nav-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.app-header__nav-btn:active {
+  transform: scale(0.97);
+}
+
+/* Logout — soft filled glass, per spec */
+.app-header__logout {
+  background: var(--asq-btn-bg);
+}
+
+.app-header__logout:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Back — outlined / transparent, per spec */
+.app-header__back {
+  background: transparent;
 }
 
 .app-header__back:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.35);
-
-  transform: translateX(-4px);
-
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-.app-header__back:active {
-  transform: translateX(-2px) scale(.95);
-}
-
-.app-header__back:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, .9);
-  outline-offset: 3px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* ------------------------------------------------------------------ */
-/* RESPONSIVE */
+/* RESPONSIVE — TABLET                                                  */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+  .app-header__inner {
+    gap: 14px;
+    min-height: 88px;
+  }
+
+  .app-header__logo {
+    height: 36px;
+  }
+
+  .app-header__nav-btn {
+    width: 96px;
+    height: 34px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* RESPONSIVE — MOBILE: logo top, title below, actions in a row         */
 /* ------------------------------------------------------------------ */
 
 @media (max-width: 768px) {
-
   .app-header__inner {
-    height: 68px;
-    padding: 0 18px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    min-height: unset;
+    padding: 14px 18px;
+    gap: 10px;
+    justify-items: center;
   }
 
   .app-header__left {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .app-header__left::after {
+    display: none;
+  }
+
+  .app-header__center {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+    white-space: normal;
+  }
+
+  .app-header__actions {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: center;
+    flex-direction: row;
+    align-items: center;
     gap: 10px;
+  }
+
+  .app-header__extra-actions {
+    flex-direction: row;
   }
 
   .app-header__logo {
@@ -303,81 +266,30 @@
   }
 
   .app-header__name {
-    font-size: 15px;
+    font-size: 19px;
   }
 
   .app-header__subtitle {
     font-size: 12px;
-  }
-
-  .app-header__back {
-    width: 38px;
-    height: 38px;
-  }
-
-  .app-header__logout {
-    height: 36px;
-    padding: 0 14px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 640px) {
-
-  .app-header__inner {
-    height: 64px;
-    padding: 0 14px;
-  }
-
-  .app-header__logo {
-    height: 28px;
-  }
-
-  .app-header__name {
-    font-size: 14px;
-  }
-
-  .app-header__subtitle {
-    display: none;
-  }
-
-  .app-header__back {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-  }
-
-  .app-header__logout {
-    width: 38px;
-    padding: 0;
-    justify-content: center;
-  }
-
-  .app-header__logout span {
-    display: none;
   }
 }
 
 @media (max-width: 420px) {
-
-  .app-header__left {
-    gap: 8px;
+  .app-header__nav-btn {
+    width: auto;
+    padding: 0 12px;
   }
 
-  .app-header__brand {
-    gap: 10px;
-    padding: 6px;
-  }
-
-  .app-header__logo {
-    height: 24px;
+  .app-header__nav-btn span {
+    display: none;
   }
 
   .app-header__name {
-    font-size: 13px;
+    font-size: 16px;
+    letter-spacing: 0.02em;
   }
 
-  .app-header__actions {
-    gap: 8px;
+  .app-header__subtitle {
+    display: none;
   }
 }

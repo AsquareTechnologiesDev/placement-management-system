@@ -25,6 +25,7 @@ import StudentJobs from "../pages/student/StudentJobs";
 import StudentJobDetail from "../pages/student/StudentJobDetail";
 import Applications from "../pages/placement/Applications";
 import MyApplications from "../pages/student/MyApplications";
+import Placements from "../pages/placement/Placements";
 
 const AppRoutes = () => {
     return (
@@ -159,6 +160,10 @@ const AppRoutes = () => {
                 <Route
                     path="/placement/applications"
                     element={<Applications />}
+                />
+                <Route
+                    path="/placement/placements"
+                    element={<Placements />}
                 />
 
             </Routes>
