@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from students.models import StudentProfile
 from django.utils import timezone
 from datetime import date
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from .models import Company,PlacementDrive,Job, JobApplication
 from .serializers import (
@@ -52,20 +53,27 @@ class CompanyListCreateAPIView(APIView):
             status=201
         )
 
+
+
+
 class CompanyDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id):
-        company = Company.objects.get(id=id)
-
-        serializer = CompanySerializer(
-            company
+    def get_object(self, id):
+        return get_object_or_404(
+            Company,
+            id=id
         )
+
+    def get(self, request, id):
+        company = self.get_object(id)
+
+        serializer = CompanySerializer(company)
 
         return Response(serializer.data)
 
     def put(self, request, id):
-        company = Company.objects.get(id=id)
+        company = self.get_object(id)
 
         serializer = CompanySerializer(
             company,
@@ -81,14 +89,17 @@ class CompanyDetailAPIView(APIView):
         return Response(serializer.data)
 
     def delete(self, request, id):
-        company = Company.objects.get(id=id)
+        company = self.get_object(id)
 
         company.delete()
 
-        return Response({
-            "message": "Company deleted"
-        })
-    
+        return Response(
+            {
+                "message": "Company deleted successfully."
+            },
+            status=status.HTTP_200_OK
+        )
+        
 class PlacementDriveListCreateAPIView(
     ListCreateAPIView
 ):
@@ -104,6 +115,8 @@ class PlacementDriveListCreateAPIView(
 class PlacementDriveDetailAPIView(
     RetrieveUpdateDestroyAPIView
 ):
+    permission_classes = [IsAuthenticated]
+
     queryset = (
         PlacementDrive.objects
         .select_related("company")
@@ -111,6 +124,19 @@ class PlacementDriveDetailAPIView(
 
     serializer_class = PlacementDriveSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        drive = self.get_object()
+
+        title = drive.title
+
+        drive.delete()
+
+        return Response(
+            {
+                "message": f'Placement Drive "{title}" deleted successfully.'
+            },
+            status=status.HTTP_200_OK
+        )
     
 class JobListCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]

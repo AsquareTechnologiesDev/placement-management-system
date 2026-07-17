@@ -445,6 +445,117 @@
 }
 
 /* ==========================================================
+   Form actions row (submit + cancel edit)
+   ========================================================== */
+
+.co-form-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.co-cancel-edit-btn{
+  margin-top:28px;
+  height:48px;
+}
+
+/* ==========================================================
+   Secondary / Danger Buttons (modal + dialog actions)
+   ========================================================== */
+
+.co-btn-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  height:44px;
+
+  padding:0 22px;
+
+  border-radius:12px;
+
+  border:1.5px solid #D8DCE3;
+
+  background:#fff;
+
+  color:var(--co-ink);
+
+  font-family:var(--co-font-body);
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:
+      background .2s ease,
+      border-color .2s ease,
+      transform .2s ease;
+}
+
+.co-btn-secondary:hover:not(:disabled){
+  background:#F5F6F8;
+  border-color:#C7CCD6;
+}
+
+.co-btn-secondary:disabled{
+  cursor:not-allowed;
+  opacity:.6;
+}
+
+.co-btn-danger{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  height:44px;
+
+  padding:0 22px;
+
+  border:none;
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-family:var(--co-font-body);
+  font-size:14px;
+  font-weight:700;
+
+  color:#fff;
+
+  background:var(--modal-primary, var(--co-primary));
+
+  box-shadow:0 10px 22px rgba(237,25,101,.28);
+
+  transition:
+      background .2s ease,
+      transform .2s ease,
+      box-shadow .2s ease,
+      opacity .2s ease;
+}
+
+.co-btn-danger:hover:not(:disabled){
+  background:var(--modal-primary-dark, var(--co-primary-dark));
+  transform:translateY(-2px);
+  box-shadow:0 14px 26px rgba(186,0,50,.32);
+}
+
+.co-btn-danger:disabled{
+  cursor:not-allowed;
+  opacity:.75;
+  transform:none;
+  box-shadow:none;
+}
+
+.co-btn-secondary svg,
+.co-btn-danger svg{
+  width:16px;
+  height:16px;
+}
+
+/* ==========================================================
    Loading Spinner
    ========================================================== */
 
@@ -694,6 +805,391 @@
 }
 
 /* ==========================================================
+   Company Card Actions (View / Edit / Delete)
+   ========================================================== */
+
+.co-card-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin-top:18px;
+  padding-top:16px;
+
+  border-top:1px solid var(--co-line);
+}
+
+.co-icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  flex:1;
+
+  height:38px;
+
+  border-radius:10px;
+
+  border:1.5px solid var(--co-line);
+
+  background:#fff;
+
+  color:var(--co-slate);
+
+  font-family:var(--co-font-body);
+  font-size:12.5px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:
+      background .2s ease,
+      border-color .2s ease,
+      color .2s ease,
+      transform .2s ease;
+}
+
+.co-icon-btn svg{
+  width:15px;
+  height:15px;
+}
+
+.co-icon-btn:hover:not(:disabled){
+  background:var(--co-primary-tint);
+  border-color:var(--co-primary-tint-2);
+  color:var(--co-primary-dark);
+  transform:translateY(-1px);
+}
+
+.co-icon-btn:disabled{
+  cursor:not-allowed;
+  opacity:.55;
+  transform:none;
+}
+
+.co-icon-btn-danger:hover:not(:disabled){
+  background:var(--co-error-bg);
+  border-color:var(--co-error);
+  color:var(--co-error);
+}
+
+/* ==========================================================
+   Modal / Dialog (View Company, Delete Confirmation)
+   Follows the Asquare Presence Book: modal-scoped tokens so
+   nothing outside .co-modal-overlay is affected.
+   ========================================================== */
+
+.co-modal-overlay{
+  /* Asquare Presence Book — modal-only palette */
+  --modal-primary: #ED1965;
+  --modal-primary-dark: #BA0032;
+  --modal-bg-light: #FFF6F9;
+  --modal-border: #F3D5E2;
+
+  position:fixed;
+  inset:0;
+  z-index:1000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:24px;
+
+  background:rgba(0,0,0,.45);
+
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+
+  animation:fadeDown .2s ease;
+}
+
+.co-modal{
+  width:100%;
+  max-width:700px;
+  max-height:85vh;
+
+  overflow-y:auto;
+
+  background:#fff;
+
+  border-radius:16px;
+
+  border:1px solid var(--modal-border);
+
+  box-shadow:0 24px 48px rgba(186,0,50,.16);
+
+  animation:modalPop .22s cubic-bezier(.2,.9,.3,1.2);
+}
+
+.co-modal-sm{
+  max-width:440px;
+}
+
+.co-modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+
+  padding:22px 26px;
+
+  border-bottom:1px solid var(--modal-border);
+
+  background:var(--modal-bg-light);
+
+  border-radius:16px 16px 0 0;
+}
+
+.co-modal-head-text{
+  display:flex;
+  flex-direction:column;
+}
+
+.co-modal-eyebrow{
+  margin-bottom:6px;
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:.4px;
+  text-transform:uppercase;
+
+  color:var(--modal-primary-dark);
+}
+
+.co-modal-title{
+  margin:0;
+
+  font-family:var(--co-font-display);
+
+  font-size:19px;
+  font-weight:800;
+
+  color:var(--co-ink);
+}
+
+.co-modal-close{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+
+  border:none;
+  border-radius:10px;
+
+  background:#fff;
+
+  color:var(--co-slate);
+
+  cursor:pointer;
+
+  transition:
+      background .2s ease,
+      color .2s ease,
+      transform .2s ease;
+}
+
+.co-modal-close:hover:not(:disabled){
+  background:var(--modal-bg-light);
+  color:var(--modal-primary-dark);
+  transform:rotate(90deg);
+}
+
+.co-modal-close:disabled{
+  cursor:not-allowed;
+  opacity:.6;
+  transform:none;
+}
+
+/* ---- View modal: two-column info grid ---- */
+
+.co-view-grid{
+  padding:22px 26px;
+
+  display:grid;
+
+  grid-template-columns:repeat(2,1fr);
+
+  gap:14px;
+}
+
+.co-view-row{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+
+  padding:14px 16px;
+
+  background:var(--modal-bg-light);
+
+  border:1px solid var(--modal-border);
+
+  border-radius:12px;
+}
+
+.co-view-row-full{
+  grid-column:1/-1;
+}
+
+.co-view-row-icon{
+  width:17px;
+  height:17px;
+  margin-top:2px;
+  flex-shrink:0;
+
+  color:var(--modal-primary);
+}
+
+.co-view-label{
+  margin:0 0 4px;
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:.3px;
+  text-transform:uppercase;
+
+  color:var(--co-slate-light);
+}
+
+.co-view-value{
+  margin:0;
+
+  font-size:14px;
+  font-weight:600;
+
+  color:var(--co-ink);
+
+  word-break:break-word;
+}
+
+.co-view-desc{
+  font-weight:400;
+  line-height:1.7;
+  color:var(--co-slate);
+}
+
+/* ---- Delete confirmation body ---- */
+
+.co-confirm-body{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  padding:28px 26px 8px;
+
+  text-align:center;
+}
+
+.co-confirm-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:52px;
+  height:52px;
+
+  margin-bottom:14px;
+
+  border-radius:50%;
+
+  background:var(--modal-bg-light);
+
+  color:var(--modal-primary);
+}
+
+.co-confirm-title{
+  margin:0 0 10px;
+
+  font-family:var(--co-font-display);
+
+  font-size:17px;
+  font-weight:800;
+
+  color:var(--co-ink);
+}
+
+.co-confirm-text{
+  margin:0 0 6px;
+
+  font-size:14px;
+  line-height:1.6;
+
+  color:var(--co-slate);
+}
+
+.co-confirm-name{
+  color:var(--co-ink);
+}
+
+.co-confirm-warning{
+  margin:0;
+
+  font-size:12.5px;
+  font-weight:600;
+
+  color:var(--co-error);
+}
+
+.co-modal-foot{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+
+  padding:20px 26px;
+
+  border-top:1px solid var(--modal-border);
+}
+
+/* ---- Modal action buttons ---- */
+
+.co-modal-foot .co-btn-secondary,
+.co-modal-foot .co-btn-danger,
+.co-modal-foot .co-btn-outline-primary{
+  min-width:120px;
+  height:44px;
+}
+
+.co-btn-outline-primary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  padding:0 22px;
+
+  border-radius:12px;
+
+  border:1.5px solid var(--modal-primary, var(--co-primary));
+
+  background:#fff;
+
+  color:var(--modal-primary-dark, var(--co-primary-dark));
+
+  font-family:var(--co-font-body);
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:
+      background .2s ease,
+      border-color .2s ease,
+      transform .2s ease;
+}
+
+.co-btn-outline-primary:hover:not(:disabled){
+  background:var(--modal-bg-light, var(--co-primary-tint));
+  transform:translateY(-1px);
+}
+
+/* ==========================================================
    Empty State
    ========================================================== */
 
@@ -796,6 +1292,18 @@
   }
 }
 
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .co-card {
   animation: fadeUp .35s ease;
 }
@@ -892,6 +1400,15 @@
     width:100%;
   }
 
+  .co-form-actions{
+    flex-direction:column-reverse;
+    align-items:stretch;
+  }
+
+  .co-cancel-edit-btn{
+    width:100%;
+  }
+
 }
 
 @media (max-width:640px){
@@ -942,6 +1459,29 @@
     font-size:14px;
   }
 
+  .co-card-actions{
+    flex-wrap:wrap;
+  }
+
+  .co-icon-btn{
+    min-width:calc(50% - 4px);
+  }
+
+  .co-view-grid{
+    grid-template-columns:1fr;
+  }
+
+  .co-modal-foot{
+    flex-wrap:wrap;
+  }
+
+  .co-modal-foot .co-btn-secondary,
+  .co-modal-foot .co-btn-danger,
+  .co-modal-foot .co-btn-outline-primary{
+    flex:1;
+    min-width:0;
+  }
+
 }
 
 @media (max-width:420px){
@@ -978,6 +1518,14 @@
     font-size:12px;
   }
 
+  .co-modal-head,
+  .co-view-grid,
+  .co-confirm-body,
+  .co-modal-foot{
+    padding-left:18px;
+    padding-right:18px;
+  }
+
 }
 
 /* ==========================================================
@@ -986,7 +1534,12 @@
 
 .co-submit-btn:focus-visible,
 .co-input:focus-visible,
-.co-card-link:focus-visible{
+.co-card-link:focus-visible,
+.co-btn-secondary:focus-visible,
+.co-btn-danger:focus-visible,
+.co-icon-btn:focus-visible,
+.co-btn-outline-primary:focus-visible,
+.co-modal-close:focus-visible{
 
   outline:2px solid var(--co-primary-dark);
   outline-offset:2px;
